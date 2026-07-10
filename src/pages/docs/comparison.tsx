@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { navigate } from "gatsby";
 import Layout from "../../components/Layout";
 import ComparisonView from "../../components/ComparisonView";
+import { useTheme } from "../../context/ThemeContext";
+import { font, radius } from "../../theme/tokens";
 
 interface ComponentData {
   id: string;
@@ -40,6 +42,7 @@ interface ComponentData {
 // not for comparison which requires real documentation
 
 const ComparisonPage: React.FC = () => {
+  const { colors } = useTheme();
   const [first, setFirst] = useState<ComponentData | null>(null);
   const [second, setSecond] = useState<ComponentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -147,7 +150,7 @@ const ComparisonPage: React.FC = () => {
   if (loading) {
     return (
       <Layout>
-        <div style={{ padding: "72px 56px", maxWidth: "992px", textAlign: "center" }}>
+        <div style={{ padding: "72px 56px", maxWidth: "992px", textAlign: "center", fontFamily: font.family, color: colors.textMuted }}>
           <p>Loading comparison...</p>
         </div>
       </Layout>
@@ -157,23 +160,23 @@ const ComparisonPage: React.FC = () => {
   if (error || !first || !second) {
     return (
       <Layout>
-        <div style={{ padding: "72px 56px", maxWidth: "992px", textAlign: "center" }}>
-          <h2>Comparison not available</h2>
-          <p style={{ color: "#666", marginBottom: "20px" }}>{error || "Components not found"}</p>
+        <div style={{ padding: "72px 56px", maxWidth: "992px", textAlign: "center", fontFamily: font.family, color: colors.text }}>
+          <h2 style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>Comparison not available</h2>
+          <p style={{ color: colors.textMuted, marginBottom: "20px", fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>{error || "Components not found"}</p>
           <button
             onClick={() => navigate(-1)}
             style={{
-              padding: "8px 14px",
-              background: "#a5e1d2",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 500,
+              padding: "8px 24px",
+              background: colors.surface,
+              color: colors.accent,
+              border: `1px solid ${colors.accent}`,
+              borderRadius: `${radius.xl}px`,
+              fontFamily: font.family,
+              fontSize: `${font.size.body}px`,
               cursor: "pointer",
             }}
           >
-            Go Back
+            Go back
           </button>
         </div>
       </Layout>
@@ -182,40 +185,33 @@ const ComparisonPage: React.FC = () => {
 
   return (
     <Layout>
-      <div style={{ padding: "72px 56px", maxWidth: "992px" }}>
+      <div style={{ padding: "72px 56px", maxWidth: "992px", fontFamily: font.family, color: colors.text }}>
         {/* Header */}
         <div style={{ marginBottom: "32px" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "16px",
-            }}
-          >
-            <h1 style={{ margin: 0, fontSize: "28px", fontWeight: 700, color: "#1c1c1e" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+            <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
               {first.name} vs {second.name}
             </h1>
             <button
               onClick={() => navigate(-1)}
+              onMouseEnter={(e) => (e.currentTarget.style.background = colors.surfaceAlt)}
+              onMouseLeave={(e) => (e.currentTarget.style.background = colors.surface)}
               style={{
-                padding: "8px 14px",
-                background: "#f5f5f5",
-                border: "1px solid #e0e0e0",
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: "#333",
+                padding: "8px 24px",
+                background: colors.surface,
+                border: `1px solid ${colors.stroke}`,
+                borderRadius: `${radius.xl}px`,
+                fontFamily: font.family,
+                fontSize: `${font.size.body}px`,
+                color: colors.text,
                 cursor: "pointer",
-                transition: "background 0.2s",
+                transition: "background 0.15s ease",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#eee")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#f5f5f5")}
             >
               Back
             </button>
           </div>
-          <p style={{ fontSize: "14px", color: "#666", margin: 0 }}>
+          <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
             {first.platform === second.platform
               ? `${first.platform.charAt(0).toUpperCase() + first.platform.slice(1)} Components`
               : `${first.platform.charAt(0).toUpperCase() + first.platform.slice(1)} vs ${second.platform.charAt(0).toUpperCase() + second.platform.slice(1)}`}

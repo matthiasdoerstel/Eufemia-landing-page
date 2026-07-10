@@ -199,7 +199,7 @@ const GettingStartedPage: React.FC = () => {
               color: colors.text,
             }}
           >
-            Getting Started
+            Developer Guide
           </h1>
           <p style={{ ...paraStyle, maxWidth: "640px" }}>
             Welcome to Eufemia — DNB's design system for building accessible, consistent digital
@@ -283,4 +283,4 @@ const GettingStartedPage: React.FC = () => {
 
 export default GettingStartedPage;
 
-export const Head = () => <title>Getting Started | Eufemia Design System</title>;
+export const Head = () => <title>Developer Guide | Eufemia Design System</title>;

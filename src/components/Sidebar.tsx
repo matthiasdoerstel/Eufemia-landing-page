@@ -76,6 +76,24 @@ const Icon = ({ kind }: { kind: IconKind }) => {
   }
 };
 
+// Leading icon slot. The 16px slot (+8px gap) is ALWAYS reserved so the label
+// never shifts; the icon itself only fades in/out. `play` triggers a small
+// in-and-out nudge (used on the active row after a click / navigation).
+const Lead = ({ kind, show, play }: { kind: IconKind; show: boolean; play?: boolean }) => (
+  <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
+    <span
+      style={{
+        display: "inline-flex",
+        opacity: show ? 1 : 0,
+        transition: "opacity 0.15s ease",
+        animation: play ? "sbArrowNudge 0.38s ease" : undefined,
+      }}
+    >
+      <Icon kind={kind} />
+    </span>
+  </span>
+);
+
 interface SidebarProps {
   currentPlatform?: Platform;
   currentPath?: string;
@@ -83,6 +101,10 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath = "" }) => {
   const [hovered, setHovered] = useState<string | null>(null);
+  // Bumps on every row click so the arrow nudge replays — even when the clicked
+  // item is already the active one (same route, no remount from navigation).
+  const [click, setClick] = useState<{ key: string; n: number }>({ key: "", n: 0 });
+  const onRowClick = (k: string) => setClick((c) => ({ key: k, n: c.n + 1 }));
   const { colors } = useTheme();
   const { docPlatform, setDocPlatform } = usePortalSettings();
 
@@ -110,7 +132,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath =
   const rowStyle = (active: boolean, hover: boolean, indent?: boolean): React.CSSProperties => ({
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: 0,
     paddingLeft: indent ? "16px" : 0,
     textDecoration: "none",
     fontFamily: font.family,
@@ -125,16 +147,44 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath =
 
   const renderRow = (item: NavItem) => {
     const active = currentPath === item.path;
+    const isChevron = item.icon === "chevron";
     return (
       <Link
         key={item.path}
         to={item.path}
+        onClick={() => onRowClick(item.path)}
         onMouseEnter={() => setHovered(item.path)}
         onMouseLeave={() => setHovered(null)}
         style={rowStyle(active, hovered === item.path, item.indent)}
       >
-        <Icon kind={active ? "arrow" : item.icon} />
+        <Lead
+          key={click.key === item.path ? `c-${item.path}-${click.n}` : active ? `a-${item.path}` : item.path}
+          kind={isChevron ? "arrow" : active ? "arrow" : item.icon}
+          show={isChevron ? active || hovered === item.path : true}
+          play={active || click.key === item.path}
+        />
         {item.label}
+      </Link>
+    );
+  };
+
+  const menuLink = (to: string, label: string, key: string, indent = false) => {
+    const active = currentPath === to;
+    return (
+      <Link
+        to={to}
+        onClick={() => onRowClick(key)}
+        onMouseEnter={() => setHovered(key)}
+        onMouseLeave={() => setHovered(null)}
+        style={rowStyle(active, hovered === key, indent)}
+      >
+        <Lead
+          key={click.key === key ? `c-${key}-${click.n}` : active ? `a-${to}` : key}
+          kind="arrow"
+          show={active || hovered === key}
+          play={active || click.key === key}
+        />
+        {label}
       </Link>
     );
   };
@@ -155,37 +205,13 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath =
         fontFamily: font.family,
       }}
     >
+      <style>{`@keyframes sbArrowNudge { 0% { transform: translateX(-6px); } 55% { transform: translateX(3px); } 100% { transform: translateX(0); } }`}</style>
       <div style={{ display: "flex", flexDirection: "column", gap: "27px", width: "336px" }}>
         {/* Menu */}
         <nav style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-          {(() => {
-            const active = currentPath === "/about";
-            return (
-              <Link
-                to="/about"
-                onMouseEnter={() => setHovered("about")}
-                onMouseLeave={() => setHovered(null)}
-                style={rowStyle(active, hovered === "about")}
-              >
-                <Icon kind={active ? "arrow" : "chevron"} />
-                About Eufemia
-              </Link>
-            );
-          })()}
-          {(() => {
-            const active = currentPath === "/getting-started";
-            return (
-              <Link
-                to="/getting-started"
-                onMouseEnter={() => setHovered("getting-started")}
-                onMouseLeave={() => setHovered(null)}
-                style={rowStyle(active, hovered === "getting-started")}
-              >
-                <Icon kind={active ? "arrow" : "chevron"} />
-                Getting started
-              </Link>
-            );
-          })()}
+          {menuLink("/about", "About Eufemia", "about")}
+          {menuLink("/docs/design", "Designer Guide", "designer-guide")}
+          {menuLink("/getting-started", "Developer Guide", "developer-guide")}
         </nav>
 
         {/* Divider between the menu and the platform selector (full-width) */}

@@ -274,8 +274,8 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
                 transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#a5e1d2";
-                e.currentTarget.style.color = "#a5e1d2";
+                e.currentTarget.style.borderColor = isDark ? "#a5e1d2" : "#007272";
+                e.currentTarget.style.color = isDark ? "#a5e1d2" : "#007272";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "#e0e0e0";
@@ -306,8 +306,8 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
                 transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#a5e1d2";
-                e.currentTarget.style.color = "#a5e1d2";
+                e.currentTarget.style.borderColor = isDark ? "#a5e1d2" : "#007272";
+                e.currentTarget.style.color = isDark ? "#a5e1d2" : "#007272";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "#e0e0e0";

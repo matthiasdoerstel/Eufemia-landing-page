@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../components/Layout";
 import { useTheme } from "../context/ThemeContext";
+import { font, radius } from "../theme/tokens";
 
 const changelog = [
   {
@@ -67,127 +68,60 @@ const changelog = [
   },
 ];
 
-const getTypeStyles = (type: string) => {
-  switch (type) {
-    case "feature":
-      return { background: "#e6f2f2", color: "#a5e1d2", label: "New" };
-    case "improvement":
-      return { background: "#e6f0ff", color: "#0055cc", label: "Improved" };
-    case "fix":
-      return { background: "#fff3e6", color: "#cc7a00", label: "Fixed" };
-    case "breaking":
-      return { background: "#ffe6e6", color: "#cc0000", label: "Breaking" };
-    default:
-      return { background: "#f5f5f5", color: "#666", label: type };
-  }
+// Semantic status colours — readable as a chip on both light and dark surfaces.
+const typeMeta: Record<string, { color: string; label: string }> = {
+  feature: { color: "#28B482", label: "New" },
+  improvement: { color: "#2B7FFF", label: "Improved" },
+  fix: { color: "#D98324", label: "Fixed" },
+  breaking: { color: "#E2483D", label: "Breaking" },
 };
 
 const ChangelogPage: React.FC = () => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { colors } = useTheme();
+
   return (
     <Layout currentPath="/changelog">
-      <div style={{ padding: "72px 56px", maxWidth: "992px" }}>
+      <div style={{ padding: "72px 56px", maxWidth: "992px", fontFamily: font.family, color: colors.text }}>
         {/* Hero */}
-        <div style={{ marginBottom: "48px" }}>
-          <div
-            style={{
-              display: "inline-block",
-              padding: "6px 12px",
-              background: "linear-gradient(135deg, #e6f2f2 0%, #d4ebeb 100%)",
-              borderRadius: "20px",
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "#a5e1d2",
-              marginBottom: "16px",
-            }}
-          >
-            Changelog
-          </div>
-          <h1
-            style={{
-              fontSize: "42px",
-              fontWeight: 700,
-              color: isDark ? "#fff" : "#1c1c1e",
-              marginBottom: "16px",
-              lineHeight: 1.2,
-              letterSpacing: "-0.5px",
-            }}
-          >
-            What's New in Eufemia
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
+          <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
+            What's new in Eufemia
           </h1>
-          <p
-            style={{
-              fontSize: "18px",
-              lineHeight: 1.7,
-              color: isDark ? "#999" : "#555",
-              maxWidth: "700px",
-            }}
-          >
-            Track all updates, new features, improvements, and bug fixes across
-            Eufemia releases. Stay up to date with the latest changes.
+          <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted, maxWidth: "640px" }}>
+            Track all updates, new features, improvements, and bug fixes across Eufemia releases.
           </p>
         </div>
 
-        {/* Changelog entries */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        {/* Entries */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {changelog.map((release) => (
             <div
               key={release.version}
               id={release.version.replace(/\./g, "-")}
               style={{
                 padding: "28px",
-                background: isDark ? "#1c1c1e" : "#fff",
-                border: `1px solid ${isDark ? "#333" : "#e8e8e8"}`,
-                borderRadius: "16px",
+                background: colors.surface,
+                border: `1px solid ${colors.strokeSubtle}`,
+                borderRadius: `${radius.xl}px`,
               }}
             >
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
-                <h2 style={{ fontSize: "22px", fontWeight: 600, color: isDark ? "#fff" : "#1c1c1e", margin: 0 }}>
+                <h2 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
                   v{release.version}
                 </h2>
-                <span
-                  style={{
-                    fontSize: "13px",
-                    color: isDark ? "#999" : "#888",
-                    padding: "4px 12px",
-                    background: isDark ? "#222" : "#fafafa",
-                    borderRadius: "6px",
-                  }}
-                >
+                <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted, padding: "4px 12px", background: colors.surfaceAlt, borderRadius: `${radius.md}px` }}>
                   {release.date}
                 </span>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {release.changes.map((change, index) => {
-                  const typeStyles = getTypeStyles(change.type);
+                  const meta = typeMeta[change.type] || { color: colors.textMuted, label: change.type };
                   return (
-                    <div
-                      key={index}
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: "12px",
-                        padding: "12px 16px",
-                        background: isDark ? "#222" : "#fafafa",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          flexShrink: 0,
-                          padding: "2px 8px",
-                          background: typeStyles.background,
-                          color: typeStyles.color,
-                          borderRadius: "4px",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {typeStyles.label}
+                    <div key={index} style={{ display: "flex", alignItems: "flex-start", gap: "12px", padding: "12px 16px", background: colors.surfaceAlt, borderRadius: `${radius.md}px` }}>
+                      <span style={{ flexShrink: 0, padding: "2px 8px", background: colors.surface, color: meta.color, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.sm}px`, fontFamily: font.family, fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                        {meta.label}
                       </span>
-                      <p style={{ fontSize: "14px", color: isDark ? "#999" : "#444", lineHeight: 1.5, margin: 0 }}>
+                      <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
                         {change.description}
                       </p>
                     </div>
@@ -198,24 +132,11 @@ const ChangelogPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Load more hint */}
-        <div
-          style={{
-            marginTop: "48px",
-            padding: "24px",
-            background: isDark ? "#1c1c1e" : "#fafafa",
-            borderRadius: "12px",
-            textAlign: "center",
-          }}
-        >
-          <p style={{ fontSize: "14px", color: isDark ? "#999" : "#666", margin: 0 }}>
+        {/* Footer hint */}
+        <div style={{ marginTop: "48px", padding: "24px", background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}px`, textAlign: "center" }}>
+          <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
             For the complete changelog history, check the{" "}
-            <a
-              href="https://github.com/dnbexperience/eufemia/releases"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#a5e1d2", textDecoration: "underline" }}
-            >
+            <a href="https://github.com/dnbexperience/eufemia/releases" target="_blank" rel="noopener noreferrer" style={{ color: colors.accent, textDecoration: "underline" }}>
               GitHub releases page
             </a>
             .

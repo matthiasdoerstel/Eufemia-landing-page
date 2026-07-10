@@ -29,7 +29,7 @@ export const TokensViewer: React.FC<TokensViewerProps> = ({ tokens }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCollection, setSelectedCollection] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const { theme } = useTheme();
+  const { theme, colors } = useTheme();
   const isDark = theme === 'dark';
 
   // Get all unique modes from tokens
@@ -147,9 +147,9 @@ export const TokensViewer: React.FC<TokensViewerProps> = ({ tokens }) => {
                     border: 'none',
                     fontSize: '14px',
                     fontWeight: selectedCollection === collection ? 600 : 400,
-                    color: selectedCollection === collection ? '#a5e1d2' : isDark ? "#999" : "#666",
+                    color: selectedCollection === collection ? colors.accent : isDark ? "#999" : "#666",
                     cursor: 'pointer',
-                    borderBottom: selectedCollection === collection ? '3px solid #a5e1d2' : 'none',
+                    borderBottom: selectedCollection === collection ? `3px solid ${colors.accent}` : 'none',
                     transition: 'all 0.2s',
                   }}
                 >
@@ -176,7 +176,7 @@ export const TokensViewer: React.FC<TokensViewerProps> = ({ tokens }) => {
                 style={{
                   fontSize: '18px',
                   fontWeight: 600,
-                  color: '#1c1c1e',
+                  color: isDark ? '#fff' : '#1c1c1e',
                   marginBottom: '16px',
                   marginTop: 0,
                 }}
@@ -203,7 +203,7 @@ export const TokensViewer: React.FC<TokensViewerProps> = ({ tokens }) => {
                 >
                   {/* Table Header */}
                   <thead>
-                    <tr style={{ borderBottom: '2px solid #e0e0e0', backgroundColor: '#f9f9f9' }}>
+                    <tr style={{ borderBottom: `2px solid ${isDark ? '#444' : '#e0e0e0'}`, backgroundColor: isDark ? '#222' : '#f9f9f9' }}>
                       <th
                         style={{
                           padding: '12px',
@@ -258,7 +258,7 @@ export const TokensViewer: React.FC<TokensViewerProps> = ({ tokens }) => {
                             style={{
                               padding: '12px',
                               fontWeight: 500,
-                              color: isDark ? "#a5e1d2" : "#a5e1d2",
+                              color: isDark ? colors.accent : colors.accent,
                               position: 'sticky',
                               left: 0,
                               backgroundColor: idx % 2 === 0 ? (isDark ? "#1c1c1e" : "#fff") : (isDark ? "#222" : "#f9f9f9"),
@@ -351,7 +351,7 @@ export const TokensViewer: React.FC<TokensViewerProps> = ({ tokens }) => {
                                           top: '-28px',
                                           left: '50%',
                                           transform: 'translateX(-50%)',
-                                          background: '#a5e1d2',
+                                          background: colors.accent,
                                           color: '#fff',
                                           padding: '4px 8px',
                                           borderRadius: '4px',

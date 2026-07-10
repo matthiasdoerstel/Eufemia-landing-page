@@ -84,7 +84,7 @@ const DevelopGraphic = ({ playing, stroke }: { playing: boolean; stroke: string 
 
 const cards = [
   { title: "Design", desc: "Figma UI kits and more", to: "/docs/design", Graphic: DesignGraphic },
-  { title: "Develop", desc: "Get started with installation guides", to: "https://eufemia.dnb.no/uilib/getting-started/", Graphic: DevelopGraphic },
+  { title: "Develop", desc: "Get started with installation guides", to: "/getting-started", Graphic: DevelopGraphic },
 ];
 
 const moreCols: string[][] = [
