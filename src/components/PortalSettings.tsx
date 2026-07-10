@@ -22,10 +22,8 @@ const CheckIcon = ({ color }: { color: string }) => (
 );
 
 const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
-  const { colors, mode, setMode, setBrand } = useTheme();
+  const { colors, mode, setMode, brand, setBrand } = useTheme();
   const { platforms, togglePlatform } = usePortalSettings();
-
-  const [brandLabel, setBrandLabel] = React.useState("DNB");
   const [language, setLanguage] = React.useState("Norsk");
   const [skeletons, setSkeletons] = React.useState(true);
   const [showGrid, setShowGrid] = React.useState(false);
@@ -242,11 +240,8 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
               <ToggleButton
                 key={b}
                 label={b}
-                selected={brandLabel === b}
-                onClick={() => {
-                  setBrandLabel(b);
-                  setBrand(b.startsWith("Sbanken") ? "Sbanken" : "DNB");
-                }}
+                selected={brand === "Sbanken" ? b.startsWith("Sbanken") : b === "DNB"}
+                onClick={() => setBrand(b.startsWith("Sbanken") ? "Sbanken" : "DNB")}
               />
             ))}
           </div>
