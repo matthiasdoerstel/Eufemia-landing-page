@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "gatsby";
 import Layout from "../../../components/Layout";
 import TokenCatalog from "../../../components/TokenCatalog";
+import InPageRail from "../../../components/InPageRail";
+import { SECTIONS } from "../../../data/design-tokens";
 import { useTheme } from "../../../context/ThemeContext";
 import { font } from "../../../theme/tokens";
 
@@ -10,8 +12,8 @@ const WebDesignTokensPage: React.FC = () => {
 
   return (
     <Layout currentPlatform="web" currentPath="/docs/web/design-tokens">
-      <div style={{ padding: "72px 56px", maxWidth: "1200px", fontFamily: font.family, color: colors.text }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", padding: "72px 56px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px", flex: "1 1 0", minWidth: 0, maxWidth: "1100px", fontFamily: font.family, color: colors.text }}>
           {/* Hero */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <h1
@@ -75,6 +77,8 @@ const WebDesignTokensPage: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        <InPageRail items={SECTIONS.map((s) => ({ id: `tokens-${s.id}`, label: s.label }))} />
       </div>
     </Layout>
   );

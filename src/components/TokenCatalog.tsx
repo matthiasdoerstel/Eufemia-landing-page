@@ -169,7 +169,7 @@ const Section: React.FC<{
   }, [rows, active, sortKey, sortDir]);
 
   return (
-    <section style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+    <section id={`tokens-${section}`} style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         <h2
           style={{
