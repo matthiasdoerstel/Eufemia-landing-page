@@ -179,6 +179,10 @@ const EufemiaAndAiPage: React.FC = () => {
             answer questions about the design system — tokens, components, icons and code — grounded in
             the real library, right where you work.
           </p>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            We're striving to make Eufemia and its documentation readable and navigable for both humans
+            and AI. This is an ongoing effort, and your feedback is always appreciated — {link("tell us what would help", "https://eufemia.dnb.no/contribute/")}.
+          </p>
         </div>
 
         {/* Web MCP */}
