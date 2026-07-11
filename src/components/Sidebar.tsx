@@ -231,6 +231,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {menuLink("/about", "About Eufemia", "about")}
           {menuLink("/docs/design", "Designer Guide", "designer-guide")}
           {menuLink("/getting-started", "Developer Guide", "developer-guide")}
+          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai")}
         </nav>
 
         {/* Divider between the menu and the platform selector (full-width) */}
