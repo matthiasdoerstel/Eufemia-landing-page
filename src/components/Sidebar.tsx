@@ -29,6 +29,7 @@ const webNavItems: NavItem[] = [
   { label: "Layout", path: "/docs/web/layout", icon: "grid" },
   { label: "HTML Elements", path: "/docs/web/html-elements", icon: "grid" },
   { label: "Extensions", path: "/docs/web/extensions", icon: "grid" },
+  { label: "Design Tokens", path: "/docs/web/design-tokens", icon: "grid" },
 ];
 
 const iosNavItems: NavItem[] = [
@@ -97,14 +98,26 @@ const Lead = ({ kind, show, play }: { kind: IconKind; show: boolean; play?: bool
 interface SidebarProps {
   currentPlatform?: Platform;
   currentPath?: string;
+  isMobile?: boolean;
+  open?: boolean;
+  onNavigate?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath = "" }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  currentPlatform = null,
+  currentPath = "",
+  isMobile = false,
+  open = false,
+  onNavigate,
+}) => {
   const [hovered, setHovered] = useState<string | null>(null);
   // Bumps on every row click so the arrow nudge replays — even when the clicked
   // item is already the active one (same route, no remount from navigation).
   const [click, setClick] = useState<{ key: string; n: number }>({ key: "", n: 0 });
-  const onRowClick = (k: string) => setClick((c) => ({ key: k, n: c.n + 1 }));
+  const onRowClick = (k: string) => {
+    setClick((c) => ({ key: k, n: c.n + 1 }));
+    onNavigate?.();
+  };
   const { colors } = useTheme();
   const { docPlatform, setDocPlatform } = usePortalSettings();
 
@@ -193,6 +206,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath =
     <aside
       style={{
         width: "384px",
+        maxWidth: isMobile ? "86vw" : undefined,
         height: `calc(100vh - ${NAV_HEIGHT}px)`,
         position: "fixed",
         top: `${NAV_HEIGHT}px`,
@@ -203,7 +217,12 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath =
         padding: "55px 24px 40px",
         boxSizing: "border-box",
         fontFamily: font.family,
+        zIndex: isMobile ? 95 : 1,
+        transform: isMobile && !open ? "translateX(-100%)" : "translateX(0)",
+        transition: "transform 0.25s ease",
+        boxShadow: isMobile && open ? "0 8px 32px rgba(0,0,0,0.35)" : "none",
       }}
+      aria-hidden={isMobile && !open}
     >
       <style>{`@keyframes sbArrowNudge { 0% { transform: translateX(-6px); } 55% { transform: translateX(3px); } 100% { transform: translateX(0); } }`}</style>
       <div style={{ display: "flex", flexDirection: "column", gap: "27px", width: "336px" }}>
@@ -226,6 +245,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPlatform = null, currentPath =
                 key={p}
                 onClick={() => {
                   setDocPlatform(p);
+                  onNavigate?.();
                   navigate(p === "web" ? "/docs/web" : p === "ios" ? "/docs/ios" : "/docs/android");
                 }}
                 onMouseEnter={() => setHovered(`platform-${p}`)}

@@ -11,7 +11,7 @@ export interface RailItem {
 // Sticky right-hand "on this page" rail. Highlights every section currently
 // visible in the viewport with a bright segment that hugs the label glyphs,
 // over a subtle full-list track. Sections are located by DOM id.
-const InPageRail: React.FC<{ items: RailItem[] }> = ({ items }) => {
+const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, hidden = false }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState<Set<number>>(() => new Set([0]));
   const [hl, setHl] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
@@ -75,6 +75,8 @@ const InPageRail: React.FC<{ items: RailItem[] }> = ({ items }) => {
       window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
+
+  if (hidden) return null;
 
   return (
     <nav

@@ -5,15 +5,17 @@ import TokenCatalog from "../../../components/TokenCatalog";
 import InPageRail from "../../../components/InPageRail";
 import { SECTIONS } from "../../../data/design-tokens";
 import { useTheme } from "../../../context/ThemeContext";
-import { font } from "../../../theme/tokens";
+import { useIsMobile } from "../../../hooks/useIsMobile";
+import { font, layout } from "../../../theme/tokens";
 
 const WebDesignTokensPage: React.FC = () => {
   const { colors } = useTheme();
+  const isMobile = useIsMobile();
 
   return (
     <Layout currentPlatform="web" currentPath="/docs/web/design-tokens">
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "80px", padding: "72px 56px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px", flex: "1 1 0", minWidth: 0, maxWidth: "1100px", fontFamily: font.family, color: colors.text }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: isMobile ? 0 : "80px", padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px", flex: "1 1 0", minWidth: 0, maxWidth: `${layout.contentMax}px`, fontFamily: font.family, color: colors.text }}>
           {/* Hero */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <h1
@@ -78,7 +80,7 @@ const WebDesignTokensPage: React.FC = () => {
           </div>
         </div>
 
-        <InPageRail items={SECTIONS.map((s) => ({ id: `tokens-${s.id}`, label: s.label }))} />
+        <InPageRail items={SECTIONS.map((s) => ({ id: `tokens-${s.id}`, label: s.label }))} hidden={isMobile} />
       </div>
     </Layout>
   );

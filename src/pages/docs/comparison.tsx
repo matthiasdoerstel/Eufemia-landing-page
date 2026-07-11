@@ -3,7 +3,8 @@ import { navigate } from "gatsby";
 import Layout from "../../components/Layout";
 import ComparisonView from "../../components/ComparisonView";
 import { useTheme } from "../../context/ThemeContext";
-import { font, radius } from "../../theme/tokens";
+import { useIsMobile } from "../../hooks/useIsMobile";
+import { font, radius, layout } from "../../theme/tokens";
 
 interface ComponentData {
   id: string;
@@ -43,6 +44,7 @@ interface ComponentData {
 
 const ComparisonPage: React.FC = () => {
   const { colors } = useTheme();
+  const isMobile = useIsMobile();
   const [first, setFirst] = useState<ComponentData | null>(null);
   const [second, setSecond] = useState<ComponentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -150,7 +152,7 @@ const ComparisonPage: React.FC = () => {
   if (loading) {
     return (
       <Layout>
-        <div style={{ padding: "72px 56px", maxWidth: "992px", textAlign: "center", fontFamily: font.family, color: colors.textMuted }}>
+        <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, textAlign: "center", fontFamily: font.family, color: colors.textMuted }}>
           <p>Loading comparison...</p>
         </div>
       </Layout>
@@ -160,7 +162,7 @@ const ComparisonPage: React.FC = () => {
   if (error || !first || !second) {
     return (
       <Layout>
-        <div style={{ padding: "72px 56px", maxWidth: "992px", textAlign: "center", fontFamily: font.family, color: colors.text }}>
+        <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, textAlign: "center", fontFamily: font.family, color: colors.text }}>
           <h2 style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>Comparison not available</h2>
           <p style={{ color: colors.textMuted, marginBottom: "20px", fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>{error || "Components not found"}</p>
           <button
@@ -185,7 +187,7 @@ const ComparisonPage: React.FC = () => {
 
   return (
     <Layout>
-      <div style={{ padding: "72px 56px", maxWidth: "992px", fontFamily: font.family, color: colors.text }}>
+      <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, fontFamily: font.family, color: colors.text }}>
         {/* Header */}
         <div style={{ marginBottom: "32px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>

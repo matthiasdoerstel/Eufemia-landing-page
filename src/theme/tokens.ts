@@ -122,8 +122,17 @@ export const shadow = {
   standard: "0 8px 16px rgba(0, 0, 0, 0.08)",
 } as const;
 
-// Content layout used across pages (matches the 560px Figma content column).
+// Content layout used across pages.
 export const layout = {
   contentWidth: 560,
   contentPadding: 40,
+  // Shared max width for the primary content column (matches the design-tokens
+  // catalog width; all pages align to this so page edges line up).
+  contentMax: 1100,
+  // Page padding: desktop vs mobile (top/right/bottom/left shorthand pairs).
+  pagePadding: "72px 56px",
+  pagePaddingMobile: "32px 20px",
+  // Below this viewport width the sidebar collapses into a drawer.
+  mobileBreakpoint: 900,
 } as const;
+

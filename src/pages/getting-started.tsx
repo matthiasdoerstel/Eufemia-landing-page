@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import InPageRail from "../components/InPageRail";
 import { useTheme } from "../context/ThemeContext";
-import { font, radius } from "../theme/tokens";
+import { useIsMobile } from "../hooks/useIsMobile";
+import { font, radius, layout } from "../theme/tokens";
 
 const installSnippet = `npm i @dnb/eufemia react react-dom
 # or
@@ -107,6 +108,7 @@ function highlight(code: string, lang: string, pal: EditorPalette): React.ReactN
 
 const GettingStartedPage: React.FC = () => {
   const { colors, theme } = useTheme();
+  const isMobile = useIsMobile();
   const [hover, setHover] = useState<string | null>(null);
 
   const editor: EditorPalette =
@@ -174,7 +176,7 @@ const GettingStartedPage: React.FC = () => {
 
   return (
     <Layout currentPath="/getting-started" currentPlatform="web">
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "160px", padding: "72px 56px" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: isMobile ? 0 : "80px", padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding }}>
         <div
           style={{
             display: "flex",
@@ -182,7 +184,7 @@ const GettingStartedPage: React.FC = () => {
             gap: "48px",
             flex: "1 1 0",
             minWidth: 0,
-            maxWidth: "880px",
+            maxWidth: `${layout.contentMax}px`,
             fontFamily: font.family,
             color: colors.text,
           }}
@@ -275,6 +277,7 @@ const GettingStartedPage: React.FC = () => {
             { id: "code-editor-extensions", label: "Code Editor Extensions" },
             { id: "please-contribute", label: "Please contribute" },
           ]}
+          hidden={isMobile}
         />
       </div>
     </Layout>

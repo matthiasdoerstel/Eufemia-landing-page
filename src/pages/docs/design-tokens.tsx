@@ -3,7 +3,8 @@ import { Link } from 'gatsby';
 import Layout from '../../components/Layout';
 import TokensViewer from '../../components/TokensViewer';
 import { useTheme } from '../../context/ThemeContext';
-import { font, radius } from '../../theme/tokens';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import { font, radius, layout } from '../../theme/tokens';
 
 interface Token {
   id: string;
@@ -29,13 +30,14 @@ interface PageProps {
 const DesignTokensPage: React.FC<PageProps> = ({ pageContext }) => {
   const { platform, designTokens, lastUpdated } = pageContext;
   const { colors } = useTheme();
+  const isMobile = useIsMobile();
   const platformLabel = platform === 'ios' ? 'iOS' : 'Android';
   const platformPath = `/docs/${platform}`;
 
   return (
     <Layout currentPlatform={platform} currentPath={platformPath}>
-      <div style={{ padding: '72px 56px', maxWidth: '992px', fontFamily: font.family, color: colors.text }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '880px' }}>
+      <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, fontFamily: font.family, color: colors.text }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: `${layout.contentMax}px` }}>
           {/* Breadcrumb */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
             <Link to={platformPath} style={{ color: colors.accent, textDecoration: 'none' }}>{platformLabel}</Link>

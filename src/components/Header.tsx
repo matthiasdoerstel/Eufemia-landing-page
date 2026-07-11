@@ -4,6 +4,7 @@ import SearchModal from "./SearchModal";
 import PortalSettings from "./PortalSettings";
 import EufemiaWordmark from "./EufemiaWordmark";
 import { useTheme } from "../context/ThemeContext";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { radius, font } from "../theme/tokens";
 
 export const NAV_HEIGHT = 64;
@@ -14,6 +15,17 @@ const SearchIcon = () => (
     <path d="M10.5 10.5L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
+
+const MenuIcon = ({ open }: { open: boolean }) =>
+  open ? (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  ) : (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
 
 const CogIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -27,13 +39,38 @@ const CogIcon = () => (
   </svg>
 );
 
-const Header: React.FC = () => {
+const Header: React.FC<{
+  showMenuButton?: boolean;
+  onMenuClick?: () => void;
+  menuOpen?: boolean;
+}> = ({ showMenuButton = false, onMenuClick, menuOpen = false }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchCompareMode, setSearchCompareMode] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [searchHovered, setSearchHovered] = useState(false);
   const [cogHovered, setCogHovered] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { colors } = useTheme();
+  const isMobile = useIsMobile();
+
+  // Translucent header once scrolled away from the very top.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // pageBg hex -> rgba with alpha, for the frosted-glass background.
+  const toRgba = (hex: string, a: number) => {
+    const m = hex.replace("#", "");
+    const n = m.length === 3 ? m.split("").map((c) => c + c).join("") : m;
+    const r = parseInt(n.slice(0, 2), 16);
+    const g = parseInt(n.slice(2, 4), 16);
+    const b = parseInt(n.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -77,53 +114,73 @@ const Header: React.FC = () => {
           justifyContent: "space-between",
           padding: "0 24px",
           height: `${NAV_HEIGHT}px`,
-          borderBottom: `1px solid ${colors.strokeSubtle}`,
-          background: colors.pageBg,
+          borderBottom: `1px solid ${scrolled ? colors.strokeSubtle : "transparent"}`,
+          background: scrolled ? toRgba(colors.pageBg, 0.85) : colors.pageBg,
+          backdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
+          WebkitBackdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
           position: "fixed",
           top: 0,
           left: 0,
           right: 0,
           zIndex: 100,
           fontFamily: font.family,
+          transition: "background 0.2s ease, border-color 0.2s ease",
         }}
       >
-        <Link
-          to="/"
-          aria-label="Eufemia — home"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            color: colors.text,
-            textDecoration: "none",
-            lineHeight: 0,
-          }}
-        >
-          <EufemiaWordmark height={22} />
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {showMenuButton && (
+            <button
+              onClick={onMenuClick}
+              style={iconButton(false)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              <MenuIcon open={menuOpen} />
+            </button>
+          )}
+          <Link
+            to="/"
+            aria-label="Eufemia — home"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              color: colors.text,
+              textDecoration: "none",
+              lineHeight: 0,
+            }}
+          >
+            <EufemiaWordmark height={22} />
+          </Link>
+        </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <button
             onClick={() => setSearchOpen(true)}
             onMouseEnter={() => setSearchHovered(true)}
             onMouseLeave={() => setSearchHovered(false)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 16px",
-              width: "194px",
-              border: `1px solid ${searchHovered ? colors.strokeAction : colors.strokeSubtle}`,
-              borderRadius: `${radius.lg}px`,
-              background: colors.surface,
-              cursor: "pointer",
-              fontSize: `${font.size.body}px`,
-              color: colors.textMuted,
-              transition: "border-color 0.15s ease",
-              fontFamily: font.family,
-            }}
+            style={
+              isMobile
+                ? iconButton(searchHovered)
+                : {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "10px 16px",
+                    width: "194px",
+                    border: `1px solid ${searchHovered ? colors.strokeAction : colors.strokeSubtle}`,
+                    borderRadius: `${radius.lg}px`,
+                    background: colors.surface,
+                    cursor: "pointer",
+                    fontSize: `${font.size.body}px`,
+                    color: colors.textMuted,
+                    transition: "border-color 0.15s ease",
+                    fontFamily: font.family,
+                  }
+            }
+            aria-label={isMobile ? "Search" : undefined}
           >
             <SearchIcon />
-            <span>cmd + k</span>
+            {!isMobile && <span>cmd + k</span>}
           </button>
           <button
             onClick={() => setSettingsOpen(true)}

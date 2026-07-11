@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import Layout from "./Layout";
 import { useTheme } from "../context/ThemeContext";
-import { font, radius } from "../theme/tokens";
+import { useIsMobile } from "../hooks/useIsMobile";
+import { font, radius, layout } from "../theme/tokens";
 
 export type PlatformKey = "web" | "ios" | "android";
 
@@ -47,6 +48,7 @@ const GithubLogo = ({ color }: { color: string }) => (
 
 const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, title, intro, figmaUrl, githubUrl, components }) => {
   const { colors } = useTheme();
+  const isMobile = useIsMobile();
   const [hover, setHover] = useState<string | null>(null);
 
   const divider = (
@@ -88,8 +90,8 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, title, in
 
   return (
     <Layout currentPlatform={platform} currentPath={`/docs/${platform}`}>
-      <div style={{ padding: "72px 56px", fontFamily: font.family, color: colors.text }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px", width: "880px", maxWidth: "100%" }}>
+      <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, fontFamily: font.family, color: colors.text }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px", width: `${layout.contentMax}px`, maxWidth: "100%" }}>
           {/* Title + intro */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
