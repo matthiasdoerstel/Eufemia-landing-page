@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NAV_HEIGHT } from "./Header";
 import { useTheme } from "../context/ThemeContext";
-import { font } from "../theme/tokens";
+import { font, layout } from "../theme/tokens";
 
 export interface RailItem {
   id: string;
@@ -81,7 +81,7 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
   return (
     <nav
       aria-label="On this page"
-      style={{ position: "sticky", top: `${NAV_HEIGHT + 80}px`, width: "289px", flexShrink: 0, padding: "16px 0" }}
+      style={{ position: "sticky", top: `${NAV_HEIGHT + 80}px`, width: `${layout.railWidth}px`, flexShrink: 0, padding: "16px 0" }}
     >
       <div ref={railRef} style={{ position: "relative" }}>
         {/* Subtle track spanning the labels' text extent */}

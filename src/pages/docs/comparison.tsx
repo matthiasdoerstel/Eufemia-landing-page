@@ -3,8 +3,8 @@ import { navigate } from "gatsby";
 import Layout from "../../components/Layout";
 import ComparisonView from "../../components/ComparisonView";
 import { useTheme } from "../../context/ThemeContext";
-import { useIsMobile } from "../../hooks/useIsMobile";
-import { font, radius, layout } from "../../theme/tokens";
+import { font, radius } from "../../theme/tokens";
+import PageShell from "../../components/PageShell";
 
 interface ComponentData {
   id: string;
@@ -44,7 +44,6 @@ interface ComponentData {
 
 const ComparisonPage: React.FC = () => {
   const { colors } = useTheme();
-  const isMobile = useIsMobile();
   const [first, setFirst] = useState<ComponentData | null>(null);
   const [second, setSecond] = useState<ComponentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -152,9 +151,9 @@ const ComparisonPage: React.FC = () => {
   if (loading) {
     return (
       <Layout>
-        <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, textAlign: "center", fontFamily: font.family, color: colors.textMuted }}>
+        <PageShell contentStyle={{ textAlign: "center", color: colors.textMuted }}>
           <p>Loading comparison...</p>
-        </div>
+        </PageShell>
       </Layout>
     );
   }
@@ -162,7 +161,7 @@ const ComparisonPage: React.FC = () => {
   if (error || !first || !second) {
     return (
       <Layout>
-        <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, textAlign: "center", fontFamily: font.family, color: colors.text }}>
+        <PageShell contentStyle={{ textAlign: "center" }}>
           <h2 style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>Comparison not available</h2>
           <p style={{ color: colors.textMuted, marginBottom: "20px", fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>{error || "Components not found"}</p>
           <button
@@ -180,14 +179,14 @@ const ComparisonPage: React.FC = () => {
           >
             Go back
           </button>
-        </div>
+        </PageShell>
       </Layout>
     );
   }
 
   return (
     <Layout>
-      <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, fontFamily: font.family, color: colors.text }}>
+      <PageShell>
         {/* Header */}
         <div style={{ marginBottom: "32px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
@@ -222,7 +221,7 @@ const ComparisonPage: React.FC = () => {
 
         {/* Comparison View */}
         <ComparisonView first={first} second={second} />
-      </div>
+      </PageShell>
     </Layout>
   );
 };

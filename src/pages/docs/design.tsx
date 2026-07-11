@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "gatsby";
 import Layout from "../../components/Layout";
 import { useTheme } from "../../context/ThemeContext";
-import { useIsMobile } from "../../hooks/useIsMobile";
-import { font, radius, layout } from "../../theme/tokens";
+import { font, radius } from "../../theme/tokens";
+import PageShell from "../../components/PageShell";
 
 const ArrowIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
@@ -50,7 +50,6 @@ const bestPractices = [
 
 const DesignPage: React.FC = () => {
   const { colors } = useTheme();
-  const isMobile = useIsMobile();
   const [hovered, setHovered] = React.useState<string | null>(null);
 
   const h2 = { margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text } as React.CSSProperties;
@@ -59,8 +58,7 @@ const DesignPage: React.FC = () => {
 
   return (
     <Layout currentPath="/docs/design">
-      <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, fontFamily: font.family, color: colors.text }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px", maxWidth: `${layout.contentMax}px` }}>
+      <PageShell contentStyle={{ gap: "32px" }}>
           {/* Hero */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
@@ -153,8 +151,7 @@ const DesignPage: React.FC = () => {
               <ArrowIcon />
             </Link>
           </div>
-        </div>
-      </div>
+      </PageShell>
     </Layout>
   );
 };

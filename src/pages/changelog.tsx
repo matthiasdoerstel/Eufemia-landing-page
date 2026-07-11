@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../components/Layout";
+import PageShell from "../components/PageShell";
 import { useTheme } from "../context/ThemeContext";
-import { useIsMobile } from "../hooks/useIsMobile";
-import { font, radius, layout } from "../theme/tokens";
+import { font, radius } from "../theme/tokens";
 
 const changelog = [
   {
@@ -79,11 +79,10 @@ const typeMeta: Record<string, { color: string; label: string }> = {
 
 const ChangelogPage: React.FC = () => {
   const { colors } = useTheme();
-  const isMobile = useIsMobile();
 
   return (
     <Layout currentPath="/changelog">
-      <div style={{ padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, maxWidth: `${layout.contentMax}px`, fontFamily: font.family, color: colors.text }}>
+      <PageShell>
         {/* Hero */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
           <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
@@ -144,7 +143,7 @@ const ChangelogPage: React.FC = () => {
             .
           </p>
         </div>
-      </div>
+      </PageShell>
     </Layout>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import PageShell from "../components/PageShell";
 import InPageRail from "../components/InPageRail";
 import { useTheme } from "../context/ThemeContext";
-import { useIsMobile } from "../hooks/useIsMobile";
-import { font, radius, layout } from "../theme/tokens";
+import { font, radius } from "../theme/tokens";
 
 const installSnippet = `npm i @dnb/eufemia react react-dom
 # or
@@ -108,7 +108,6 @@ function highlight(code: string, lang: string, pal: EditorPalette): React.ReactN
 
 const GettingStartedPage: React.FC = () => {
   const { colors, theme } = useTheme();
-  const isMobile = useIsMobile();
   const [hover, setHover] = useState<string | null>(null);
 
   const editor: EditorPalette =
@@ -176,19 +175,20 @@ const GettingStartedPage: React.FC = () => {
 
   return (
     <Layout currentPath="/getting-started" currentPlatform="web">
-      <div style={{ display: "flex", alignItems: "flex-start", gap: isMobile ? 0 : "80px", padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "48px",
-            flex: "1 1 0",
-            minWidth: 0,
-            maxWidth: `${layout.contentMax}px`,
-            fontFamily: font.family,
-            color: colors.text,
-          }}
-        >
+      <PageShell
+        contentStyle={{ gap: "48px" }}
+        rail={
+          <InPageRail
+            items={[
+              { id: "start-here", label: "Start Here" },
+              { id: "quick-start", label: "Quick Start" },
+              { id: "choose-your-path", label: "Choose Your Path" },
+              { id: "code-editor-extensions", label: "Code Editor Extensions" },
+              { id: "please-contribute", label: "Please contribute" },
+            ]}
+          />
+        }
+      >
         {/* Hero */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <h1
@@ -267,19 +267,7 @@ const GettingStartedPage: React.FC = () => {
             contribute.
           </p>
         </section>
-        </div>
-
-        <InPageRail
-          items={[
-            { id: "start-here", label: "Start Here" },
-            { id: "quick-start", label: "Quick Start" },
-            { id: "choose-your-path", label: "Choose Your Path" },
-            { id: "code-editor-extensions", label: "Code Editor Extensions" },
-            { id: "please-contribute", label: "Please contribute" },
-          ]}
-          hidden={isMobile}
-        />
-      </div>
+      </PageShell>
     </Layout>
   );
 };

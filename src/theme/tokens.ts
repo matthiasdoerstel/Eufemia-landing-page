@@ -134,5 +134,9 @@ export const layout = {
   pagePaddingMobile: "32px 20px",
   // Below this viewport width the sidebar collapses into a drawer.
   mobileBreakpoint: 900,
+  // On-this-page rail dimensions (also reserved as an empty gutter on
+  // rail-less pages so every page's content column is identical).
+  railWidth: 289,
+  railGap: 80,
 } as const;
 

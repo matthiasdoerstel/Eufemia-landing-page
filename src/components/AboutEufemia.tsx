@@ -1,10 +1,10 @@
 import React from "react";
 import Layout from "./Layout";
+import PageShell from "./PageShell";
 import InPageRail from "./InPageRail";
 import { NAV_HEIGHT } from "./Header";
 import { useTheme } from "../context/ThemeContext";
-import { useIsMobile } from "../hooks/useIsMobile";
-import { font, layout } from "../theme/tokens";
+import { font } from "../theme/tokens";
 
 type Block =
   | { type: "p"; text: string }
@@ -117,7 +117,6 @@ const sections: Section[] = [
 
 const AboutEufemia: React.FC = () => {
   const { colors } = useTheme();
-  const isMobile = useIsMobile();
 
   const paraStyle: React.CSSProperties = {
     margin: 0,
@@ -177,9 +176,10 @@ const AboutEufemia: React.FC = () => {
 
   return (
     <Layout currentPath="/about" currentPlatform="web">
-      <div style={{ display: "flex", alignItems: "flex-start", gap: isMobile ? 0 : "80px", padding: isMobile ? layout.pagePaddingMobile : layout.pagePadding, fontFamily: font.family, color: colors.text }}>
-        {/* Content column */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "72px", flex: "1 1 0", minWidth: 0, maxWidth: `${layout.contentMax}px` }}>
+      <PageShell
+        contentStyle={{ gap: "72px" }}
+        rail={<InPageRail items={sections.map((s) => ({ id: s.id, label: s.step }))} />}
+      >
           <h1
             style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}
           >
@@ -200,10 +200,7 @@ const AboutEufemia: React.FC = () => {
               {s.blocks.map((b, j) => renderBlock(b, j))}
             </section>
           ))}
-        </div>
-
-        <InPageRail items={sections.map((s) => ({ id: s.id, label: s.step }))} hidden={isMobile} />
-      </div>
+      </PageShell>
     </Layout>
   );
 };
