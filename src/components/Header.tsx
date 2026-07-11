@@ -114,7 +114,7 @@ const Header: React.FC<{
           justifyContent: "space-between",
           padding: "0 24px",
           height: `${NAV_HEIGHT}px`,
-          borderBottom: `1px solid ${scrolled ? colors.strokeSubtle : "transparent"}`,
+          borderBottom: `1px solid ${colors.strokeSubtle}`,
           background: scrolled ? toRgba(colors.pageBg, 0.85) : colors.pageBg,
           backdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
           WebkitBackdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
