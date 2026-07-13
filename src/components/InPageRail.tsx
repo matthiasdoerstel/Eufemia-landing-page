@@ -90,7 +90,7 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
           <circle cx="3.5" cy="10" r="1.3" fill="currentColor" />
           <circle cx="3.5" cy="14.5" r="1.3" fill="currentColor" />
         </svg>
-        <span style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 500, color: colors.text }}>
+        <span style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 400, color: colors.text }}>
           On this page
         </span>
       </div>
