@@ -83,15 +83,13 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
       aria-label="On this page"
       style={{ position: "sticky", top: `${NAV_HEIGHT + 80}px`, width: `${layout.railWidth}px`, flexShrink: 0, padding: "16px 0" }}
     >
-      <div style={{ position: "relative", display: "flex", alignItems: "center", paddingLeft: "16px", marginBottom: "20px" }}>
-        <span style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "16px", display: "inline-flex", alignItems: "center", color: colors.accent }}>
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path d="M5.5 4H14M5.5 8H14M5.5 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            <circle cx="2.25" cy="4" r="1" fill="currentColor" />
-            <circle cx="2.25" cy="8" r="1" fill="currentColor" />
-            <circle cx="2.25" cy="12" r="1" fill="currentColor" />
-          </svg>
-        </span>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, color: colors.text }} aria-hidden>
+          <path d="M7 5.5H16.5M7 10H16.5M7 14.5H16.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          <circle cx="3.5" cy="5.5" r="1.3" fill="currentColor" />
+          <circle cx="3.5" cy="10" r="1.3" fill="currentColor" />
+          <circle cx="3.5" cy="14.5" r="1.3" fill="currentColor" />
+        </svg>
         <span style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 500, color: colors.text }}>
           On this page
         </span>
