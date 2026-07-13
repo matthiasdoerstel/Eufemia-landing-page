@@ -85,7 +85,8 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
     >
       <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, color: colors.text }} aria-hidden>
-          <path d="M7 3.5v13M13 3.5v13M3.5 7.5h13M3.5 12.5h13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <rect x="4" y="2.5" width="12" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M7 6.5h6M7 10h6M7 13.5h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
         <span style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 400, color: colors.text }}>
           On this page
