@@ -83,6 +83,18 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
       aria-label="On this page"
       style={{ position: "sticky", top: `${NAV_HEIGHT + 80}px`, width: `${layout.railWidth}px`, flexShrink: 0, padding: "16px 0" }}
     >
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", paddingLeft: "16px", marginBottom: "16px", color: colors.textMuted }}>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }} aria-hidden>
+          <path d="M5.5 4H14M5.5 8H14M5.5 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="2.25" cy="4" r="1" fill="currentColor" />
+          <circle cx="2.25" cy="8" r="1" fill="currentColor" />
+          <circle cx="2.25" cy="12" r="1" fill="currentColor" />
+        </svg>
+        <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, fontWeight: 500 }}>
+          On this page
+        </span>
+      </div>
+
       <div ref={railRef} style={{ position: "relative" }}>
         {/* Subtle track spanning the labels' text extent */}
         <div style={{ position: "absolute", left: 0, top: `${track.top}px`, height: `${track.height}px`, width: "1px", background: colors.stroke }} />
