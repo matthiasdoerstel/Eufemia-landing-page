@@ -83,14 +83,16 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
       aria-label="On this page"
       style={{ position: "sticky", top: `${NAV_HEIGHT + 80}px`, width: `${layout.railWidth}px`, flexShrink: 0, padding: "16px 0" }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", paddingLeft: "16px", marginBottom: "16px", color: colors.textMuted }}>
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }} aria-hidden>
-          <path d="M5.5 4H14M5.5 8H14M5.5 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <circle cx="2.25" cy="4" r="1" fill="currentColor" />
-          <circle cx="2.25" cy="8" r="1" fill="currentColor" />
-          <circle cx="2.25" cy="12" r="1" fill="currentColor" />
-        </svg>
-        <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, fontWeight: 500 }}>
+      <div style={{ position: "relative", display: "flex", alignItems: "center", paddingLeft: "16px", marginBottom: "20px" }}>
+        <span style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "16px", display: "inline-flex", alignItems: "center", color: colors.accent }}>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+            <path d="M5.5 4H14M5.5 8H14M5.5 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="2.25" cy="4" r="1" fill="currentColor" />
+            <circle cx="2.25" cy="8" r="1" fill="currentColor" />
+            <circle cx="2.25" cy="12" r="1" fill="currentColor" />
+          </svg>
+        </span>
+        <span style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 500, color: colors.text }}>
           On this page
         </span>
       </div>
@@ -124,7 +126,7 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
                 style={{
                   display: "block",
                   width: "100%",
-                  paddingBottom: "24px",
+                  padding: "0 0 24px",
                   background: "none",
                   border: "none",
                   cursor: "pointer",
