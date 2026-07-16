@@ -28,3 +28,4 @@ yarn-error.log*
 
 # Sanity
 studio/dist/
+scripts/.eufemia/
