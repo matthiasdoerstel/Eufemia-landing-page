@@ -21,6 +21,7 @@ interface Tool {
   to: string;
   external?: boolean;
   comingSoon?: boolean;
+  hoverColor?: string;
   Icon: React.FC<{ color: string }>;
 }
 
@@ -70,6 +71,7 @@ const tools: Tool[] = [
     description: "Open the Sanity CMS to edit components, guidelines and page content.",
     to: CMS_URL,
     external: true,
+    hoverColor: SANITY_RED,
     Icon: SanityLogo,
   },
   {
@@ -191,7 +193,8 @@ const MaintainerPage: React.FC = () => {
       border: `1px solid ${colors.strokeSubtle}`,
       background: colors.surface,
       textDecoration: "none",
-    };
+      ["--hover-border" as string]: t.hoverColor ?? colors.strokeAction,
+    } as React.CSSProperties;
     if (t.comingSoon) {
       return (
         <div key={t.name} style={{ ...style, opacity: 0.7, cursor: "default" }}>
@@ -204,7 +207,7 @@ const MaintainerPage: React.FC = () => {
         {inner}
       </a>
     ) : (
-      <Link key={t.name} to={t.to} style={style}>
+      <Link key={t.name} to={t.to} className="maint-card" style={style}>
         {inner}
       </Link>
     );
@@ -213,7 +216,7 @@ const MaintainerPage: React.FC = () => {
   return (
     <Layout currentPath="/maintainer" currentPlatform="web">
       <PageShell contentStyle={{ gap: "32px" }}>
-        <style>{`.maint-card:hover .maint-launch { transform: translate(3px, -3px); }`}</style>
+        <style>{`.maint-card { transition: border-color 0.15s ease; } .maint-card:hover { border-color: var(--hover-border) !important; } .maint-card:hover .maint-launch { transform: translate(3px, -3px); }`}</style>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <h1 style={h1}>Maintainer tools</h1>
           <p style={{ ...para, maxWidth: "640px" }}>
