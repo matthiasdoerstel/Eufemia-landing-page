@@ -33,7 +33,7 @@ const TokensIcon = ({ color }: { color: string }) => (
 );
 
 const tools: Omit<Tool, "icon">[] = [
-  { name: "Design Tokens", description: "Browse the resolved token catalog across every brand and theme.", to: "/docs/web/design-tokens" },
+  { name: "Design Tokens", description: "Browse the resolved token catalog across every brand and theme, and see which components use each token.", to: "/maintainer/design-tokens" },
 ];
 
 const MaintainerPage: React.FC = () => {

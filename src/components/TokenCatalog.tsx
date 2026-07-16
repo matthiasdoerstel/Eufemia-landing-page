@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { useAuth } from "../context/AuthContext";
 import { font, radius } from "../theme/tokens";
 import {
   TOKEN_ROWS,
@@ -184,9 +183,10 @@ const Section: React.FC<{
   rows: TokenRow[];
   copied: string | null;
   onCopy: (token: string) => void;
-}> = ({ section, label, rows, copied, onCopy }) => {
+  maintainer: boolean;
+}> = ({ section, label, rows, copied, onCopy, maintainer }) => {
   const { colors } = useTheme();
-  const { isMaintainer } = useAuth();
+  const isMaintainer = maintainer;
   const [active, setActive] = useState<string[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("group");
@@ -460,9 +460,7 @@ const AdoptionPanel: React.FC = () => {
   );
 };
 
-const TokenCatalog: React.FC = () => {
-  const { colors } = useTheme();
-  const { isMaintainer } = useAuth();
+const TokenCatalog: React.FC<{ maintainer?: boolean }> = ({ maintainer = false }) => {
   const [copied, setCopied] = useState<string | null>(null);
 
   const onCopy = (id: string) => {
@@ -480,9 +478,9 @@ const TokenCatalog: React.FC = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
-      {isMaintainer && <AdoptionPanel />}
+      {maintainer && <AdoptionPanel />}
       {SECTIONS.map((s) => (
-        <Section key={s.id} section={s.id} label={s.label} rows={bySection[s.id] ?? []} copied={copied} onCopy={onCopy} />
+        <Section key={s.id} section={s.id} label={s.label} rows={bySection[s.id] ?? []} copied={copied} onCopy={onCopy} maintainer={maintainer} />
       ))}
     </div>
   );
