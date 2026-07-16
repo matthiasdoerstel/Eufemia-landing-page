@@ -54,7 +54,7 @@ const tools: Tool[] = [
     Icon: TokensIcon,
   },
   {
-    name: "Content Studio",
+    name: "Sanity CMS",
     description: "Open the Sanity CMS to edit components, guidelines and page content.",
     to: CMS_URL,
     external: true,
