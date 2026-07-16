@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Logo } from "@dnb/eufemia";
 import Header, { NAV_HEIGHT } from "./Header";
 import Sidebar from "./Sidebar";
+import FeedbackButton from "./FeedbackButton";
 import { useTheme } from "../context/ThemeContext";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { font } from "../theme/tokens";
@@ -111,6 +112,7 @@ const Layout: React.FC<LayoutProps> = ({
           © <span style={{ textDecoration: "underline" }}>Copyright 2018-present DNB.no</span>
         </span>
       </footer>
+      <FeedbackButton />
     </div>
   );
 };

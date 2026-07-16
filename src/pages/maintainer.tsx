@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import PageShell from "../components/PageShell";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
+import { unreadCount } from "../lib/feedback";
 import { font, radius } from "../theme/tokens";
 
 const MicrosoftLogo = () => (
@@ -53,6 +54,14 @@ const FigmaLogo = (_props: { color: string }) => (
   </svg>
 );
 
+// Feedback glyph: a speech bubble.
+const FeedbackIcon = ({ color }: { color: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+    <path d="M4 5.5h16v11H9l-4 3.5v-3.5H4v-11Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M8 9.5h8M8 12.5h5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+  </svg>
+);
+
 const SANITY_PROJECT_ID = "sy4b7kpu";
 // No Studio host is deployed yet, so link to the Sanity project console. Swap
 // this for the deployed Studio URL (e.g. https://<host>.sanity.studio) — or the
@@ -65,6 +74,12 @@ const tools: Tool[] = [
     description: "Browse the resolved token catalog across every brand and theme, and see which components use each token.",
     to: "/maintainer/design-tokens",
     Icon: TokensIcon,
+  },
+  {
+    name: "Feedback",
+    description: "Read feedback submitted by portal visitors and triage what needs attention.",
+    to: "/maintainer/feedback",
+    Icon: FeedbackIcon,
   },
   {
     name: "Sanity CMS",
@@ -86,6 +101,11 @@ const tools: Tool[] = [
 const MaintainerPage: React.FC = () => {
   const { colors } = useTheme();
   const { isMaintainer, user, signingIn, signIn } = useAuth();
+  const [unread, setUnread] = React.useState(0);
+
+  React.useEffect(() => {
+    if (isMaintainer) setUnread(unreadCount());
+  }, [isMaintainer]);
 
   const h1: React.CSSProperties = {
     margin: 0,
@@ -162,6 +182,29 @@ const MaintainerPage: React.FC = () => {
         </div>
         <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
           {t.name}
+          {t.to === "/maintainer/feedback" && unread > 0 && (
+            <span
+              title={`${unread} unread`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minWidth: "20px",
+                height: "20px",
+                marginLeft: "10px",
+                padding: "0 7px",
+                borderRadius: "999px",
+                background: colors.accent,
+                color: colors.pageBg,
+                fontFamily: font.family,
+                fontSize: `${font.size.small}px`,
+                fontWeight: 600,
+                verticalAlign: "middle",
+              }}
+            >
+              {unread}
+            </span>
+          )}
           {t.comingSoon && (
             <span
               style={{
