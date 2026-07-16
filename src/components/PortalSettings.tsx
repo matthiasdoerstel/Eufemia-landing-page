@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { navigate } from "gatsby";
 import { useTheme } from "../context/ThemeContext";
 import { usePortalSettings, ALL_PLATFORMS } from "../context/SettingsContext";
 import { useAuth } from "../context/AuthContext";
@@ -395,25 +394,6 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
                 </span>
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                <button
-                  onClick={() => {
-                    onClose();
-                    navigate("/maintainer");
-                  }}
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: `${radius.md}px`,
-                    border: `1px solid ${colors.strokeAction}`,
-                    background: colors.selectedSubtle,
-                    color: colors.textSelected,
-                    fontFamily: font.family,
-                    fontSize: `${font.size.body}px`,
-                    lineHeight: `${font.lineHeight.body}px`,
-                    cursor: "pointer",
-                  }}
-                >
-                  Maintainer tools
-                </button>
                 <button
                   onClick={() => signOut()}
                   style={{
