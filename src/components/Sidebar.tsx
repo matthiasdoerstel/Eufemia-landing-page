@@ -177,9 +177,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         border: `1px solid ${colors.strokeSubtle}`,
       }}
     >
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{ color: colors.accent }}>
-        <circle cx="10" cy="6" r="2.7" fill="currentColor" />
-        <path d="M10 11 V15.5 C10 18.2 11.4 19.3 13.7 19.3" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+      <svg width="12" height="12" viewBox="0 0 160 160" fill="none" style={{ color: colors.accent }}>
+        <path d="M77.1186 36.1343C68.3071 36.1343 61 28.8988 61 20.1736C61 11.4484 68.3071 4 77.1186 4C85.9301 4 93.4522 11.4484 93.4522 20.1736C93.4522 28.8988 85.9301 36.1343 77.1186 36.1343Z" fill="currentColor" />
+        <path d="M64.4989 44.9547L88.784 44.9547V99.9773C75.3717 99.9773 64.4989 88.4484 64.4989 74.2267V44.9547Z" fill="currentColor" />
+        <path d="M88.7149 155V99.9773C102.127 99.9773 113 111.506 113 125.728V155H88.7149Z" fill="currentColor" />
       </svg>
     </span>
   );
