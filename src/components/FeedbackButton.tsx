@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius, shadow } from "../theme/tokens";
 import { addFeedback, CATEGORY_LABELS, type FeedbackCategory } from "../lib/feedback";
@@ -12,6 +12,26 @@ const FeedbackButton: React.FC = () => {
   const [category, setCategory] = useState<FeedbackCategory>("idea");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  // When the footer scrolls into view, lift the button so it rests above it
+  // instead of overlapping the footer content.
+  const [lift, setLift] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => {
+      const footer = document.querySelector("footer");
+      if (!footer) return setLift(0);
+      const overlap = window.innerHeight - footer.getBoundingClientRect().top;
+      setLift(overlap > 0 ? overlap + 16 : 0);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   const reset = () => {
     setMessage("");
@@ -53,7 +73,7 @@ const FeedbackButton: React.FC = () => {
         style={{
           position: "fixed",
           right: "24px",
-          bottom: "24px",
+          bottom: `${24 + lift}px`,
           zIndex: 300,
           display: "inline-flex",
           alignItems: "center",
@@ -85,7 +105,7 @@ const FeedbackButton: React.FC = () => {
             style={{
               position: "fixed",
               right: "24px",
-              bottom: "80px",
+              bottom: `${80 + lift}px`,
               zIndex: 301,
               width: "360px",
               maxWidth: "calc(100vw - 48px)",
