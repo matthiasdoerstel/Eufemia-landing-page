@@ -20,6 +20,7 @@ interface Tool {
   description: string;
   to: string;
   external?: boolean;
+  comingSoon?: boolean;
   Icon: React.FC<{ color: string }>;
 }
 
@@ -37,6 +38,17 @@ const SANITY_RED = "#F03E2F";
 const SanityLogo = (_props: { color: string }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill={SANITY_RED} aria-hidden style={{ flexShrink: 0 }}>
     <path d="m23.327 15.205-.893-1.555-4.321 2.632 4.799-6.11.726-.426-.179-.27.33-.421-1.515-1.261-.693.883-13.992 8.186 5.173-6.221 9.636-5.282-.915-1.769-5.248 2.876 2.584-3.106-1.481-1.305-5.816 6.994-5.777 3.168 4.423-5.847 2.771-1.442-.88-1.789-8.075 4.203L6.186 4.43 4.648 3.198 0 9.349l.072.058.868 1.768 5.153-2.683-4.696 6.207.77.617.458.885 5.425-2.974-5.974 7.185 1.481 1.304.297-.358 14.411-8.459-4.785 6.094.078.065-.007.005.992 1.726 6.364-3.877-2.451 3.954 1.642 1.077L24 15.648z" />
+  </svg>
+);
+
+// Figma brand logo (official five-shape mark).
+const FigmaLogo = (_props: { color: string }) => (
+  <svg width="16" height="24" viewBox="0 0 38 57" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+    <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE" />
+    <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z" fill="#0ACF83" />
+    <path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z" fill="#FF7262" />
+    <path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#F24E1E" />
+    <path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#A259FF" />
   </svg>
 );
 
@@ -59,6 +71,13 @@ const tools: Tool[] = [
     to: CMS_URL,
     external: true,
     Icon: SanityLogo,
+  },
+  {
+    name: "Figma insights",
+    description: "See how Eufemia components are used across Figma files and libraries.",
+    to: "",
+    comingSoon: true,
+    Icon: FigmaLogo,
   },
 ];
 
@@ -126,6 +145,24 @@ const MaintainerPage: React.FC = () => {
         <t.Icon color={colors.accent} />
         <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
           {t.name}
+          {t.comingSoon && (
+            <span
+              style={{
+                marginLeft: "10px",
+                padding: "2px 8px",
+                borderRadius: "999px",
+                border: `1px dashed ${colors.strokeSubtle}`,
+                fontFamily: font.family,
+                fontSize: `${font.size.small}px`,
+                fontWeight: 400,
+                color: colors.textMuted,
+                verticalAlign: "middle",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Coming soon
+            </span>
+          )}
         </span>
         <span style={para}>{t.description}</span>
       </>
@@ -140,6 +177,13 @@ const MaintainerPage: React.FC = () => {
       background: colors.surface,
       textDecoration: "none",
     };
+    if (t.comingSoon) {
+      return (
+        <div key={t.name} style={{ ...style, opacity: 0.7, cursor: "default" }}>
+          {inner}
+        </div>
+      );
+    }
     return t.external ? (
       <a key={t.name} href={t.to} target="_blank" rel="noreferrer" style={style}>
         {inner}
