@@ -7,8 +7,11 @@ import { useAuth } from "../../context/AuthContext";
 import { font, radius } from "../../theme/tokens";
 import {
   listFeedback,
+  listArchived,
   markRead,
   markAllRead,
+  archive,
+  unarchive,
   CATEGORY_LABELS,
   type FeedbackEntry,
 } from "../../lib/feedback";
@@ -33,14 +36,37 @@ const timeAgo = (ms: number) => {
   return `${d}d ago`;
 };
 
+const rowBtn = (colors: { text: string; strokeSubtle: string }): React.CSSProperties => ({
+  padding: "4px 10px",
+  borderRadius: `${radius.md}px`,
+  border: `1px solid ${colors.strokeSubtle}`,
+  background: "transparent",
+  color: colors.text,
+  fontFamily: font.family,
+  fontSize: `${font.size.small}px`,
+  cursor: "pointer",
+});
+
 const MaintainerFeedbackPage: React.FC = () => {
   const { colors } = useTheme();
   const { isMaintainer, signingIn, signIn } = useAuth();
+  const [view, setView] = useState<"inbox" | "archive">("inbox");
   const [items, setItems] = useState<FeedbackEntry[]>([]);
+  const [inboxUnread, setInboxUnread] = useState(0);
+  const [counts, setCounts] = useState({ inbox: 0, archive: 0 });
+
+  const refresh = (v: "inbox" | "archive" = view) => {
+    const inbox = listFeedback();
+    const arch = listArchived();
+    setItems(v === "inbox" ? inbox : arch);
+    setInboxUnread(inbox.filter((i) => !i.read).length);
+    setCounts({ inbox: inbox.length, archive: arch.length });
+  };
 
   useEffect(() => {
-    if (isMaintainer) setItems(listFeedback());
-  }, [isMaintainer]);
+    if (isMaintainer) refresh(view);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMaintainer, view]);
 
   const h1: React.CSSProperties = {
     margin: 0,
@@ -92,15 +118,21 @@ const MaintainerFeedbackPage: React.FC = () => {
     );
   }
 
-  const unread = items.filter((i) => !i.read).length;
-
   const onMarkRead = (id: string) => {
     markRead(id);
-    setItems(listFeedback());
+    refresh();
   };
   const onMarkAll = () => {
     markAllRead();
-    setItems(listFeedback());
+    refresh();
+  };
+  const onArchive = (id: string) => {
+    archive(id);
+    refresh();
+  };
+  const onRestore = (id: string) => {
+    unarchive(id);
+    refresh();
   };
 
   const backLink = (
@@ -132,13 +164,13 @@ const MaintainerFeedbackPage: React.FC = () => {
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
             <h1 style={h1}>
               Feedback
-              {unread > 0 && (
+              {inboxUnread > 0 && (
                 <span style={{ marginLeft: "12px", fontFamily: font.family, fontSize: `${font.size.body}px`, fontWeight: 400, color: colors.textMuted }}>
-                  {unread} unread
+                  {inboxUnread} unread
                 </span>
               )}
             </h1>
-            {unread > 0 && (
+            {view === "inbox" && inboxUnread > 0 && (
               <button
                 onClick={onMarkAll}
                 style={{
@@ -157,6 +189,35 @@ const MaintainerFeedbackPage: React.FC = () => {
             )}
           </div>
           <p style={para}>Feedback submitted from the portal's feedback button.</p>
+
+          {/* Inbox / Archive tabs */}
+          <div style={{ display: "flex", gap: "8px" }}>
+            {([
+              { key: "inbox", label: "Inbox", count: counts.inbox },
+              { key: "archive", label: "Archive", count: counts.archive },
+            ] as const).map((t) => {
+              const on = view === t.key;
+              return (
+                <button
+                  key={t.key}
+                  onClick={() => setView(t.key)}
+                  style={{
+                    padding: "6px 14px",
+                    borderRadius: "999px",
+                    cursor: "pointer",
+                    fontFamily: font.family,
+                    fontSize: `${font.size.small}px`,
+                    fontWeight: on ? 500 : 400,
+                    background: on ? colors.selectedSubtle : "transparent",
+                    color: on ? colors.textSelected : colors.textMuted,
+                    border: `1px solid ${on ? colors.strokeAction : colors.strokeSubtle}`,
+                  }}
+                >
+                  {t.label} ({t.count})
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {items.length === 0 ? (
@@ -174,10 +235,12 @@ const MaintainerFeedbackPage: React.FC = () => {
             }}
           >
             <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, color: colors.text }}>
-              No feedback yet
+              {view === "inbox" ? "No feedback yet" : "Nothing archived"}
             </span>
             <span style={{ ...para, maxWidth: "420px" }}>
-              When visitors use the feedback button on the portal, their messages show up here.
+              {view === "inbox"
+                ? "When visitors use the feedback button on the portal, their messages show up here."
+                : "Feedback you archive from the inbox is kept here."}
             </span>
           </div>
         ) : (
@@ -214,24 +277,24 @@ const MaintainerFeedbackPage: React.FC = () => {
                     {timeAgo(f.createdAt)} · from{" "}
                     <code style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>{f.page || "/"}</code>
                   </span>
-                  {!f.read && (
-                    <button
-                      onClick={() => onMarkRead(f.id)}
-                      style={{
-                        marginLeft: "auto",
-                        padding: "4px 10px",
-                        borderRadius: `${radius.md}px`,
-                        border: `1px solid ${colors.strokeSubtle}`,
-                        background: "transparent",
-                        color: colors.text,
-                        fontFamily: font.family,
-                        fontSize: `${font.size.small}px`,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Mark read
-                    </button>
-                  )}
+                  <div style={{ marginLeft: "auto", display: "flex", gap: "8px" }}>
+                    {view === "inbox" ? (
+                      <>
+                        {!f.read && (
+                          <button onClick={() => onMarkRead(f.id)} style={rowBtn(colors)}>
+                            Mark read
+                          </button>
+                        )}
+                        <button onClick={() => onArchive(f.id)} style={rowBtn(colors)}>
+                          Archive
+                        </button>
+                      </>
+                    ) : (
+                      <button onClick={() => onRestore(f.id)} style={rowBtn(colors)}>
+                        Restore
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text, whiteSpace: "pre-wrap" }}>

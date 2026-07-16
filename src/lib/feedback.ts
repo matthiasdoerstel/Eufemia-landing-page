@@ -18,6 +18,7 @@ export interface FeedbackEntry {
   email?: string; // optional contact
   createdAt: number; // epoch ms
   read: boolean;
+  archived: boolean;
 }
 
 const STORAGE_KEY = "portal-feedback";
@@ -45,8 +46,16 @@ function write(entries: FeedbackEntry[]) {
 }
 
 export function listFeedback(): FeedbackEntry[] {
-  // Newest first.
-  return read().sort((a, b) => b.createdAt - a.createdAt);
+  // Active (non-archived) feedback, newest first.
+  return read()
+    .filter((e) => !e.archived)
+    .sort((a, b) => b.createdAt - a.createdAt);
+}
+
+export function listArchived(): FeedbackEntry[] {
+  return read()
+    .filter((e) => e.archived)
+    .sort((a, b) => b.createdAt - a.createdAt);
 }
 
 export function addFeedback(input: {
@@ -63,6 +72,7 @@ export function addFeedback(input: {
     email: input.email?.trim() || undefined,
     createdAt: Date.now(),
     read: false,
+    archived: false,
   };
   write([entry, ...read()]);
   return entry;
@@ -73,9 +83,19 @@ export function markRead(id: string) {
 }
 
 export function markAllRead() {
-  write(read().map((e) => ({ ...e, read: true })));
+  // Only affects the active inbox.
+  write(read().map((e) => (e.archived ? e : { ...e, read: true })));
+}
+
+export function archive(id: string) {
+  // Archiving also marks it read.
+  write(read().map((e) => (e.id === id ? { ...e, archived: true, read: true } : e)));
+}
+
+export function unarchive(id: string) {
+  write(read().map((e) => (e.id === id ? { ...e, archived: false } : e)));
 }
 
 export function unreadCount(): number {
-  return read().filter((e) => !e.read).length;
+  return read().filter((e) => !e.archived && !e.read).length;
 }
