@@ -3,6 +3,7 @@ import { Link, navigate } from "gatsby";
 import { useTheme } from "../context/ThemeContext";
 import { usePortalSettings } from "../context/SettingsContext";
 import { useAuth } from "../context/AuthContext";
+import { unreadCount } from "../lib/feedback";
 import { radius, font } from "../theme/tokens";
 import { NAV_HEIGHT } from "./Header";
 
@@ -122,6 +123,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   const { colors } = useTheme();
   const { docPlatform, setDocPlatform } = usePortalSettings();
   const { isMaintainer } = useAuth();
+  const [hasUnreadFeedback, setHasUnreadFeedback] = useState(false);
+
+  useEffect(() => {
+    if (isMaintainer) setHasUnreadFeedback(unreadCount() > 0);
+  }, [isMaintainer]);
 
   // Sync the persisted selection from the URL only on actual docs pages, so
   // visiting About / Getting started doesn't reset the chosen platform.
@@ -160,29 +166,22 @@ const Sidebar: React.FC<SidebarProps> = ({
     transition: "opacity 0.15s ease",
   });
 
-  const eufemiaBadge = (
+  // Notification dot for the Maintainer tools item — shown when there is unread
+  // portal feedback waiting.
+  const notificationDot = (
     <span
-      aria-hidden
-      title="Eufemia"
+      aria-label="Unread feedback"
+      title="Unread feedback"
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "20px",
-        height: "20px",
         marginLeft: "auto",
+        alignSelf: "center",
+        width: "9px",
+        height: "9px",
         flexShrink: 0,
-        borderRadius: "6px",
-        background: colors.surface,
-        border: `1px solid ${colors.strokeSubtle}`,
+        borderRadius: "999px",
+        background: colors.accent,
       }}
-    >
-      <svg width="11" height="11" viewBox="11.5 4 151 151" fill="none" style={{ color: colors.accent }}>
-        <path d="M77.1186 36.1343C68.3071 36.1343 61 28.8988 61 20.1736C61 11.4484 68.3071 4 77.1186 4C85.9301 4 93.4522 11.4484 93.4522 20.1736C93.4522 28.8988 85.9301 36.1343 77.1186 36.1343Z" fill="currentColor" />
-        <path d="M64.4989 44.9547L88.784 44.9547V99.9773C75.3717 99.9773 64.4989 88.4484 64.4989 74.2267V44.9547Z" fill="currentColor" />
-        <path d="M88.7149 155V99.9773C102.127 99.9773 113 111.506 113 125.728V155H88.7149Z" fill="currentColor" />
-      </svg>
-    </span>
+    />
   );
 
   const renderRow = (item: NavItem) => {
@@ -225,7 +224,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           play={active || click.key === key}
         />
         {label}
-        {badge && eufemiaBadge}
+        {badge && hasUnreadFeedback && notificationDot}
       </Link>
     );
   };
