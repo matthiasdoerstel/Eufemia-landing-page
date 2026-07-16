@@ -1,14 +1,19 @@
 import React, { useMemo, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 import { font, radius } from "../theme/tokens";
 import {
   TOKEN_ROWS,
+  TOKEN_USAGE,
+  COMPONENT_STATUS,
   SECTIONS,
   BRAND_COLUMNS,
   MODIFIER_LABELS,
   type TokenRow,
   type TokenSection,
 } from "../data/design-tokens";
+
+const COMPONENT_DOCS = (slug: string) => `https://eufemia.dnb.no/uilib/components/${slug}/`;
 
 type SortKey = "group" | "token";
 type SortDir = "asc" | "desc";
@@ -128,6 +133,51 @@ const SortHeader: React.FC<{
   );
 };
 
+// Maintainer-only: which components reference a token (its change blast radius).
+const UsagePanel: React.FC<{ users: string[] }> = ({ users }) => {
+  const { colors } = useTheme();
+  if (users.length === 0) {
+    return (
+      <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+        Not used by any component — safe to change.
+      </span>
+    );
+  }
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+        Used by {users.length} component{users.length === 1 ? "" : "s"} — changing it affects:
+      </span>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        {users.map((slug) => (
+          <a
+            key={slug}
+            href={COMPONENT_DOCS(slug)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "4px 12px",
+              borderRadius: "999px",
+              border: `1px solid ${colors.strokeSubtle}`,
+              background: colors.surface,
+              color: colors.text,
+              fontFamily: font.family,
+              fontSize: `${font.size.small}px`,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {slug}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Section: React.FC<{
   section: TokenSection;
   label: string;
@@ -136,7 +186,9 @@ const Section: React.FC<{
   onCopy: (token: string) => void;
 }> = ({ section, label, rows, copied, onCopy }) => {
   const { colors } = useTheme();
+  const { isMaintainer } = useAuth();
   const [active, setActive] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("group");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
@@ -260,8 +312,19 @@ const Section: React.FC<{
             </tr>
           </thead>
           <tbody>
-            {visible.map((r) => (
-              <tr key={r.token} style={{ borderBottom: `1px solid ${colors.strokeSubtle}` }}>
+            {visible.map((r) => {
+              const isOpen = isMaintainer && selected === r.token;
+              const users = TOKEN_USAGE[r.token] ?? [];
+              return (
+              <React.Fragment key={r.token}>
+              <tr
+                onClick={isMaintainer ? () => setSelected((s) => (s === r.token ? null : r.token)) : undefined}
+                style={{
+                  borderBottom: `1px solid ${colors.strokeSubtle}`,
+                  cursor: isMaintainer ? "pointer" : "default",
+                  background: isOpen ? colors.surfaceAlt : "transparent",
+                }}
+              >
                 <td
                   style={{
                     padding: "10px 12px",
@@ -271,7 +334,7 @@ const Section: React.FC<{
                     whiteSpace: "nowrap",
                     position: "sticky",
                     left: 0,
-                    background: colors.surface,
+                    background: isOpen ? colors.surfaceAlt : colors.surface,
                     zIndex: 1,
                   }}
                 >
@@ -288,12 +351,26 @@ const Section: React.FC<{
                   >
                     {r.token.replace("--token-color-", "")}
                   </code>
+                  {isMaintainer && (
+                    <span style={{ marginLeft: "10px", fontSize: `${font.size.small}px`, color: users.length ? colors.textMuted : colors.strokeAction }}>
+                      {users.length ? `${users.length} component${users.length === 1 ? "" : "s"}` : "unused"}
+                    </span>
+                  )}
                 </td>
                 {BRAND_COLUMNS.map((c) => (
                   <SwatchCell key={c.key} cell={r.cells[c.key]} token={r.token} copied={copied === `${r.token}:${c.key}`} onCopy={() => onCopy(`${r.token}:${c.key}`)} />
                 ))}
               </tr>
-            ))}
+              {isOpen && (
+                <tr style={{ borderBottom: `1px solid ${colors.strokeSubtle}` }}>
+                  <td colSpan={2 + BRAND_COLUMNS.length} style={{ padding: "4px 16px 18px", background: colors.surfaceAlt }}>
+                    <UsagePanel users={users} />
+                  </td>
+                </tr>
+              )}
+              </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -301,7 +378,91 @@ const Section: React.FC<{
   );
 };
 
+// Maintainer-only: token adoption across components (migration insight).
+const AdoptionPanel: React.FC = () => {
+  const { colors } = useTheme();
+  const [open, setOpen] = useState(false);
+  const total = COMPONENT_STATUS.length;
+  const onTokens = COMPONENT_STATUS.filter((c) => c.usesTokens);
+  const notYet = COMPONENT_STATUS.filter((c) => !c.usesTokens);
+  const pct = total ? Math.round((onTokens.length / total) * 100) : 0;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "14px",
+        padding: "20px 24px",
+        borderRadius: `${radius.lg}px`,
+        border: `1px solid ${colors.strokeSubtle}`,
+        background: colors.surface,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: "8px" }}>
+        <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, color: colors.text }}>
+          Token adoption
+        </span>
+        <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+          {onTokens.length} of {total} components on semantic tokens ({pct}%)
+        </span>
+      </div>
+
+      <div style={{ height: "8px", width: "100%", background: colors.surfaceAlt, borderRadius: "999px", overflow: "hidden" }}>
+        <div style={{ height: "100%", width: `${pct}%`, background: colors.accent }} />
+      </div>
+
+      {notYet.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <button
+            onClick={() => setOpen((v) => !v)}
+            style={{
+              alignSelf: "flex-start",
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              fontFamily: font.family,
+              fontSize: `${font.size.small}px`,
+              color: colors.accent,
+            }}
+          >
+            {open ? "Hide" : "Show"} {notYet.length} component{notYet.length === 1 ? "" : "s"} not on tokens yet
+          </button>
+          {open && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {notYet.map((c) => (
+                <a
+                  key={c.name}
+                  href={COMPONENT_DOCS(c.name)}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "999px",
+                    border: `1px solid ${colors.strokeSubtle}`,
+                    background: colors.surfaceAlt,
+                    color: colors.text,
+                    fontFamily: font.family,
+                    fontSize: `${font.size.small}px`,
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {c.name}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const TokenCatalog: React.FC = () => {
+  const { colors } = useTheme();
+  const { isMaintainer } = useAuth();
   const [copied, setCopied] = useState<string | null>(null);
 
   const onCopy = (id: string) => {
@@ -319,6 +480,7 @@ const TokenCatalog: React.FC = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
+      {isMaintainer && <AdoptionPanel />}
       {SECTIONS.map((s) => (
         <Section key={s.id} section={s.id} label={s.label} rows={bySection[s.id] ?? []} copied={copied} onCopy={onCopy} />
       ))}
