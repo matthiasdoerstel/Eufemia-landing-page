@@ -340,7 +340,7 @@ const Section: React.FC<{
 
       {/* Table */}
       <div style={{ overflowX: "auto", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.md}px` }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: colors.surface }}>
+        <table style={{ width: isMaintainer ? "auto" : "100%", minWidth: isMaintainer ? "0" : undefined, borderCollapse: "collapse", background: colors.surface }}>
           <thead>
             <tr style={{ background: colors.surfaceAlt, borderBottom: `1px solid ${colors.stroke}` }}>
               <SortHeader label="Token" active={sortKey === "token"} dir={sortDir} onClick={() => sortBy("token")} sticky />
@@ -381,6 +381,7 @@ const Section: React.FC<{
                 <td
                   style={{
                     padding: "8px 10px",
+                    maxWidth: isMaintainer ? "210px" : undefined,
                     position: "sticky",
                     left: 0,
                     background: isOpen ? colors.surfaceAlt : colors.surface,
@@ -392,15 +393,55 @@ const Section: React.FC<{
                       fontSize: "12px",
                       color: colors.accent,
                       fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
-                      whiteSpace: "nowrap",
+                      whiteSpace: isMaintainer ? "normal" : "nowrap",
+                      overflowWrap: isMaintainer ? "anywhere" : undefined,
                     }}
                   >
                     {r.token.replace("--token-color-", "")}
                   </code>
                   {isMaintainer && (
-                    <span style={{ marginLeft: "10px", fontSize: `${font.size.small}px`, color: users.length ? colors.textMuted : colors.strokeAction }}>
-                      {users.length ? `${users.length} component${users.length === 1 ? "" : "s"}` : "unused"}
-                    </span>
+                    users.length ? (
+                      <span
+                        title={`${users.length} component${users.length === 1 ? "" : "s"} use this token`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          minWidth: "20px",
+                          height: "20px",
+                          marginLeft: "10px",
+                          padding: "0 7px",
+                          borderRadius: "999px",
+                          background: colors.selectedSubtle,
+                          color: colors.textSelected,
+                          fontFamily: font.family,
+                          fontSize: `${font.size.small}px`,
+                          fontWeight: 500,
+                          verticalAlign: "middle",
+                        }}
+                      >
+                        {users.length}
+                      </span>
+                    ) : (
+                      <span
+                        title="Not used by any component"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          height: "20px",
+                          marginLeft: "10px",
+                          padding: "0 8px",
+                          borderRadius: "999px",
+                          border: `1px dashed ${colors.strokeSubtle}`,
+                          color: colors.textMuted,
+                          fontFamily: font.family,
+                          fontSize: `${font.size.small}px`,
+                          verticalAlign: "middle",
+                        }}
+                      >
+                        unused
+                      </span>
+                    )
                   )}
                 </td>
                 {BRAND_COLUMNS.map((c) => (
