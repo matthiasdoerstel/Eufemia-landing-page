@@ -88,7 +88,8 @@ const SortHeader: React.FC<{
   dir: SortDir;
   onClick: () => void;
   sticky?: boolean;
-}> = ({ label, active, dir, onClick, sticky }) => {
+  width?: string;
+}> = ({ label, active, dir, onClick, sticky, width }) => {
   const { colors } = useTheme();
   return (
     <th
@@ -99,6 +100,7 @@ const SortHeader: React.FC<{
         fontSize: `${font.size.small}px`,
         color: colors.text,
         whiteSpace: "nowrap",
+        width,
         position: sticky ? "sticky" : undefined,
         left: sticky ? 0 : undefined,
         background: colors.surfaceAlt,
@@ -340,10 +342,10 @@ const Section: React.FC<{
 
       {/* Table */}
       <div style={{ overflowX: "auto", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.md}px` }}>
-        <table style={{ width: isMaintainer ? "auto" : "100%", minWidth: isMaintainer ? "0" : undefined, borderCollapse: "collapse", background: colors.surface }}>
+        <table style={{ width: "100%", tableLayout: isMaintainer ? "fixed" : undefined, borderCollapse: "collapse", background: colors.surface }}>
           <thead>
             <tr style={{ background: colors.surfaceAlt, borderBottom: `1px solid ${colors.stroke}` }}>
-              <SortHeader label="Token" active={sortKey === "token"} dir={sortDir} onClick={() => sortBy("token")} sticky />
+              <SortHeader label="Token" active={sortKey === "token"} dir={sortDir} onClick={() => sortBy("token")} sticky width={isMaintainer ? "210px" : undefined} />
               {BRAND_COLUMNS.map((c) => (
                 <th
                   key={c.key}
@@ -354,7 +356,7 @@ const Section: React.FC<{
                     fontSize: `${font.size.small}px`,
                     color: colors.text,
                     whiteSpace: isMaintainer ? "normal" : "nowrap",
-                    width: isMaintainer ? "62px" : undefined,
+                    width: isMaintainer ? "auto" : undefined,
                     lineHeight: isMaintainer ? 1.2 : undefined,
                     borderLeft: `1px solid ${colors.strokeSubtle}`,
                   }}
