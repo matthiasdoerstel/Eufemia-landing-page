@@ -20,13 +20,20 @@ interface Tool {
   description: string;
   to: string;
   external?: boolean;
+  icon: React.ReactNode;
 }
 
-const tools: Tool[] = [
-  { name: "Content Studio", description: "Edit components, tokens and page content in the Sanity CMS.", to: "https://www.sanity.io/manage/project/sy4b7kpu", external: true },
-  { name: "Design tokens", description: "Review the resolved token catalog across brands and themes.", to: "/docs/web/design-tokens" },
-  { name: "Changelog", description: "Publish and review release notes.", to: "/changelog" },
-  { name: "Eufemia and AI", description: "Manage the MCP surface and AI-readability efforts.", to: "/eufemia-and-ai" },
+// Color-token glyph: overlapping swatches (tokens resolving across themes).
+const TokensIcon = ({ color }: { color: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+    <circle cx="9" cy="9" r="5.25" stroke={color} strokeWidth="1.6" />
+    <circle cx="15" cy="9" r="5.25" stroke={color} strokeWidth="1.6" />
+    <circle cx="12" cy="14.5" r="5.25" stroke={color} strokeWidth="1.6" />
+  </svg>
+);
+
+const tools: Omit<Tool, "icon">[] = [
+  { name: "Design Tokens", description: "Browse the resolved token catalog across every brand and theme.", to: "/docs/web/design-tokens" },
 ];
 
 const MaintainerPage: React.FC = () => {
@@ -87,9 +94,10 @@ const MaintainerPage: React.FC = () => {
     );
   }
 
-  const card = (t: Tool) => {
+  const card = (t: Omit<Tool, "icon">) => {
     const inner = (
       <>
+        <TokensIcon color={colors.accent} />
         <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
           {t.name}
         </span>
@@ -99,7 +107,7 @@ const MaintainerPage: React.FC = () => {
     const style: React.CSSProperties = {
       display: "flex",
       flexDirection: "column",
-      gap: "8px",
+      gap: "12px",
       padding: "24px",
       borderRadius: `${radius.lg}px`,
       border: `1px solid ${colors.strokeSubtle}`,
