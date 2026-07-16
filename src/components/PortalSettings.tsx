@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { navigate } from "gatsby";
 import { useTheme } from "../context/ThemeContext";
 import { usePortalSettings, ALL_PLATFORMS } from "../context/SettingsContext";
+import { useAuth } from "../context/AuthContext";
 import { radius, font, shadow } from "../theme/tokens";
 import { NAV_HEIGHT } from "./Header";
 
@@ -15,6 +17,16 @@ const CloseIcon = () => (
   </svg>
 );
 
+// Microsoft's four-square logo (brand colours, theme-independent).
+const MicrosoftLogo = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden style={{ flexShrink: 0 }}>
+    <rect x="0" y="0" width="7.2" height="7.2" fill="#F25022" />
+    <rect x="8.8" y="0" width="7.2" height="7.2" fill="#7FBA00" />
+    <rect x="0" y="8.8" width="7.2" height="7.2" fill="#00A4EF" />
+    <rect x="8.8" y="8.8" width="7.2" height="7.2" fill="#FFB900" />
+  </svg>
+);
+
 const CheckIcon = ({ color }: { color: string }) => (
   <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
     <path d="M2.5 6.5L5 9L9.5 3.5" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -24,6 +36,7 @@ const CheckIcon = ({ color }: { color: string }) => (
 const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
   const { colors, mode, setMode, brand, setBrand } = useTheme();
   const { platforms, togglePlatform } = usePortalSettings();
+  const { isMaintainer, user, signingIn, signIn, signOut } = useAuth();
   const [language, setLanguage] = React.useState("Norsk");
   const [skeletons, setSkeletons] = React.useState(true);
   const [showGrid, setShowGrid] = React.useState(false);
@@ -326,6 +339,100 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Sign In — maintainer tools */}
+        <div style={section}>
+          {labelBlock(
+            "Sign In",
+            <span
+              style={{
+                fontFamily: font.family,
+                fontSize: `${font.size.small}px`,
+                lineHeight: `${font.lineHeight.small}px`,
+                color: colors.textMuted,
+              }}
+            >
+              Maintainer tools
+            </span>
+          )}
+
+          {!isMaintainer ? (
+            <button
+              onClick={() => signIn()}
+              disabled={signingIn}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                alignSelf: "flex-start",
+                padding: "10px 16px",
+                borderRadius: `${radius.md}px`,
+                border: `1px solid ${colors.stroke}`,
+                background: colors.surface,
+                color: colors.text,
+                fontFamily: font.family,
+                fontSize: `${font.size.body}px`,
+                lineHeight: `${font.lineHeight.body}px`,
+                cursor: signingIn ? "default" : "pointer",
+                opacity: signingIn ? 0.6 : 1,
+                transition: "background 0.15s ease, border-color 0.15s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = colors.surfaceAlt)}
+              onMouseLeave={(e) => (e.currentTarget.style.background = colors.surface)}
+            >
+              <MicrosoftLogo />
+              {signingIn ? "Signing in…" : "Maintainer sign-in"}
+            </button>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <span style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 500, color: colors.text }}>
+                  {user?.name}
+                </span>
+                <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
+                  {user?.email}
+                </span>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                <button
+                  onClick={() => {
+                    onClose();
+                    navigate("/maintainer");
+                  }}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: `${radius.md}px`,
+                    border: `1px solid ${colors.strokeAction}`,
+                    background: colors.selectedSubtle,
+                    color: colors.textSelected,
+                    fontFamily: font.family,
+                    fontSize: `${font.size.body}px`,
+                    lineHeight: `${font.lineHeight.body}px`,
+                    cursor: "pointer",
+                  }}
+                >
+                  Maintainer tools
+                </button>
+                <button
+                  onClick={() => signOut()}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: `${radius.md}px`,
+                    border: `1px solid ${colors.stroke}`,
+                    background: "transparent",
+                    color: colors.text,
+                    fontFamily: font.family,
+                    fontSize: `${font.size.body}px`,
+                    lineHeight: `${font.lineHeight.body}px`,
+                    cursor: "pointer",
+                  }}
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

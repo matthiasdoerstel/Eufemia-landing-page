@@ -4,11 +4,14 @@ import '@dnb/eufemia/style/themes/theme-ui/ui-theme-fonts.min.css'
 import '@dnb/eufemia/style/themes/theme-ui/ui-theme-basis.min.css'
 import { ThemeProvider } from './src/context/ThemeContext'
 import { SettingsProvider } from './src/context/SettingsContext'
+import { AuthProvider } from './src/context/AuthContext'
 
 export const wrapRootElement = ({ element }) => (
   <ThemeProvider>
     <SettingsProvider>
-      {element}
+      <AuthProvider>
+        {element}
+      </AuthProvider>
     </SettingsProvider>
   </ThemeProvider>
 )

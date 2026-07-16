@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, navigate } from "gatsby";
 import { useTheme } from "../context/ThemeContext";
 import { usePortalSettings } from "../context/SettingsContext";
+import { useAuth } from "../context/AuthContext";
 import { radius, font } from "../theme/tokens";
 import { NAV_HEIGHT } from "./Header";
 
@@ -120,6 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
   const { colors } = useTheme();
   const { docPlatform, setDocPlatform } = usePortalSettings();
+  const { isMaintainer } = useAuth();
 
   // Sync the persisted selection from the URL only on actual docs pages, so
   // visiting About / Getting started doesn't reset the chosen platform.
@@ -232,6 +234,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {menuLink("/docs/design", "Designer Guide", "designer-guide")}
           {menuLink("/getting-started", "Developer Guide", "developer-guide")}
           {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai")}
+          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer")}
         </nav>
 
         {/* Divider between the menu and the platform selector (full-width) */}
