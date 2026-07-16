@@ -151,7 +151,8 @@ const MaintainerPage: React.FC = () => {
               viewBox="0 0 16 16"
               fill="none"
               aria-hidden
-              style={{ marginLeft: "auto", color: colors.textMuted }}
+              className="maint-launch"
+              style={{ marginLeft: "auto", color: colors.textMuted, transition: "transform 0.15s ease" }}
             >
               <path d="M6 3.5H12.5V10M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -199,7 +200,7 @@ const MaintainerPage: React.FC = () => {
       );
     }
     return t.external ? (
-      <a key={t.name} href={t.to} target="_blank" rel="noreferrer" style={style}>
+      <a key={t.name} href={t.to} target="_blank" rel="noreferrer" className="maint-card" style={style}>
         {inner}
       </a>
     ) : (
@@ -212,6 +213,7 @@ const MaintainerPage: React.FC = () => {
   return (
     <Layout currentPath="/maintainer" currentPlatform="web">
       <PageShell contentStyle={{ gap: "32px" }}>
+        <style>{`.maint-card:hover .maint-launch { transform: translate(3px, -3px); }`}</style>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <h1 style={h1}>Maintainer tools</h1>
           <p style={{ ...para, maxWidth: "640px" }}>
