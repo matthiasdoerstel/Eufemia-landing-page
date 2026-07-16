@@ -184,7 +184,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const menuLink = (to: string, label: string, key: string, indent = false) => {
-    const active = currentPath === to;
+    const active = currentPath === to || currentPath.startsWith(`${to}/`);
     return (
       <Link
         to={to}
