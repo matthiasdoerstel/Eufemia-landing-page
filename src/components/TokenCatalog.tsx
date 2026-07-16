@@ -553,6 +553,7 @@ const TokenCatalog: React.FC<{ maintainer?: boolean }> = ({ maintainer = false }
   const { colors } = useTheme();
   const [copied, setCopied] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const onCopy = (id: string) => {
     const token = id.split(":")[0];
@@ -578,38 +579,66 @@ const TokenCatalog: React.FC<{ maintainer?: boolean }> = ({ maintainer = false }
       {maintainer && <AdoptionPanel />}
 
       {maintainer && (
-        <div style={{ position: "relative", maxWidth: "420px" }}>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
-          >
-            <circle cx="7" cy="7" r="5" stroke={colors.textMuted} strokeWidth="1.4" />
-            <path d="M11 11L14 14" stroke={colors.textMuted} strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search tokens by name or group…"
-            aria-label="Search tokens"
+        <div style={{ maxWidth: "420px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div
             style={{
-              width: "100%",
-              boxSizing: "border-box",
-              padding: "10px 14px 10px 40px",
-              borderRadius: `${radius.md}px`,
-              border: `1px solid ${colors.stroke}`,
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "10px 16px",
+              border: `1px solid ${searchFocused ? colors.strokeAction : colors.strokeSubtle}`,
+              borderRadius: `${radius.lg}px`,
               background: colors.surface,
-              color: colors.text,
-              fontFamily: font.family,
-              fontSize: `${font.size.body}px`,
-              outline: "none",
+              transition: "border-color 0.15s ease",
             }}
-          />
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: colors.textMuted }}>
+              <circle cx="6.75" cy="6.75" r="5" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M10.5 10.5L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              placeholder="Search tokens…"
+              aria-label="Search tokens"
+              style={{
+                flex: 1,
+                minWidth: 0,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                color: colors.text,
+                fontFamily: font.family,
+                fontSize: `${font.size.body}px`,
+              }}
+            />
+            {search !== "" && (
+              <button
+                onClick={() => setSearch("")}
+                aria-label="Clear search"
+                style={{
+                  flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  color: colors.textMuted,
+                  padding: 0,
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            )}
+          </div>
           {search.trim() !== "" && (
-            <span style={{ display: "block", marginTop: "8px", fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+            <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
               {totalMatches} token{totalMatches === 1 ? "" : "s"} match “{search.trim()}”
             </span>
           )}
