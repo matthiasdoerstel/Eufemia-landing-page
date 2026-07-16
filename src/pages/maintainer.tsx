@@ -142,7 +142,21 @@ const MaintainerPage: React.FC = () => {
   const card = (t: Tool) => {
     const inner = (
       <>
-        <t.Icon color={colors.accent} />
+        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <t.Icon color={colors.accent} />
+          {t.external && (
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden
+              style={{ marginLeft: "auto", color: colors.textMuted }}
+            >
+              <path d="M6 3.5H12.5V10M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </div>
         <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
           {t.name}
           {t.comingSoon && (
