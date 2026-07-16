@@ -20,7 +20,7 @@ interface Tool {
   description: string;
   to: string;
   external?: boolean;
-  icon: React.ReactNode;
+  Icon: React.FC<{ color: string }>;
 }
 
 // Color-token glyph: overlapping swatches (tokens resolving across themes).
@@ -32,8 +32,35 @@ const TokensIcon = ({ color }: { color: string }) => (
   </svg>
 );
 
-const tools: Omit<Tool, "icon">[] = [
-  { name: "Design Tokens", description: "Browse the resolved token catalog across every brand and theme, and see which components use each token.", to: "/maintainer/design-tokens" },
+// CMS glyph: a document with content lines.
+const CmsIcon = ({ color }: { color: string }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
+    <path d="M6 3.5h8L18.5 8v12.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-16a1 1 0 0 1 1-1Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M13.5 3.5V8H18.5" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M8.5 12.5h7M8.5 16h7" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+  </svg>
+);
+
+const SANITY_PROJECT_ID = "sy4b7kpu";
+// No Studio host is deployed yet, so link to the Sanity project console. Swap
+// this for the deployed Studio URL (e.g. https://<host>.sanity.studio) — or the
+// local studio (http://localhost:3333) in dev — once one exists.
+const CMS_URL = `https://www.sanity.io/manage/project/${SANITY_PROJECT_ID}`;
+
+const tools: Tool[] = [
+  {
+    name: "Design Tokens",
+    description: "Browse the resolved token catalog across every brand and theme, and see which components use each token.",
+    to: "/maintainer/design-tokens",
+    Icon: TokensIcon,
+  },
+  {
+    name: "Content Studio",
+    description: "Open the Sanity CMS to edit components, guidelines and page content.",
+    to: CMS_URL,
+    external: true,
+    Icon: CmsIcon,
+  },
 ];
 
 const MaintainerPage: React.FC = () => {
@@ -94,10 +121,10 @@ const MaintainerPage: React.FC = () => {
     );
   }
 
-  const card = (t: Omit<Tool, "icon">) => {
+  const card = (t: Tool) => {
     const inner = (
       <>
-        <TokensIcon color={colors.accent} />
+        <t.Icon color={colors.accent} />
         <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
           {t.name}
         </span>
