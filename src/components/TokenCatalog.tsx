@@ -14,11 +14,8 @@ import {
 
 const COMPONENT_DOCS = (slug: string) => `https://eufemia.dnb.no/uilib/components/${slug}/`;
 
-type SortKey = "group" | "token";
+type SortKey = "token";
 type SortDir = "asc" | "desc";
-
-const prettyGroup = (g: string) =>
-  g.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
 // A single color swatch cell. Hover shows the foundation ref; click copies the
 // full CSS custom property.
@@ -236,7 +233,7 @@ const Section: React.FC<{
   const isMaintainer = maintainer;
   const [active, setActive] = useState<string[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("group");
+  const [sortKey, setSortKey] = useState<SortKey>("token");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   // Modifiers present in this section, ordered by MODIFIER_LABELS order.
@@ -266,8 +263,8 @@ const Section: React.FC<{
     );
     const dir = sortDir === "asc" ? 1 : -1;
     return [...filtered].sort((a, b) => {
-      const av = sortKey === "group" ? `${a.group} ${a.token}` : a.token;
-      const bv = sortKey === "group" ? `${b.group} ${b.token}` : b.token;
+      const av = a.token;
+      const bv = b.token;
       return av.localeCompare(bv) * dir;
     });
   }, [rows, active, sortKey, sortDir, search]);
@@ -346,8 +343,7 @@ const Section: React.FC<{
         <table style={{ width: "100%", borderCollapse: "collapse", background: colors.surface }}>
           <thead>
             <tr style={{ background: colors.surfaceAlt, borderBottom: `1px solid ${colors.stroke}` }}>
-              <SortHeader label="Group" active={sortKey === "group"} dir={sortDir} onClick={() => sortBy("group")} sticky />
-              <SortHeader label="Token" active={sortKey === "token"} dir={sortDir} onClick={() => sortBy("token")} />
+              <SortHeader label="Token" active={sortKey === "token"} dir={sortDir} onClick={() => sortBy("token")} sticky />
               {BRAND_COLUMNS.map((c) => (
                 <th
                   key={c.key}
@@ -385,19 +381,12 @@ const Section: React.FC<{
                 <td
                   style={{
                     padding: "8px 10px",
-                    fontFamily: font.family,
-                    fontSize: `${font.size.small}px`,
-                    color: colors.text,
-                    whiteSpace: "nowrap",
                     position: "sticky",
                     left: 0,
                     background: isOpen ? colors.surfaceAlt : colors.surface,
                     zIndex: 1,
                   }}
                 >
-                  {prettyGroup(r.group)}
-                </td>
-                <td style={{ padding: "8px 10px" }}>
                   <code
                     style={{
                       fontSize: "12px",
@@ -420,7 +409,7 @@ const Section: React.FC<{
               </tr>
               {isOpen && (
                 <tr style={{ borderBottom: `1px solid ${colors.strokeSubtle}` }}>
-                  <td colSpan={2 + BRAND_COLUMNS.length} style={{ padding: "4px 16px 18px", background: colors.surfaceAlt }}>
+                  <td colSpan={1 + BRAND_COLUMNS.length} style={{ padding: "4px 16px 18px", background: colors.surfaceAlt }}>
                     <UsagePanel users={users} />
                   </td>
                 </tr>
