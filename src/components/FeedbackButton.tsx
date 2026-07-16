@@ -113,7 +113,7 @@ const FeedbackButton: React.FC = () => {
               <>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, color: colors.text }}>
-                    Send feedback
+                    Feedback about the portal
                   </span>
                   <button onClick={close} aria-label="Close" style={{ background: "none", border: "none", cursor: "pointer", color: colors.text, display: "flex" }}>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -121,6 +121,10 @@ const FeedbackButton: React.FC = () => {
                     </svg>
                   </button>
                 </div>
+
+                <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
+                  Something broken on this site, or an idea to make it better? This is about the <strong style={{ color: colors.text, fontWeight: 500 }}>portal itself</strong> — not for reporting that a component isn't working.
+                </p>
 
                 {/* Category */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -156,7 +160,7 @@ const FeedbackButton: React.FC = () => {
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="What's working, what's missing, what's broken…"
+                    placeholder="Something broken on the portal, or a way to improve it…"
                     rows={4}
                     style={{
                       resize: "vertical",
