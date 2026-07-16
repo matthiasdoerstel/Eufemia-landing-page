@@ -3,8 +3,6 @@ import { Link } from "gatsby";
 import Layout from "../../components/Layout";
 import PageShell from "../../components/PageShell";
 import TokenCatalog from "../../components/TokenCatalog";
-import InPageRail from "../../components/InPageRail";
-import { SECTIONS } from "../../data/design-tokens";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { font, radius } from "../../theme/tokens";
@@ -75,10 +73,10 @@ const MaintainerDesignTokensPage: React.FC = () => {
 
   return (
     <Layout currentPlatform="web" currentPath="/maintainer/design-tokens">
-      <PageShell
-        contentStyle={{ gap: "40px" }}
-        rail={<InPageRail items={SECTIONS.map((s) => ({ id: `tokens-${s.id}`, label: s.label }))} />}
-      >
+      {/* Full-width overrides scoped to this maintainer page: uncap the content
+          column and collapse the reserved rail gutter so the wide token table
+          doesn't force horizontal scrolling. */}
+      <PageShell contentStyle={{ gap: "40px", maxWidth: "none" }} rail={<></>}>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <h1 style={h1}>Design Tokens</h1>
           <p style={para}>

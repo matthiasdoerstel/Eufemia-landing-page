@@ -31,21 +31,21 @@ const SwatchCell: React.FC<{
   const { colors } = useTheme();
   if (!cell) {
     return (
-      <td style={{ padding: "10px 12px", textAlign: "center", color: colors.textMuted, borderLeft: `1px solid ${colors.strokeSubtle}` }}>
+      <td style={{ padding: "8px 6px", textAlign: "center", color: colors.textMuted, borderLeft: `1px solid ${colors.strokeSubtle}` }}>
         —
       </td>
     );
   }
   return (
-    <td style={{ padding: "10px 12px", textAlign: "center", borderLeft: `1px solid ${colors.strokeSubtle}`, position: "relative" }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+    <td style={{ padding: "8px 6px", textAlign: "center", borderLeft: `1px solid ${colors.strokeSubtle}`, position: "relative" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
         <button
           onClick={() => onCopy(token)}
-          title={cell.ref}
+          title={`${cell.ref} · ${cell.hex}`}
           aria-label={`${token} — ${cell.ref} (${cell.hex}). Click to copy variable.`}
           style={{
-            width: "34px",
-            height: "34px",
+            width: "20px",
+            height: "20px",
             background: cell.hex,
             borderRadius: `${radius.sm}px`,
             border: `1px solid ${colors.strokeSubtle}`,
@@ -53,10 +53,10 @@ const SwatchCell: React.FC<{
             padding: 0,
             transition: "transform 0.15s ease",
           }}
-          onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1.12)")}
+          onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1.15)")}
           onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
         />
-        <code style={{ fontSize: "10px", color: colors.textMuted, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+        <code style={{ fontSize: "9px", color: colors.textMuted, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
           {cell.hex}
         </code>
       </div>
@@ -352,12 +352,14 @@ const Section: React.FC<{
                 <th
                   key={c.key}
                   style={{
-                    padding: "12px",
+                    padding: "10px 6px",
                     textAlign: "center",
                     fontWeight: 500,
                     fontSize: `${font.size.small}px`,
                     color: colors.text,
-                    whiteSpace: "nowrap",
+                    whiteSpace: isMaintainer ? "normal" : "nowrap",
+                    width: isMaintainer ? "62px" : undefined,
+                    lineHeight: isMaintainer ? 1.2 : undefined,
                     borderLeft: `1px solid ${colors.strokeSubtle}`,
                   }}
                 >
@@ -382,7 +384,7 @@ const Section: React.FC<{
               >
                 <td
                   style={{
-                    padding: "10px 12px",
+                    padding: "8px 10px",
                     fontFamily: font.family,
                     fontSize: `${font.size.small}px`,
                     color: colors.text,
@@ -395,7 +397,7 @@ const Section: React.FC<{
                 >
                   {prettyGroup(r.group)}
                 </td>
-                <td style={{ padding: "10px 12px" }}>
+                <td style={{ padding: "8px 10px" }}>
                   <code
                     style={{
                       fontSize: "12px",
