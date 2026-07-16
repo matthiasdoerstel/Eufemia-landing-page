@@ -179,19 +179,16 @@ const MaintainerPage: React.FC = () => {
               <path d="M6 3.5H12.5V10M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           )}
-        </div>
-        <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
-          {t.name}
           {t.to === "/maintainer/feedback" && unread > 0 && (
             <span
               title={`${unread} unread`}
               style={{
+                marginLeft: "auto",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
                 minWidth: "20px",
                 height: "20px",
-                marginLeft: "10px",
                 padding: "0 7px",
                 borderRadius: "999px",
                 background: colors.accent,
@@ -199,12 +196,14 @@ const MaintainerPage: React.FC = () => {
                 fontFamily: font.family,
                 fontSize: `${font.size.small}px`,
                 fontWeight: 600,
-                verticalAlign: "middle",
               }}
             >
               {unread}
             </span>
           )}
+        </div>
+        <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
+          {t.name}
           {t.comingSoon && (
             <span
               style={{
