@@ -160,6 +160,30 @@ const Sidebar: React.FC<SidebarProps> = ({
     transition: "opacity 0.15s ease",
   });
 
+  const eufemiaBadge = (
+    <span
+      aria-hidden
+      title="Eufemia"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "20px",
+        height: "20px",
+        marginLeft: "8px",
+        flexShrink: 0,
+        borderRadius: "6px",
+        background: colors.surface,
+        border: `1px solid ${colors.strokeSubtle}`,
+      }}
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{ color: colors.accent }}>
+        <circle cx="10" cy="6" r="2.7" fill="currentColor" />
+        <path d="M10 11 V15.5 C10 18.2 11.4 19.3 13.7 19.3" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+
   const renderRow = (item: NavItem) => {
     const active = currentPath === item.path;
     const isChevron = item.icon === "chevron";
@@ -183,7 +207,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     );
   };
 
-  const menuLink = (to: string, label: string, key: string, indent = false) => {
+  const menuLink = (to: string, label: string, key: string, indent = false, badge = false) => {
     const active = currentPath === to || currentPath.startsWith(`${to}/`);
     return (
       <Link
@@ -200,6 +224,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           play={active || click.key === key}
         />
         {label}
+        {badge && eufemiaBadge}
       </Link>
     );
   };
@@ -234,7 +259,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {menuLink("/docs/design", "Designer Guide", "designer-guide")}
           {menuLink("/getting-started", "Developer Guide", "developer-guide")}
           {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai")}
-          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer")}
+          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", false, true)}
         </nav>
 
         {/* Divider between the menu and the platform selector (full-width) */}
