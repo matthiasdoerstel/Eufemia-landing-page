@@ -135,19 +135,61 @@ const SortHeader: React.FC<{
 // Maintainer-only: which components reference a token (its change blast radius).
 const UsagePanel: React.FC<{ users: string[] }> = ({ users }) => {
   const { colors } = useTheme();
+
   if (users.length === 0) {
     return (
-      <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
-        Not used by any component — safe to change.
-      </span>
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          padding: "8px 14px",
+          borderRadius: `${radius.md}px`,
+          border: `1px dashed ${colors.strokeSubtle}`,
+          background: colors.surface,
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6.25" stroke={colors.textMuted} strokeWidth="1.3" />
+          <path d="M5.5 8.2L7.2 10L10.5 6" stroke={colors.textMuted} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+          Not used by any component — safe to change.
+        </span>
+      </div>
     );
   }
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-      <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
-        Used by {users.length} component{users.length === 1 ? "" : "s"} — changing it affects:
-      </span>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.body}px`, color: colors.text }}>
+          Connected components
+        </span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minWidth: "22px",
+            height: "22px",
+            padding: "0 7px",
+            borderRadius: "999px",
+            background: colors.selectedSubtle,
+            color: colors.textSelected,
+            fontFamily: font.family,
+            fontSize: `${font.size.small}px`,
+            fontWeight: 500,
+          }}
+        >
+          {users.length}
+        </span>
+        <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+          reference this token — changing it affects them.
+        </span>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: "8px" }}>
         {users.map((slug) => (
           <a
             key={slug}
@@ -156,20 +198,24 @@ const UsagePanel: React.FC<{ users: string[] }> = ({ users }) => {
             rel="noreferrer"
             onClick={(e) => e.stopPropagation()}
             style={{
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
-              padding: "4px 12px",
-              borderRadius: "999px",
+              justifyContent: "space-between",
+              gap: "8px",
+              padding: "9px 12px",
+              borderRadius: `${radius.md}px`,
               border: `1px solid ${colors.strokeSubtle}`,
               background: colors.surface,
               color: colors.text,
               fontFamily: font.family,
               fontSize: `${font.size.small}px`,
               textDecoration: "none",
-              whiteSpace: "nowrap",
             }}
           >
-            {slug}
+            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{slug}</span>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: colors.textMuted }}>
+              <path d="M6 3.5H12.5V10M12 4L4 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </a>
         ))}
       </div>
@@ -184,7 +230,8 @@ const Section: React.FC<{
   copied: string | null;
   onCopy: (token: string) => void;
   maintainer: boolean;
-}> = ({ section, label, rows, copied, onCopy, maintainer }) => {
+  search: string;
+}> = ({ section, label, rows, copied, onCopy, maintainer, search }) => {
   const { colors } = useTheme();
   const isMaintainer = maintainer;
   const [active, setActive] = useState<string[]>([]);
@@ -211,14 +258,22 @@ const Section: React.FC<{
   };
 
   const visible = useMemo(() => {
-    const filtered = rows.filter((r) => active.every((m) => r.modifiers.includes(m)));
+    const q = search.trim().toLowerCase();
+    const filtered = rows.filter(
+      (r) =>
+        active.every((m) => r.modifiers.includes(m)) &&
+        (q === "" || r.token.toLowerCase().includes(q) || r.group.toLowerCase().includes(q))
+    );
     const dir = sortDir === "asc" ? 1 : -1;
     return [...filtered].sort((a, b) => {
       const av = sortKey === "group" ? `${a.group} ${a.token}` : a.token;
       const bv = sortKey === "group" ? `${b.group} ${b.token}` : b.token;
       return av.localeCompare(bv) * dir;
     });
-  }, [rows, active, sortKey, sortDir]);
+  }, [rows, active, sortKey, sortDir, search]);
+
+  // Hide a section entirely when a search excludes all its rows.
+  if (search.trim() !== "" && visible.length === 0) return null;
 
   return (
     <section id={`tokens-${section}`} style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
@@ -461,7 +516,9 @@ const AdoptionPanel: React.FC = () => {
 };
 
 const TokenCatalog: React.FC<{ maintainer?: boolean }> = ({ maintainer = false }) => {
+  const { colors } = useTheme();
   const [copied, setCopied] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   const onCopy = (id: string) => {
     const token = id.split(":")[0];
@@ -476,11 +533,57 @@ const TokenCatalog: React.FC<{ maintainer?: boolean }> = ({ maintainer = false }
     return map;
   }, []);
 
+  const totalMatches = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return TOKEN_ROWS.length;
+    return TOKEN_ROWS.filter((r) => r.token.toLowerCase().includes(q) || r.group.toLowerCase().includes(q)).length;
+  }, [search]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
       {maintainer && <AdoptionPanel />}
+
+      {maintainer && (
+        <div style={{ position: "relative", maxWidth: "420px" }}>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
+          >
+            <circle cx="7" cy="7" r="5" stroke={colors.textMuted} strokeWidth="1.4" />
+            <path d="M11 11L14 14" stroke={colors.textMuted} strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search tokens by name or group…"
+            aria-label="Search tokens"
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              padding: "10px 14px 10px 40px",
+              borderRadius: `${radius.md}px`,
+              border: `1px solid ${colors.stroke}`,
+              background: colors.surface,
+              color: colors.text,
+              fontFamily: font.family,
+              fontSize: `${font.size.body}px`,
+              outline: "none",
+            }}
+          />
+          {search.trim() !== "" && (
+            <span style={{ display: "block", marginTop: "8px", fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
+              {totalMatches} token{totalMatches === 1 ? "" : "s"} match “{search.trim()}”
+            </span>
+          )}
+        </div>
+      )}
+
       {SECTIONS.map((s) => (
-        <Section key={s.id} section={s.id} label={s.label} rows={bySection[s.id] ?? []} copied={copied} onCopy={onCopy} maintainer={maintainer} />
+        <Section key={s.id} section={s.id} label={s.label} rows={bySection[s.id] ?? []} copied={copied} onCopy={onCopy} maintainer={maintainer} search={search} />
       ))}
     </div>
   );
