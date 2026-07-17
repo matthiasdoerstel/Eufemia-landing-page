@@ -135,6 +135,10 @@ const runThemeSweep = (apply: () => void, look: SweepLook) => {
 // previews the colours you're switching into (teal for DNB, purple for
 // Sbanken; brighter in light, dimmed in dark).
 const themeLook = (target: ThemeName, brand: BrandName): SweepLook => {
+  // Carnegie's accent is black; use its card colours (maroon + teal) for the band.
+  if (brand === 'Carnegie') {
+    return { palette: accentPair('#390015', '#041318'), direction: 'rtl', brightness: 1 };
+  }
   const c = colorsFor(target, brand);
   return {
     palette: accentPair(c.selectedSubtle, c.accent),
