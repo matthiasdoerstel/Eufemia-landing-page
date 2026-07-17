@@ -27,8 +27,8 @@ const MicrosoftLogo = () => (
 );
 
 const CheckIcon = ({ color }: { color: string }) => (
-  <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-    <path d="M2.5 6.5L5 9L9.5 3.5" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ color }}>
+    <path d="M2.5 6.5L5 9L9.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 

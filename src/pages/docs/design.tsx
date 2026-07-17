@@ -12,8 +12,8 @@ const ArrowIcon = () => (
 );
 
 const CheckIcon = ({ color }: { color: string }) => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M3 8L6.5 11.5L13 4.5" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color }}>
+    <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 

@@ -148,9 +148,9 @@ const UsagePanel: React.FC<{ users: string[] }> = ({ users }) => {
           background: colors.surface,
         }}
       >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6.25" stroke={colors.textMuted} strokeWidth="1.3" />
-          <path d="M5.5 8.2L7.2 10L10.5 6" stroke={colors.textMuted} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: colors.textMuted }}>
+          <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.3" />
+          <path d="M5.5 8.2L7.2 10L10.5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>
           Not used by any component — safe to change.

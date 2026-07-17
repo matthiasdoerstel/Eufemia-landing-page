@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { createShader, playSweep, accentPair, type Palette } from 'glimm';
-import { colorsFor, ThemeName, BrandName, ColorTokens } from '../theme/tokens';
+import { colorsFor, cssVarColors, ThemeName, BrandName, ColorTokens } from '../theme/tokens';
 
 type ThemeMode = 'auto' | 'light' | 'dark';
 
@@ -151,11 +151,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const applyTheme = (t: ThemeName, b: BrandName) => {
     if (typeof window === 'undefined') return; // SSR safety
-    const c = colorsFor(t, b);
+    // Colours are driven by CSS variables selected via these attributes, so
+    // flipping them re-themes the whole page (including static markup).
     const root = document.documentElement;
-    root.style.colorScheme = t;
-    root.style.backgroundColor = c.pageBg;
-    root.style.color = c.text;
+    root.setAttribute('data-theme', t);
+    root.setAttribute('data-brand', b);
     applyFavicon(t, b);
   };
 
@@ -207,7 +207,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   return (
     <ThemeContext.Provider
-      value={{ theme, mode, brand, colors: colorsFor(theme, brand), toggleTheme, setMode, setBrand }}
+      value={{ theme, mode, brand, colors: cssVarColors, toggleTheme, setMode, setBrand }}
     >
       {children}
     </ThemeContext.Provider>
@@ -222,7 +222,7 @@ export const useTheme = () => {
       theme: 'dark' as ThemeName,
       mode: 'dark' as ThemeMode,
       brand: 'DNB' as BrandName,
-      colors: colorsFor('dark', 'DNB'),
+      colors: cssVarColors,
       toggleTheme: () => {},
       setMode: (_: ThemeMode) => {},
       setBrand: (_: BrandName) => {},

@@ -5,6 +5,7 @@ import '@dnb/eufemia/style/themes/theme-ui/ui-theme-basis.min.css'
 import { ThemeProvider } from './src/context/ThemeContext'
 import { SettingsProvider } from './src/context/SettingsContext'
 import { AuthProvider } from './src/context/AuthContext'
+import { THEME_VARS_CSS } from './src/theme/tokens'
 
 export const wrapRootElement = ({ element }) => (
   <ThemeProvider>
@@ -31,17 +32,20 @@ export const onRenderBody = ({ setHeadComponents }) => {
     <link key="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />,
     <link key="favicon-48" rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />,
     <link key="favicon-apple" rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />,
-    // Set the page background from the saved theme before first paint, so a
-    // hard refresh doesn't flash the default (dark) theme before hydration.
+    // Theme colours as CSS variables, selected by the data-theme/data-brand
+    // attributes set below. Keeps the static HTML theme-agnostic so there is no
+    // flash of the wrong theme on a hard load.
+    <style key="theme-vars" dangerouslySetInnerHTML={{ __html: THEME_VARS_CSS }} />,
+    // Set the theme + brand attributes from the saved preference before first
+    // paint, so a hard refresh renders the correct theme immediately.
     <script
       key="theme-init"
       dangerouslySetInnerHTML={{
         __html:
           "(function(){try{var m=localStorage.getItem('theme-mode')||'dark';" +
+          "var b=localStorage.getItem('theme-brand')||'DNB';" +
           "var t=m==='auto'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):m;" +
-          "var r=document.documentElement;r.style.colorScheme=t;" +
-          "r.style.backgroundColor=t==='dark'?'#000000':'#ffffff';" +
-          "r.style.color=t==='dark'?'#ffffff':'#333333';}catch(e){}})()",
+          "var r=document.documentElement;r.setAttribute('data-theme',t);r.setAttribute('data-brand',b);}catch(e){}})()",
       }}
     />,
   ])

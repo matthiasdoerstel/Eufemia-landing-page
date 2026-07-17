@@ -27,8 +27,8 @@ const cardMotionCSS = `
 `;
 
 const ArrowRight = ({ color }: { color: string }) => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color }}>
+    <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -40,44 +40,44 @@ const Piece: React.FC<{ delay: number; children: React.ReactNode }> = ({ delay, 
 );
 
 const DesignGraphic = ({ playing, stroke }: { playing: boolean; stroke: string }) => (
-  <svg className={playing ? "pieces--play" : ""} width="84" height="84" viewBox="0 0 84 84" fill="none" aria-hidden>
+  <svg className={playing ? "pieces--play" : ""} width="84" height="84" viewBox="0 0 84 84" fill="none" aria-hidden style={{ color: stroke }}>
     <Piece delay={0}>
-      <circle cx="30" cy="52" r="18" fill={stroke} fillOpacity="0.25" />
+      <circle cx="30" cy="52" r="18" fill="currentColor" fillOpacity="0.25" />
     </Piece>
     <Piece delay={0.09}>
-      <circle cx="46" cy="34" r="24" stroke={stroke} strokeWidth="1.5" />
+      <circle cx="46" cy="34" r="24" stroke="currentColor" strokeWidth="1.5" />
     </Piece>
     <Piece delay={0.16}>
-      <circle cx="66" cy="16" r="8" fill={stroke} fillOpacity="0.45" />
+      <circle cx="66" cy="16" r="8" fill="currentColor" fillOpacity="0.45" />
     </Piece>
     <Piece delay={0.24}>
-      <path d="M20 60 L40 34 L58 52" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M20 60 L40 34 L58 52" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </Piece>
     <Piece delay={0.32}>
-      <rect x="37" y="45" width="42" height="18" rx="4" stroke={stroke} strokeWidth="0.75" strokeDasharray="3 3" />
+      <rect x="37" y="45" width="42" height="18" rx="4" stroke="currentColor" strokeWidth="0.75" strokeDasharray="3 3" />
     </Piece>
   </svg>
 );
 
 const DevelopGraphic = ({ playing, stroke }: { playing: boolean; stroke: string }) => (
-  <svg className={playing ? "pieces--play" : ""} width="84" height="84" viewBox="0 0 84 84" fill="none" aria-hidden>
+  <svg className={playing ? "pieces--play" : ""} width="84" height="84" viewBox="0 0 84 84" fill="none" aria-hidden style={{ color: stroke }}>
     <Piece delay={0.05}>
-      <rect x="2" y="30" width="78" height="50" rx="5" stroke={stroke} strokeWidth="0.75" strokeDasharray="3 3" />
+      <rect x="2" y="30" width="78" height="50" rx="5" stroke="currentColor" strokeWidth="0.75" strokeDasharray="3 3" />
     </Piece>
     <Piece delay={0.08}>
-      <rect x="28" y="2" width="50" height="50" rx="5" stroke={stroke} strokeWidth="0.75" strokeDasharray="3 3" />
+      <rect x="28" y="2" width="50" height="50" rx="5" stroke="currentColor" strokeWidth="0.75" strokeDasharray="3 3" />
     </Piece>
     <Piece delay={0.03}>
-      <circle cx="57" cy="20" r="9" fill={stroke} fillOpacity="0.4" />
+      <circle cx="57" cy="20" r="9" fill="currentColor" fillOpacity="0.4" />
     </Piece>
     <Piece delay={0.22}>
-      <circle cx="57" cy="50" r="9" fill={stroke} fillOpacity="0.4" />
+      <circle cx="57" cy="50" r="9" fill="currentColor" fillOpacity="0.4" />
     </Piece>
     <Piece delay={0.1}>
-      <path d="M57 29 V41" stroke={stroke} strokeWidth="1" strokeLinecap="round" />
+      <path d="M57 29 V41" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
     </Piece>
     <Piece delay={0.15}>
-      <path d="M57 59 V71 M52 66 L57 71 L62 66" stroke={stroke} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M57 59 V71 M52 66 L57 71 L62 66" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
     </Piece>
   </svg>
 );

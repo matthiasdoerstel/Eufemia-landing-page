@@ -89,6 +89,40 @@ export const colorsFor = (theme: ThemeName, brand: BrandName = "DNB"): ColorToke
       };
 };
 
+// CSS-variable theming ------------------------------------------------------
+// To avoid a flash of the wrong theme on hard loads, colours are exposed as CSS
+// custom properties instead of baked-in values. `cssVarColors` is what the app
+// consumes (every token is `var(--eu-*)`), so the static HTML is theme-agnostic;
+// `THEME_VARS_CSS` defines the actual values per theme+brand, selected by the
+// `data-theme` / `data-brand` attributes a pre-paint script sets on <html>.
+
+const TOKEN_KEYS = Object.keys(dark) as (keyof ColorTokens)[];
+const cssVar = (k: keyof ColorTokens) => `--eu-${k}`;
+
+export const cssVarColors: ColorTokens = TOKEN_KEYS.reduce((acc, k) => {
+  acc[k] = `var(${cssVar(k)})`;
+  return acc;
+}, {} as ColorTokens);
+
+const varsBlock = (selector: string, c: ColorTokens) =>
+  `${selector}{${TOKEN_KEYS.map((k) => `${cssVar(k)}:${c[k]};`).join("")}}`;
+
+const COMBOS: Array<[ThemeName, BrandName]> = [
+  ["dark", "DNB"],
+  ["light", "DNB"],
+  ["dark", "Sbanken"],
+  ["light", "Sbanken"],
+];
+
+export const THEME_VARS_CSS = [
+  // Default (no attributes yet) matches the SSR default so nothing is unstyled.
+  varsBlock(":root", colorsFor("dark", "DNB")),
+  ...COMBOS.map(([t, b]) => varsBlock(`html[data-theme="${t}"][data-brand="${b}"]`, colorsFor(t, b))),
+  `html{background:var(--eu-pageBg);color:var(--eu-text);}`,
+  `html[data-theme="light"]{color-scheme:light;}html[data-theme="dark"]{color-scheme:dark;}`,
+].join("");
+
+
 // Static, theme-independent scales -----------------------------------------
 
 export const radius = {

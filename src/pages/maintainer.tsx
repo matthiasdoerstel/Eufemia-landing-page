@@ -28,10 +28,10 @@ interface Tool {
 
 // Color-token glyph: overlapping swatches (tokens resolving across themes).
 const TokensIcon = ({ color }: { color: string }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
-    <circle cx="9" cy="9" r="5.25" stroke={color} strokeWidth="1.6" />
-    <circle cx="15" cy="9" r="5.25" stroke={color} strokeWidth="1.6" />
-    <circle cx="12" cy="14.5" r="5.25" stroke={color} strokeWidth="1.6" />
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0, color }}>
+    <circle cx="9" cy="9" r="5.25" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="15" cy="9" r="5.25" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="12" cy="14.5" r="5.25" stroke="currentColor" strokeWidth="1.6" />
   </svg>
 );
 
@@ -56,9 +56,9 @@ const FigmaLogo = (_props: { color: string }) => (
 
 // Feedback glyph: a speech bubble.
 const FeedbackIcon = ({ color }: { color: string }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
-    <path d="M4 5.5h16v11H9l-4 3.5v-3.5H4v-11Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
-    <path d="M8 9.5h8M8 12.5h5" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0, color }}>
+    <path d="M4 5.5h16v11H9l-4 3.5v-3.5H4v-11Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M8 9.5h8M8 12.5h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
 

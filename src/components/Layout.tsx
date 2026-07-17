@@ -100,7 +100,9 @@ const Layout: React.FC<LayoutProps> = ({
           marginLeft: sidebarOffset,
         }}
       >
-        <Logo height={38} color={colors.text} aria-label="DNB" />
+        <span style={{ display: "inline-flex", color: colors.text }}>
+          <Logo height={38} color="currentColor" aria-label="DNB" />
+        </span>
         <span
           style={{
             fontFamily: font.family,
