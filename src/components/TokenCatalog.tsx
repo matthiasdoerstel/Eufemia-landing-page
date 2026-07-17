@@ -44,7 +44,7 @@ const SwatchCell: React.FC<{
             width: "20px",
             height: "20px",
             background: cell.hex,
-            borderRadius: `${radius.sm}px`,
+            borderRadius: `${radius.sm}`,
             border: `1px solid ${colors.strokeSubtle}`,
             cursor: "pointer",
             padding: 0,
@@ -67,7 +67,7 @@ const SwatchCell: React.FC<{
             background: colors.accent,
             color: colors.pageBg,
             padding: "3px 8px",
-            borderRadius: `${radius.sm}px`,
+            borderRadius: `${radius.sm}`,
             fontSize: "11px",
             fontWeight: 600,
             whiteSpace: "nowrap",
@@ -143,7 +143,7 @@ const UsagePanel: React.FC<{ users: string[] }> = ({ users }) => {
           alignItems: "center",
           gap: "8px",
           padding: "8px 14px",
-          borderRadius: `${radius.md}px`,
+          borderRadius: `${radius.md}`,
           border: `1px dashed ${colors.strokeSubtle}`,
           background: colors.surface,
         }}
@@ -202,7 +202,7 @@ const UsagePanel: React.FC<{ users: string[] }> = ({ users }) => {
               justifyContent: "space-between",
               gap: "8px",
               padding: "9px 12px",
-              borderRadius: `${radius.md}px`,
+              borderRadius: `${radius.md}`,
               border: `1px solid ${colors.strokeSubtle}`,
               background: colors.surface,
               color: colors.text,
@@ -341,7 +341,7 @@ const Section: React.FC<{
       </div>
 
       {/* Table */}
-      <div style={{ overflowX: "auto", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.md}px` }}>
+      <div style={{ overflowX: "auto", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.md}` }}>
         <table style={{ width: "100%", tableLayout: isMaintainer ? "fixed" : undefined, borderCollapse: "collapse", background: colors.surface }}>
           <thead>
             <tr style={{ background: colors.surfaceAlt, borderBottom: `1px solid ${colors.stroke}` }}>
@@ -483,7 +483,7 @@ const AdoptionPanel: React.FC = () => {
         flexDirection: "column",
         gap: "14px",
         padding: "20px 24px",
-        borderRadius: `${radius.lg}px`,
+        borderRadius: `${radius.lg}`,
         border: `1px solid ${colors.strokeSubtle}`,
         background: colors.surface,
       }}
@@ -587,7 +587,7 @@ const TokenCatalog: React.FC<{ maintainer?: boolean }> = ({ maintainer = false }
               gap: "8px",
               padding: "10px 16px",
               border: `1px solid ${searchFocused ? colors.strokeAction : colors.strokeSubtle}`,
-              borderRadius: `${radius.lg}px`,
+              borderRadius: `${radius.lg}`,
               background: colors.surface,
               transition: "border-color 0.15s ease",
             }}

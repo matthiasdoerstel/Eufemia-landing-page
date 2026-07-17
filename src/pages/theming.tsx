@@ -132,7 +132,7 @@ const ThemingPage: React.FC = () => {
         {/* Key points */}
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {points.map((p) => (
-            <div key={p.title} style={{ display: "flex", gap: "16px", padding: "20px", background: colors.surfaceAlt, borderRadius: `${radius.lg}px` }}>
+            <div key={p.title} style={{ display: "flex", gap: "16px", padding: "20px", background: colors.surfaceAlt, borderRadius: `${radius.lg}` }}>
               <div style={{ flexShrink: 0, marginTop: "3px" }}><CheckIcon color={colors.accent} /></div>
               <div>
                 <h3 style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, fontWeight: 500, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>{p.title}</h3>
@@ -145,7 +145,7 @@ const ThemingPage: React.FC = () => {
         {divider}
 
         {/* Callout: expected and fine */}
-        <div style={{ padding: "28px 32px", background: colors.selectedSubtle, borderRadius: `${radius.xl}px`, display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={{ padding: "28px 32px", background: colors.selectedSubtle, borderRadius: `${radius.xl}`, display: "flex", flexDirection: "column", gap: "10px" }}>
           <h2 style={{ ...h2, color: colors.textSelected }}>Slight color differences are expected</h2>
           <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textSelected, maxWidth: "720px" }}>
             If a color on screen doesn't exactly match its Brand Center value, that's fine. Eufemia translates our brand
@@ -166,7 +166,7 @@ const ThemingPage: React.FC = () => {
           <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
             <Link
               to="/docs/web/design-tokens"
-              style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 20px", background: colors.surface, borderRadius: `${radius.xl}px`, border: `1px solid ${colors.accent}`, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 20px", background: colors.surface, borderRadius: `${radius.xl}`, border: `1px solid ${colors.accent}`, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}
             >
               Browse design tokens
               <ArrowIcon />
@@ -175,7 +175,7 @@ const ThemingPage: React.FC = () => {
               href="https://eufemia.dnb.no/uilib/usage/customisation/theming/"
               target="_blank"
               rel="noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 20px", background: "transparent", borderRadius: `${radius.xl}px`, border: `1px solid ${colors.strokeSubtle}`, color: colors.text, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 20px", background: "transparent", borderRadius: `${radius.xl}`, border: `1px solid ${colors.strokeSubtle}`, color: colors.text, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}
             >
               Theming docs
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

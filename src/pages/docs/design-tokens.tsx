@@ -62,7 +62,7 @@ const DesignTokensPage: React.FC<PageProps> = ({ pageContext }) => {
           {designTokens && designTokens.length > 0 ? (
             <TokensViewer tokens={designTokens} />
           ) : (
-            <div style={{ padding: '48px 40px', background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}px`, textAlign: 'center', color: colors.textMuted }}>
+            <div style={{ padding: '48px 40px', background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}`, textAlign: 'center', color: colors.textMuted }}>
               <p style={{ margin: 0 }}>No design tokens available yet.</p>
               <p style={{ margin: '8px 0 0 0', fontSize: `${font.size.small}px` }}>Run the import script to populate design tokens from your Figma file.</p>
             </div>

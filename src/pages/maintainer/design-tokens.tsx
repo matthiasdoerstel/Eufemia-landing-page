@@ -53,7 +53,7 @@ const MaintainerDesignTokensPage: React.FC = () => {
               gap: "10px",
               alignSelf: "flex-start",
               padding: "10px 16px",
-              borderRadius: `${radius.md}px`,
+              borderRadius: `${radius.md}`,
               border: `1px solid ${colors.stroke}`,
               background: colors.surface,
               color: colors.text,

@@ -70,7 +70,7 @@ const DesignPage: React.FC = () => {
           </div>
 
           {/* Figma setup */}
-          <div style={{ padding: "32px", background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.xl}px`, display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div style={{ padding: "32px", background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.xl}`, display: "flex", flexDirection: "column", gap: "20px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <FigmaLogo />
               <h2 style={h2}>Figma setup</h2>
@@ -102,7 +102,7 @@ const DesignPage: React.FC = () => {
                   rel="noopener noreferrer"
                   onMouseEnter={() => setHovered(library.name)}
                   onMouseLeave={() => setHovered(null)}
-                  style={{ display: "block", padding: "20px", background: colors.surface, border: `1px solid ${hovered === library.name ? colors.accent : colors.strokeSubtle}`, borderRadius: `${radius.lg}px`, textDecoration: "none", transition: "border-color 0.15s ease" }}
+                  style={{ display: "block", padding: "20px", background: colors.surface, border: `1px solid ${hovered === library.name ? colors.accent : colors.strokeSubtle}`, borderRadius: `${radius.lg}`, textDecoration: "none", transition: "border-color 0.15s ease" }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
                     <h3 style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, fontWeight: 500, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>{library.name}</h3>
@@ -125,7 +125,7 @@ const DesignPage: React.FC = () => {
             <h2 style={h2}>Best practices</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {bestPractices.map((practice) => (
-                <div key={practice.title} style={{ display: "flex", gap: "16px", padding: "20px", background: colors.surfaceAlt, borderRadius: `${radius.lg}px` }}>
+                <div key={practice.title} style={{ display: "flex", gap: "16px", padding: "20px", background: colors.surfaceAlt, borderRadius: `${radius.lg}` }}>
                   <div style={{ flexShrink: 0, marginTop: "3px" }}><CheckIcon color={colors.accent} /></div>
                   <div>
                     <h3 style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, fontWeight: 500, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>{practice.title}</h3>
@@ -139,14 +139,14 @@ const DesignPage: React.FC = () => {
           {divider}
 
           {/* Next steps CTA */}
-          <div style={{ padding: "32px", background: colors.selectedSubtle, borderRadius: `${radius.xl}px`, display: "flex", flexDirection: "column", gap: "12px", alignItems: "flex-start" }}>
+          <div style={{ padding: "32px", background: colors.selectedSubtle, borderRadius: `${radius.xl}`, display: "flex", flexDirection: "column", gap: "12px", alignItems: "flex-start" }}>
             <h3 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.textSelected }}>
               Ready to explore components?
             </h3>
             <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textSelected }}>
               Now that you're set up, explore our component library and start designing.
             </p>
-            <Link to="/docs/web" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 24px", background: colors.surface, borderRadius: `${radius.xl}px`, border: `1px solid ${colors.accent}`, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>
+            <Link to="/docs/web" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "8px 24px", background: colors.surface, borderRadius: `${radius.xl}`, border: `1px solid ${colors.accent}`, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>
               Browse components
               <ArrowIcon />
             </Link>

@@ -4,7 +4,7 @@
 // uses the on-light equivalents so the theme toggle keeps working.
 
 export type ThemeName = "light" | "dark";
-export type BrandName = "DNB" | "Sbanken";
+export type BrandName = "DNB" | "Sbanken" | "Carnegie";
 
 export interface ColorTokens {
   // Surfaces
@@ -64,7 +64,30 @@ const light: ColorTokens = {
   actionAlt: "#a5a5a5",
 };
 
+// Carnegie brand — light-only. Monochrome black action color, warm neutral
+// strokes/surfaces. Values from Eufemia's Carnegie token set.
+const carnegie: ColorTokens = {
+  pageBg: "#ffffff",
+  surface: "#ffffff",
+  surfaceAlt: "#f2f2f5",
+  text: "#000000",
+  textMuted: "#737373",
+  accent: "#000000",
+  stroke: "#dbcdc5",
+  strokeSubtle: "#f6eae4",
+  strokeAction: "#000000",
+  strokeActionAlt: "#000000",
+  selectedSubtle: "#f6eae4",
+  selected: "#000000",
+  textSelected: "#333333",
+  buttonStrokeSelected: "#897971",
+  actionAlt: "#a5a5a5",
+};
+
 export const colorsFor = (theme: ThemeName, brand: BrandName = "DNB"): ColorTokens => {
+  // Carnegie is a light-only brand (Eufemia): monochrome black action color with
+  // warm neutral strokes. Same palette regardless of the light/dark toggle.
+  if (brand === "Carnegie") return carnegie;
   const base = theme === "dark" ? dark : light;
   if (brand !== "Sbanken") return base;
   // Sbanken brand — purple accent overrides on the shared neutral surfaces.
@@ -112,12 +135,28 @@ const COMBOS: Array<[ThemeName, BrandName]> = [
   ["light", "DNB"],
   ["dark", "Sbanken"],
   ["light", "Sbanken"],
+  // Carnegie is light-only — both toggle states resolve to the same palette.
+  ["dark", "Carnegie"],
+  ["light", "Carnegie"],
 ];
+
+// Corner radius differs by brand (Carnegie is much sharper). Values in px.
+const RADIUS_BY_BRAND: Record<BrandName, { sm: number; md: number; lg: number; xl: number }> = {
+  DNB: { sm: 4, md: 8, lg: 16, xl: 24 },
+  Sbanken: { sm: 4, md: 8, lg: 16, xl: 24 },
+  Carnegie: { sm: 2, md: 2, lg: 4, xl: 24 },
+};
+
+const radiusBlock = (selector: string, r: { sm: number; md: number; lg: number; xl: number }) =>
+  `${selector}{--eu-radius-sm:${r.sm}px;--eu-radius-md:${r.md}px;--eu-radius-lg:${r.lg}px;--eu-radius-xl:${r.xl}px;}`;
 
 export const THEME_VARS_CSS = [
   // Default (no attributes yet) matches the SSR default so nothing is unstyled.
   varsBlock(":root", colorsFor("dark", "DNB")),
   ...COMBOS.map(([t, b]) => varsBlock(`html[data-theme="${t}"][data-brand="${b}"]`, colorsFor(t, b))),
+  // Radius vars — brand-scoped (theme-independent). Default + DNB/Sbanken share.
+  radiusBlock(':root, html[data-brand="DNB"], html[data-brand="Sbanken"]', RADIUS_BY_BRAND.DNB),
+  radiusBlock('html[data-brand="Carnegie"]', RADIUS_BY_BRAND.Carnegie),
   `html{background:var(--eu-pageBg);color:var(--eu-text);}`,
   `html[data-theme="light"]{color-scheme:light;}html[data-theme="dark"]{color-scheme:dark;}`,
 ].join("");
@@ -125,11 +164,13 @@ export const THEME_VARS_CSS = [
 
 // Static, theme-independent scales -----------------------------------------
 
+// Corner radius is brand-aware via CSS variables (see RADIUS_BY_BRAND +
+// THEME_VARS_CSS). Consume as `borderRadius: radius.md` (already a var()).
 export const radius = {
-  sm: 4,
-  md: 8,
-  lg: 16,
-  xl: 24,
+  sm: "var(--eu-radius-sm)",
+  md: "var(--eu-radius-md)",
+  lg: "var(--eu-radius-lg)",
+  xl: "var(--eu-radius-xl)",
 } as const;
 
 export const font = {

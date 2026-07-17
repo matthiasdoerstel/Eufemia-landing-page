@@ -38,7 +38,7 @@ const timeAgo = (ms: number) => {
 
 const rowBtn = (colors: { text: string; strokeSubtle: string }): React.CSSProperties => ({
   padding: "4px 10px",
-  borderRadius: `${radius.md}px`,
+  borderRadius: `${radius.md}`,
   border: `1px solid ${colors.strokeSubtle}`,
   background: "transparent",
   color: colors.text,
@@ -100,7 +100,7 @@ const MaintainerFeedbackPage: React.FC = () => {
               gap: "10px",
               alignSelf: "flex-start",
               padding: "10px 16px",
-              borderRadius: `${radius.md}px`,
+              borderRadius: `${radius.md}`,
               border: `1px solid ${colors.stroke}`,
               background: colors.surface,
               color: colors.text,
@@ -175,7 +175,7 @@ const MaintainerFeedbackPage: React.FC = () => {
                 onClick={onMarkAll}
                 style={{
                   padding: "8px 14px",
-                  borderRadius: `${radius.md}px`,
+                  borderRadius: `${radius.md}`,
                   border: `1px solid ${colors.strokeSubtle}`,
                   background: "transparent",
                   color: colors.text,
@@ -227,7 +227,7 @@ const MaintainerFeedbackPage: React.FC = () => {
               flexDirection: "column",
               gap: "8px",
               padding: "48px 24px",
-              borderRadius: `${radius.lg}px`,
+              borderRadius: `${radius.lg}`,
               border: `1px dashed ${colors.strokeSubtle}`,
               background: colors.surface,
               alignItems: "center",
@@ -253,7 +253,7 @@ const MaintainerFeedbackPage: React.FC = () => {
                   flexDirection: "column",
                   gap: "10px",
                   padding: "20px",
-                  borderRadius: `${radius.lg}px`,
+                  borderRadius: `${radius.lg}`,
                   border: `1px solid ${f.read ? colors.strokeSubtle : colors.strokeAction}`,
                   background: colors.surface,
                 }}

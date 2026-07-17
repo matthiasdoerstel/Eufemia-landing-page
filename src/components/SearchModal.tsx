@@ -232,7 +232,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
           boxSizing: "border-box",
           background: colors.surface,
           border: `1px solid ${colors.strokeSubtle}`,
-          borderRadius: `${radius.xl}px`,
+          borderRadius: `${radius.xl}`,
           boxShadow: "0px 8px 16px 0px rgba(51,51,51,0.24)",
           zIndex: 1001,
           overflowY: "auto",
@@ -251,7 +251,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
             padding: "12px 24px",
             background: subtle,
             border: `1px solid ${colors.stroke}`,
-            borderRadius: `${radius.lg}px`,
+            borderRadius: `${radius.lg}`,
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "15px", flex: 1, minWidth: 0 }}>
@@ -290,7 +290,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
                 padding: "8px 16px",
                 background: colors.surface,
                 border: `1px solid ${colors.strokeSubtle}`,
-                borderRadius: `${radius.md}px`,
+                borderRadius: `${radius.md}`,
                 cursor: "pointer",
                 fontFamily: font.family,
                 fontSize: `${font.size.body}px`,
@@ -313,7 +313,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
                   minWidth: "180px",
                   background: colors.surface,
                   border: `1px solid ${colors.strokeSubtle}`,
-                  borderRadius: `${radius.md}px`,
+                  borderRadius: `${radius.md}`,
                   boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.24)",
                   padding: "6px",
                   zIndex: 2,
@@ -331,7 +331,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
                       padding: "8px 10px",
                       background: "transparent",
                       border: "none",
-                      borderRadius: `${radius.sm}px`,
+                      borderRadius: `${radius.sm}`,
                       cursor: "pointer",
                       fontFamily: font.family,
                       fontSize: `${font.size.body}px`,
@@ -343,7 +343,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
                       style={{
                         width: "16px",
                         height: "16px",
-                        borderRadius: `${radius.sm}px`,
+                        borderRadius: `${radius.sm}`,
                         border: `1.5px solid ${platforms[p] ? colors.accent : colors.stroke}`,
                         background: platforms[p] ? colors.accent : "transparent",
                         display: "flex",
@@ -394,7 +394,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
                         gap: "10px",
                         padding: "4px 8px 4px 16px",
                         marginLeft: "-8px",
-                        borderRadius: `${radius.sm}px`,
+                        borderRadius: `${radius.sm}`,
                         cursor: "pointer",
                         background: isSelected ? subtle : "transparent",
                       }}
@@ -415,7 +415,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, initialCompa
                         <span
                           style={{
                             padding: "4px 8px",
-                            borderRadius: `${radius.md}px`,
+                            borderRadius: `${radius.md}`,
                             border: `1px solid ${colors.stroke}`,
                             background: badgeColors[platform].bg,
                             color: badgeColors[platform].fg,

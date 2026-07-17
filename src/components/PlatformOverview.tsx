@@ -71,7 +71,7 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, title, in
         minHeight: "90px",
         boxSizing: "border-box",
         padding: "16px 24px",
-        borderRadius: `${radius.xl}px`,
+        borderRadius: `${radius.xl}`,
         border: `1px solid ${colors.strokeSubtle}`,
         background: hover === key ? colors.surfaceAlt : colors.surface,
         textDecoration: "none",
@@ -138,7 +138,7 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, title, in
                       style={{
                         height: "160px",
                         width: "240px",
-                        borderRadius: `${radius.xl}px`,
+                        borderRadius: `${radius.xl}`,
                         background: colors.surfaceAlt,
                         transform: hover === c.id ? "translateY(-2px)" : "none",
                         boxShadow: hover === c.id ? "0 8px 16px rgba(0,0,0,0.12)" : "none",

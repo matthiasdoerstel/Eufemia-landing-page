@@ -35,7 +35,7 @@ const IconTile: React.FC<{ icon: IconEntry; onCopy: (name: string) => void; copi
         alignItems: "center",
         gap: "10px",
         padding: "18px 10px 12px",
-        borderRadius: `${radius.md}px`,
+        borderRadius: `${radius.md}`,
         border: `1px solid ${hover ? colors.strokeAction : colors.strokeSubtle}`,
         background: hover ? colors.surfaceAlt : colors.surface,
         color: colors.text,
@@ -126,7 +126,7 @@ const IconsPage: React.FC = () => {
             alignItems: "center",
             gap: "10px",
             padding: "10px 14px",
-            borderRadius: `${radius.lg}px`,
+            borderRadius: `${radius.lg}`,
             border: `1px solid ${colors.strokeSubtle}`,
             background: colors.surface,
             color: colors.textMuted,
@@ -172,7 +172,7 @@ const IconsPage: React.FC = () => {
           <div
             style={{
               padding: "48px 24px",
-              borderRadius: `${radius.lg}px`,
+              borderRadius: `${radius.lg}`,
               border: `1px dashed ${colors.strokeSubtle}`,
               background: colors.surface,
               textAlign: "center",

@@ -193,7 +193,7 @@ const PortalHome: React.FC = () => {
                     minHeight: "162px",
                     boxSizing: "border-box",
                     padding: "16px 24px",
-                    borderRadius: `${radius.xl}px`,
+                    borderRadius: `${radius.xl}`,
                     background: bg,
                     textDecoration: "none",
                     transform: hoverCard === title ? "translateY(-2px)" : "none",
@@ -269,7 +269,7 @@ const PortalHome: React.FC = () => {
               ))}
             </div>
             <a href="https://eufemia.dnb.no/uilib/getting-started/versions/" target="_blank" rel="noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "fit-content", padding: "8px 24px", borderRadius: `${radius.xl}px`, border: `1px solid ${colors.accent}`, background: colors.surface, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>
+              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "fit-content", padding: "8px 24px", borderRadius: `${radius.xl}`, border: `1px solid ${colors.accent}`, background: colors.surface, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>
               See all Eufemia updates
             </a>
           </div>

@@ -140,7 +140,7 @@ const FeedbackButton: React.FC = () => {
               flexDirection: "column",
               gap: "16px",
               padding: "24px",
-              borderRadius: `${radius.xl}px`,
+              borderRadius: `${radius.xl}`,
               background: colors.surface,
               border: `1px solid ${colors.strokeSubtle}`,
               boxShadow: shadow.standard,
@@ -212,7 +212,7 @@ const FeedbackButton: React.FC = () => {
                     style={{
                       resize: "vertical",
                       padding: "10px 12px",
-                      borderRadius: `${radius.md}px`,
+                      borderRadius: `${radius.md}`,
                       border: `1px solid ${colors.strokeSubtle}`,
                       background: colors.pageBg,
                       color: colors.text,
@@ -233,7 +233,7 @@ const FeedbackButton: React.FC = () => {
                     placeholder="you@dnb.no"
                     style={{
                       padding: "10px 12px",
-                      borderRadius: `${radius.md}px`,
+                      borderRadius: `${radius.md}`,
                       border: `1px solid ${colors.strokeSubtle}`,
                       background: colors.pageBg,
                       color: colors.text,
@@ -260,7 +260,7 @@ function primaryBtn(colors: { accent: string; pageBg: string }): React.CSSProper
   return {
     alignSelf: "flex-start",
     padding: "10px 18px",
-    borderRadius: `${radius.md}px`,
+    borderRadius: `${radius.md}`,
     border: "none",
     background: colors.accent,
     color: colors.pageBg,

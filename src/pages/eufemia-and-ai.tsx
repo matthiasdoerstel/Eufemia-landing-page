@@ -124,7 +124,7 @@ const EufemiaAndAiPage: React.FC = () => {
         padding: "20px 24px",
         background: editor.bg,
         border: `1px solid ${colors.strokeSubtle}`,
-        borderRadius: `${radius.md}px`,
+        borderRadius: `${radius.md}`,
         overflowX: "auto",
       }}
     >

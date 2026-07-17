@@ -103,14 +103,14 @@ const ChangelogPage: React.FC = () => {
                 padding: "28px",
                 background: colors.surface,
                 border: `1px solid ${colors.strokeSubtle}`,
-                borderRadius: `${radius.xl}px`,
+                borderRadius: `${radius.xl}`,
               }}
             >
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
                 <h2 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
                   v{release.version}
                 </h2>
-                <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted, padding: "4px 12px", background: colors.surfaceAlt, borderRadius: `${radius.md}px` }}>
+                <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted, padding: "4px 12px", background: colors.surfaceAlt, borderRadius: `${radius.md}` }}>
                   {release.date}
                 </span>
               </div>
@@ -118,8 +118,8 @@ const ChangelogPage: React.FC = () => {
                 {release.changes.map((change, index) => {
                   const meta = typeMeta[change.type] || { color: colors.textMuted, label: change.type };
                   return (
-                    <div key={index} style={{ display: "flex", alignItems: "flex-start", gap: "12px", padding: "12px 16px", background: colors.surfaceAlt, borderRadius: `${radius.md}px` }}>
-                      <span style={{ flexShrink: 0, padding: "2px 8px", background: colors.surface, color: meta.color, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.sm}px`, fontFamily: font.family, fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                    <div key={index} style={{ display: "flex", alignItems: "flex-start", gap: "12px", padding: "12px 16px", background: colors.surfaceAlt, borderRadius: `${radius.md}` }}>
+                      <span style={{ flexShrink: 0, padding: "2px 8px", background: colors.surface, color: meta.color, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.sm}`, fontFamily: font.family, fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.4px" }}>
                         {meta.label}
                       </span>
                       <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
@@ -134,7 +134,7 @@ const ChangelogPage: React.FC = () => {
         </div>
 
         {/* Footer hint */}
-        <div style={{ marginTop: "48px", padding: "24px", background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}px`, textAlign: "center" }}>
+        <div style={{ marginTop: "48px", padding: "24px", background: colors.surface, border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}`, textAlign: "center" }}>
           <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
             For the complete changelog history, check the{" "}
             <a href="https://github.com/dnbexperience/eufemia/releases" target="_blank" rel="noopener noreferrer" style={{ color: colors.accent, textDecoration: "underline" }}>

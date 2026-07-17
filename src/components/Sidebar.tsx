@@ -281,7 +281,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 onMouseLeave={() => setHovered(null)}
                 style={{
                   padding: "8px 20px",
-                  borderRadius: `${radius.md}px`,
+                  borderRadius: `${radius.md}`,
                   border: `1px solid ${active ? colors.accent : colors.strokeSubtle}`,
                   background: active
                     ? colors.selectedSubtle

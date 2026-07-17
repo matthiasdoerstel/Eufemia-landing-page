@@ -65,7 +65,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
         alignItems: "center",
         gap: checkbox ? "8px" : 0,
         padding: checkbox ? "8px 24px 8px 16px" : "8px 24px",
-        borderRadius: `${radius.md}px`,
+        borderRadius: `${radius.md}`,
         border: selected
           ? `2px solid ${colors.buttonStrokeSelected}`
           : `1px solid ${colors.stroke}`,
@@ -86,7 +86,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
             justifyContent: "center",
             width: "16px",
             height: "16px",
-            borderRadius: `${radius.sm}px`,
+            borderRadius: `${radius.sm}`,
             background: selected ? colors.selected : colors.surface,
             border: selected ? "none" : `1px solid ${colors.strokeActionAlt}`,
           }}
@@ -108,7 +108,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
         width: "40px",
         height: "24px",
         flexShrink: 0,
-        borderRadius: `${radius.xl}px`,
+        borderRadius: `${radius.xl}`,
         border: on ? "none" : `1px solid ${colors.strokeActionAlt}`,
         background: on ? colors.selected : colors.surface,
         cursor: "pointer",
@@ -124,7 +124,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
           right: on ? "3px" : "auto",
           width: on ? "18px" : "12px",
           height: on ? "18px" : "12px",
-          borderRadius: `${radius.xl}px`,
+          borderRadius: `${radius.xl}`,
           background: on ? colors.selectedSubtle : colors.actionAlt,
           display: "flex",
           alignItems: "center",
@@ -214,7 +214,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
           flexDirection: "column",
           gap: "32px",
           padding: "40px",
-          borderRadius: `${radius.xl}px`,
+          borderRadius: `${radius.xl}`,
           background: colors.surface,
           border: `1px solid ${colors.strokeSubtle}`,
           boxShadow: shadow.standard,
@@ -248,14 +248,18 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
         <div style={section}>
           {labelBlock("Brand", helpText("theming", "https://eufemia.dnb.no/uilib/usage/customisation/theming/"))}
           <div style={chipRow}>
-            {brands.map((b) => (
-              <ToggleButton
-                key={b}
-                label={b}
-                selected={brand === "Sbanken" ? b.startsWith("Sbanken") : b === "DNB"}
-                onClick={() => setBrand(b.startsWith("Sbanken") ? "Sbanken" : "DNB")}
-              />
-            ))}
+            {brands.map((b) => {
+              const brandOf = (label: string): typeof brand =>
+                label.startsWith("Sbanken") ? "Sbanken" : label.includes("Carnegie") ? "Carnegie" : "DNB";
+              return (
+                <ToggleButton
+                  key={b}
+                  label={b}
+                  selected={brand === brandOf(b) && (brand !== "DNB" || b === "DNB")}
+                  onClick={() => setBrand(brandOf(b))}
+                />
+              );
+            })}
           </div>
         </div>
 
@@ -366,7 +370,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
                 gap: "10px",
                 alignSelf: "flex-start",
                 padding: "10px 16px",
-                borderRadius: `${radius.md}px`,
+                borderRadius: `${radius.md}`,
                 border: `1px solid ${colors.stroke}`,
                 background: colors.surface,
                 color: colors.text,
@@ -398,7 +402,7 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
                   onClick={() => signOut()}
                   style={{
                     padding: "8px 16px",
-                    borderRadius: `${radius.md}px`,
+                    borderRadius: `${radius.md}`,
                     border: `1px solid ${colors.stroke}`,
                     background: "transparent",
                     color: colors.text,
