@@ -32,10 +32,10 @@ const HERO_SVG = `<svg viewBox="0 0 1055 584" fill="none" xmlns="http://www.w3.o
 <g clip-path="url(#clip2_5369_3153)">
 <rect width="1155.56" height="650" transform="translate(-29.9999 -49.9999)" fill="url(#paint_hero_bg)"/>
 <g filter="url(#filter9_f_5369_3153)">
-<ellipse cx="230" cy="470" rx="600" ry="278.206" fill="#041318"/>
+<ellipse cx="230" cy="470" rx="600" ry="278.206" fill="#390015"/>
 </g>
 <g filter="url(#filter10_f_5369_3153)">
-<ellipse cx="840" cy="430" rx="600" ry="220" fill="#390015"/>
+<ellipse cx="840" cy="430" rx="600" ry="220" fill="#041318"/>
 </g>
 <g filter="url(#filter11_f_5369_3153)" style="mix-blend-mode:overlay">
 <path d="M1223.36 262.963C1223.36 337.253 923.853 397.477 554.398 397.477C184.942 397.477 -114.56 337.253 -114.56 262.963C-114.56 188.673 184.942 128.449 554.398 128.449C923.853 128.449 1223.36 188.673 1223.36 262.963Z" fill="white"/>
@@ -93,8 +93,8 @@ const HERO_SVG = `<svg viewBox="0 0 1055 584" fill="none" xmlns="http://www.w3.o
 <stop offset="1" stop-color="#390014"/>
 </linearGradient>
 <linearGradient id="paint_hero_bg" x1="0" y1="0" x2="1" y2="0">
-<stop stop-color="#041318"/>
-<stop offset="1" stop-color="#390015"/>
+<stop stop-color="#390015"/>
+<stop offset="1" stop-color="#041318"/>
 </linearGradient>
 <clipPath id="clip0_5369_3153">
 <rect width="1055" height="584" fill="white" transform="translate(1055 584) rotate(180)"/>
