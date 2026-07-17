@@ -46,15 +46,12 @@ const ThemingHeroGraphic: React.FC = () => {
           from { opacity: 0; transform: translateY(20px) scale(.94) rotate(0deg); }
           to   { opacity: 1; transform: translateY(0) scale(1) rotate(var(--rot)); }
         }
-        .thm-float { transform-box: fill-box; transform-origin: center;
-          animation: thm-float 6s ease-in-out infinite; animation-delay: 1s; }
-        @keyframes thm-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .thm-badge { transform-box: fill-box; transform-origin: center; opacity: 0;
           animation: thm-pop .4s cubic-bezier(.2,.9,.3,1.4) forwards; animation-delay: .95s; }
         @keyframes thm-pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
         @media (prefers-reduced-motion: reduce) {
           .thm-card { opacity: 1; animation: none; transform: rotate(var(--rot)); }
-          .thm-float, .thm-badge { animation: none; opacity: 1; }
+          .thm-badge { animation: none; opacity: 1; }
         }
       `}</style>
 
