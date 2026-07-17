@@ -94,7 +94,7 @@ const moreCols: string[][] = [
 const moreHref: Record<string, string> = {
   Images: "https://eufemia.dnb.no/uilib/usage/best-practices/for-designers/",
   Animations: "https://eufemia.dnb.no/uilib/usage/animation/",
-  Icons: "https://eufemia.dnb.no/icons/",
+  Icons: "/icons/",
   Theming: "https://eufemia.dnb.no/uilib/usage/customisation/theming/",
   Grid: "https://eufemia.dnb.no/uilib/usage/layout/grid/",
   Tokens: "https://eufemia.dnb.no/uilib/usage/customisation/design-tokens/",
@@ -224,13 +224,17 @@ const PortalHome: React.FC = () => {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "8px", rowGap: "8px" }}>
               {moreCols.map((col, ci) => (
                 <div key={ci} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  {col.map((label) => (
-                    <a key={label} href={moreHref[label]} target="_blank" rel="noreferrer"
-                      onMouseEnter={() => setMoreHover(label)} onMouseLeave={() => setMoreHover(null)}
-                      style={{ display: "inline-flex", alignItems: "center", padding: "8px 0", fontFamily: font.family, fontWeight: 500, fontSize: "34px", lineHeight: "40px", color: colors.accent, textDecoration: "underline", textDecorationColor: moreHover === label ? colors.accent : "transparent", textUnderlineOffset: "4px", width: "fit-content", opacity: moreHover === label ? 1 : 0.9, transform: moreHover === label ? "translateX(6px)" : "translateX(0)", transition: "transform 0.15s ease, opacity 0.15s ease, text-decoration-color 0.15s ease" }}>
-                      {label}
-                    </a>
-                  ))}
+                  {col.map((label) => {
+                    const to = moreHref[label];
+                    const internal = to.startsWith("/");
+                    const linkStyle: React.CSSProperties = { display: "inline-flex", alignItems: "center", padding: "8px 0", fontFamily: font.family, fontWeight: 500, fontSize: "34px", lineHeight: "40px", color: colors.accent, textDecoration: "underline", textDecorationColor: moreHover === label ? colors.accent : "transparent", textUnderlineOffset: "4px", width: "fit-content", opacity: moreHover === label ? 1 : 0.9, transform: moreHover === label ? "translateX(6px)" : "translateX(0)", transition: "transform 0.15s ease, opacity 0.15s ease, text-decoration-color 0.15s ease" };
+                    const handlers = { onMouseEnter: () => setMoreHover(label), onMouseLeave: () => setMoreHover(null) };
+                    return internal ? (
+                      <Link key={label} to={to} {...handlers} style={linkStyle}>{label}</Link>
+                    ) : (
+                      <a key={label} href={to} target="_blank" rel="noreferrer" {...handlers} style={linkStyle}>{label}</a>
+                    );
+                  })}
                 </div>
               ))}
             </div>
