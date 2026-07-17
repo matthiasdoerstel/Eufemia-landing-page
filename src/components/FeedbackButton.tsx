@@ -12,24 +12,40 @@ const FeedbackButton: React.FC = () => {
   const [category, setCategory] = useState<FeedbackCategory>("idea");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
-  // When the footer scrolls into view, lift the button so it rests above it
-  // instead of overlapping the footer content.
+  // Keep the button clear of the footer: when the footer scrolls into view,
+  // lift the button so it rests above it instead of overlapping. Recompute on
+  // scroll/resize AND on any layout change (ResizeObserver) so it stays correct
+  // after client-side navigation, async content, or font/image reflow.
   const [lift, setLift] = useState(0);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    let raf = 0;
     const update = () => {
       const footer = document.querySelector("footer");
       if (!footer) return setLift(0);
       const overlap = window.innerHeight - footer.getBoundingClientRect().top;
-      setLift(overlap > 0 ? overlap + 16 : 0);
+      setLift(overlap > 0 ? Math.ceil(overlap) + 16 : 0);
     };
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    // Run now, and again after layout settles.
     update();
+    schedule();
+
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+    // Catch layout changes that don't fire scroll/resize (navigation, reflow).
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
+    ro?.observe(document.body);
+
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      ro?.disconnect();
     };
   }, []);
 
@@ -73,7 +89,7 @@ const FeedbackButton: React.FC = () => {
         style={{
           position: "fixed",
           right: "24px",
-          bottom: `${24 + lift}px`,
+          bottom: `calc(24px + env(safe-area-inset-bottom, 0px) + ${lift}px)`,
           zIndex: 300,
           display: "inline-flex",
           alignItems: "center",
@@ -105,7 +121,7 @@ const FeedbackButton: React.FC = () => {
             style={{
               position: "fixed",
               right: "24px",
-              bottom: `${80 + lift}px`,
+              bottom: `calc(80px + env(safe-area-inset-bottom, 0px) + ${lift}px)`,
               zIndex: 301,
               width: "360px",
               maxWidth: "calc(100vw - 48px)",
