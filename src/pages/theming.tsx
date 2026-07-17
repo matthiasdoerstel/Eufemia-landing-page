@@ -17,31 +17,74 @@ const CheckIcon = ({ color }: { color: string }) => (
   </svg>
 );
 
-// Theme-aware hero graphic: a brand color "translated" into an accessible
-// digital pairing. Uses the active theme tokens, so it adapts to light/dark and
-// to the brand accent — no static image to keep in sync.
+// Theme-aware hero graphic: a small fan of theme "cards" (the brands/themes
+// Eufemia manages), with the front card showing the brand accent translated into
+// tokens and an accessible "Aa" sample. Uses live theme tokens, so it adapts to
+// light/dark and the brand accent. Animates in with a staggered fan-out and a
+// gentle float; respects prefers-reduced-motion.
 const ThemingHeroGraphic: React.FC = () => {
   const { colors } = useTheme();
+  const [playKey, setPlayKey] = React.useState(0);
   return (
-    <svg width="100%" viewBox="0 0 360 240" fill="none" role="img" aria-label="Brand color translated into an accessible digital palette" style={{ maxWidth: "360px" }}>
-      {/* Brand color source */}
-      <circle cx="96" cy="96" r="60" fill={colors.accent} />
-      {/* The digitally-adjusted variant, slightly offset and lighter */}
-      <circle cx="140" cy="120" r="60" fill={colors.accent} opacity="0.4" />
+    <svg
+      width="100%"
+      viewBox="0 0 360 260"
+      fill="none"
+      role="img"
+      aria-label="Themes and brands translated into an accessible palette"
+      onClick={() => setPlayKey((k) => k + 1)}
+      style={{ maxWidth: "360px", cursor: "pointer" }}
+    >
+      <title>Replay animation</title>
+      <style>{`
+        .thm-card { transform-box: fill-box; transform-origin: center; opacity: 0;
+          animation: thm-in 0.65s cubic-bezier(.2,.7,.2,1) forwards; }
+        .thm-c1 { --rot: -10deg; animation-delay: .05s; }
+        .thm-c2 { --rot: -4deg;  animation-delay: .16s; }
+        .thm-c3 { --rot: 4deg;   animation-delay: .28s; }
+        @keyframes thm-in {
+          from { opacity: 0; transform: translateY(20px) scale(.94) rotate(0deg); }
+          to   { opacity: 1; transform: translateY(0) scale(1) rotate(var(--rot)); }
+        }
+        .thm-float { transform-box: fill-box; transform-origin: center;
+          animation: thm-float 6s ease-in-out infinite; animation-delay: 1s; }
+        @keyframes thm-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .thm-badge { transform-box: fill-box; transform-origin: center; opacity: 0;
+          animation: thm-pop .4s cubic-bezier(.2,.9,.3,1.4) forwards; animation-delay: .95s; }
+        @keyframes thm-pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+        @media (prefers-reduced-motion: reduce) {
+          .thm-card { opacity: 1; animation: none; transform: rotate(var(--rot)); }
+          .thm-float, .thm-badge { animation: none; opacity: 1; }
+        }
+      `}</style>
 
-      {/* Dotted translation path */}
-      <path d="M188 132 C 226 150, 244 150, 268 150" stroke={colors.textMuted} strokeWidth="1.5" strokeDasharray="2 6" strokeLinecap="round" />
+      <g className="thm-float" key={playKey}>
+        {/* Back cards — the other brands/themes in the stack */}
+        <g className="thm-card thm-c1">
+          <rect x="108" y="46" width="150" height="168" rx="16" fill={colors.surfaceAlt} stroke={colors.strokeSubtle} strokeWidth="1.5" />
+        </g>
+        <g className="thm-card thm-c2">
+          <rect x="108" y="46" width="150" height="168" rx="16" fill={colors.selectedSubtle} />
+        </g>
 
-      {/* Digital palette chips */}
-      <rect x="256" y="40" width="88" height="26" rx="8" fill={colors.selectedSubtle} />
-      <rect x="256" y="74" width="88" height="26" rx="8" fill="none" stroke={colors.strokeSubtle} strokeWidth="1.5" />
-      <rect x="256" y="108" width="88" height="26" rx="8" fill="none" stroke={colors.strokeSubtle} strokeWidth="1.5" />
-
-      {/* Accessible contrast sample: "Aa" on the accent, with a check badge */}
-      <rect x="252" y="150" width="96" height="58" rx="12" fill={colors.accent} />
-      <text x="270" y="188" fontFamily="DNB, sans-serif" fontWeight="500" fontSize="26" fill={colors.pageBg}>Aa</text>
-      <circle cx="330" cy="164" r="13" fill={colors.surface} stroke={colors.strokeSubtle} strokeWidth="1" />
-      <path d="M324 164.5L328 168.5L336 160.5" stroke={colors.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        {/* Front card */}
+        <g className="thm-card thm-c3">
+          <rect x="108" y="46" width="150" height="168" rx="16" fill={colors.surface} stroke={colors.strokeSubtle} strokeWidth="1.5" />
+          {/* brand accent dot */}
+          <circle cx="132" cy="76" r="12" fill={colors.accent} />
+          {/* token lines */}
+          <rect x="152" y="70" width="78" height="10" rx="5" fill={colors.strokeSubtle} />
+          <rect x="124" y="102" width="110" height="9" rx="4.5" fill={colors.strokeSubtle} />
+          <rect x="124" y="120" width="72" height="9" rx="4.5" fill={colors.strokeSubtle} />
+          {/* accessible contrast sample */}
+          <rect x="124" y="150" width="110" height="46" rx="10" fill={colors.accent} />
+          <text x="140" y="181" fontFamily="DNB, sans-serif" fontWeight="500" fontSize="24" fill={colors.pageBg}>Aa</text>
+          <g className="thm-badge">
+            <circle cx="212" cy="173" r="12" fill={colors.surface} stroke={colors.strokeSubtle} strokeWidth="1" />
+            <path d="M206.5 173.5L210.5 177.5L218 169.5" stroke={colors.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+        </g>
+      </g>
     </svg>
   );
 };
