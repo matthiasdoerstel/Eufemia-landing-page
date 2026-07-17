@@ -128,14 +128,14 @@ const PortalHome: React.FC = () => {
   const divider = <div style={{ height: "1px", width: "761px", maxWidth: "100%", background: colors.strokeSubtle }} />;
 
   // Cards invert between themes (Figma): bright green on dark, dark navy on light.
-  const cardTheme =
-    brand === "Sbanken"
-      ? theme === "dark"
-        ? { design: "#d9b3ff", develop: "#ecd9ff", text: "#333333", stroke: "#6b2c91", developStroke: "#8a5cad" }
-        : { design: "#2a0e3a", develop: "#3d1259", text: "#ffffff", stroke: "#c9a3e6", developStroke: "#c9a3e6" }
-      : theme === "dark"
-      ? { design: "#99ff9a", develop: "#deffcd", text: "#333333", stroke: "#007272", developStroke: "#4a948d" }
-      : { design: "#0e1e26", develop: "#003842", text: "#ffffff", stroke: "#a5e1d2", developStroke: "#a5e1d2" };
+  // Fixed card colors (requested): Design = deep teal-black, Develop = deep maroon.
+  const cardTheme = {
+    design: "#041318",
+    develop: "#390015",
+    text: "#ffffff",
+    stroke: "#a5e1d2",
+    developStroke: "#e2a2a5",
+  };
 
   return (
     <Layout currentPath="/" currentPlatform="web">
