@@ -228,7 +228,7 @@ const PortalHome: React.FC = () => {
     <Layout currentPath="/" currentPlatform="web">
       <style>{cardMotionCSS}</style>
       <div style={{ position: "relative", fontFamily: font.family, color: colors.text, overflow: "hidden" }}>
-        {/* Hero backdrop artwork */}
+        {/* Hero backdrop artwork — fades out towards the bottom into the page */}
         <div
           aria-hidden
           style={{
@@ -239,6 +239,8 @@ const PortalHome: React.FC = () => {
             lineHeight: 0,
             pointerEvents: "none",
             userSelect: "none",
+            WebkitMaskImage: "linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.4) 75%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.4) 75%, transparent 100%)",
           }}
           dangerouslySetInnerHTML={{ __html: HERO_SVG }}
         />
