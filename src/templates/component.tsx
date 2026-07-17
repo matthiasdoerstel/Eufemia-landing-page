@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { graphql, Link } from "gatsby";
 import Layout from "../components/Layout";
+import PageShell from "../components/PageShell";
+import InPageRail, { RailItem } from "../components/InPageRail";
 import { useTheme } from "../context/ThemeContext";
+import { font, radius } from "../theme/tokens";
 
 interface BlockChild {
   _key: string;
@@ -34,20 +37,9 @@ interface ComponentData {
   accessibilityInfo?: string | null;
   _rawDocumentation?: Block[] | null;
   _rawPreviewImage?: {
-    light?: {
-      asset?: {
-        _ref?: string;
-        url?: string;
-      };
-    };
-    dark?: {
-      asset?: {
-        _ref?: string;
-        url?: string;
-      };
-    };
+    light?: { asset?: { _ref?: string; url?: string } };
+    dark?: { asset?: { _ref?: string; url?: string } };
   } | null;
-  [key: string]: any;
 }
 
 interface Props {
@@ -56,62 +48,57 @@ interface Props {
   };
 }
 
-// Helper to build Sanity image URL
 const buildImageUrl = (ref: string) => {
-  // ref format: image-{id}-{width}x{height}-{format}
-  const [, id, dimensions, format] = ref.split('-');
+  const [, id, dimensions, format] = ref.split("-");
   return `https://cdn.sanity.io/images/sy4b7kpu/production/${id}-${dimensions}.${format}`;
 };
 
-// Simple portable text renderer
-const renderBlock = (block: Block, index: number, isDark: boolean) => {
-  // Handle images
+const ExternalLinkIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+    <path d="M12 8.667v4C12 13.404 11.404 14 10.667 14H3.333A1.333 1.333 0 0 1 2 12.667V5.333C2 4.596 2.596 4 3.333 4h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 2h4v4M6.667 9.333 14 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CompareIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+    <path d="M2.5 5.5h8M8 2.5l3 3-3 3M13.5 10.5h-8M8 13.5l-3-3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const FigmaIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <path d="M8 24c2.208 0 4-1.792 4-4v-4H8c-2.208 0-4 1.792-4 4s1.792 4 4 4Z" fill="#0ACF83" />
+    <path d="M4 12c0-2.208 1.792-4 4-4h4v8H8c-2.208 0-4-1.792-4-4Z" fill="#A259FF" />
+    <path d="M4 4c0-2.208 1.792-4 4-4h4v8H8c-2.208 0-4-1.792-4-4Z" fill="#F24E1E" />
+    <path d="M12 0h4c2.208 0 4 1.792 4 4s-1.792 4-4 4h-4V0Z" fill="#FF7262" />
+    <path d="M20 12c0 2.208-1.792 4-4 4s-4-1.792-4-4 1.792-4 4-4 4 1.792 4 4Z" fill="#1ABCFE" />
+  </svg>
+);
+
+const GitHubIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-4.18 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.72.23 3.89.11 4.18.74.84 1.19 1.83 1.19 3.08 0 4.41-2.69 5.38-5.25 5.67.41.35.78 1.05.78 2.12 0 1.53-.01 2.77-.01 3.14 0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z" />
+  </svg>
+);
+
+const renderBlock = (block: Block, colors: ReturnType<typeof useTheme>["colors"]) => {
   if (block._type === "image" && block.asset?._ref) {
-    const imageUrl = buildImageUrl(block.asset._ref);
     return (
-      <div
-        key={index}
-        style={{
-          margin: "24px 0",
-          borderRadius: "8px",
-          overflow: "hidden",
-          border: `1px solid ${isDark ? '#333' : '#e8e8e8'}`,
-        }}
-      >
-        <img
-          src={imageUrl}
-          alt=""
-          style={{
-            width: "100%",
-            height: "auto",
-            display: "block",
-          }}
-        />
+      <div key={block._key} style={{ overflow: "hidden", border: `1px solid ${colors.strokeSubtle}`, borderRadius: radius.lg }}>
+        <img src={buildImageUrl(block.asset._ref)} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
       </div>
     );
   }
 
   if (block._type !== "block") return null;
 
-  const text = block.children?.map((child, i) => {
-    if (child.marks?.includes("strong")) {
-      return <strong key={i}>{child.text}</strong>;
-    }
-    if (child.marks?.includes("em")) {
-      return <em key={i}>{child.text}</em>;
-    }
+  const text = block.children?.map((child) => {
+    if (child.marks?.includes("strong")) return <strong key={child._key}>{child.text}</strong>;
+    if (child.marks?.includes("em")) return <em key={child._key}>{child.text}</em>;
     if (child.marks?.includes("code")) {
       return (
-        <code
-          key={i}
-          style={{
-            background: isDark ? "#222" : "#f5f5f5",
-            padding: "2px 6px",
-            borderRadius: "4px",
-            fontSize: "14px",
-            color: isDark ? "#ccc" : "#333",
-          }}
-        >
+        <code key={child._key} style={{ padding: "2px 6px", borderRadius: radius.sm, background: colors.surfaceAlt, color: colors.text, fontSize: "0.875em" }}>
           {child.text}
         </code>
       );
@@ -119,379 +106,211 @@ const renderBlock = (block: Block, index: number, isDark: boolean) => {
     return child.text;
   });
 
-  switch (block.style) {
-    case "h2":
-      return (
-        <h2
-          key={index}
-          style={{
-            fontSize: "24px",
-            fontWeight: 600,
-            color: isDark ? "#fff" : "#1c1c1e",
-            marginTop: "32px",
-            marginBottom: "16px",
-          }}
-        >
-          {text}
-        </h2>
-      );
-    case "h3":
-      return (
-        <h3
-          key={index}
-          style={{
-            fontSize: "20px",
-            fontWeight: 600,
-            color: isDark ? "#fff" : "#1c1c1e",
-            marginTop: "24px",
-            marginBottom: "12px",
-          }}
-        >
-          {text}
-        </h3>
-      );
-    case "h4":
-      return (
-        <h4
-          key={index}
-          style={{
-            fontSize: "16px",
-            fontWeight: 600,
-            color: isDark ? "#fff" : "#1c1c1e",
-            marginTop: "20px",
-            marginBottom: "8px",
-          }}
-        >
-          {text}
-        </h4>
-      );
-    default:
-      return (
-        <p
-          key={index}
-          style={{
-            fontSize: "16px",
-            lineHeight: 1.7,
-            color: isDark ? "#ccc" : "#444",
-            marginBottom: "16px",
-          }}
-        >
-          {text}
-        </p>
-      );
+  const headingSize = block.style === "h2" ? font.size.headingLg : block.style === "h3" ? font.size.bodyMedium : font.size.body;
+  const headingLineHeight = block.style === "h2" ? font.lineHeight.headingLg : font.lineHeight.body;
+
+  if (block.style === "h2" || block.style === "h3" || block.style === "h4") {
+    const Tag = block.style;
+    return (
+      <Tag key={block._key} style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${headingSize}px`, lineHeight: `${headingLineHeight}px`, color: colors.text }}>
+        {text}
+      </Tag>
+    );
   }
+
+  return (
+    <p key={block._key} style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
+      {text}
+    </p>
+  );
 };
-
-const ExternalLinkIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-    <path
-      d="M12 8.66667V12.6667C12 13.0203 11.8595 13.3594 11.6095 13.6095C11.3594 13.8595 11.0203 14 10.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V5.33333C2 4.97971 2.14048 4.64057 2.39052 4.39052C2.64057 4.14048 2.97971 4 3.33333 4H7.33333"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path d="M10 2H14V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M6.66699 9.33333L14.0003 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const FigmaIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <path d="M8 24C10.208 24 12 22.208 12 20V16H8C5.792 16 4 17.792 4 20C4 22.208 5.792 24 8 24Z" fill="#0ACF83"/>
-    <path d="M4 12C4 9.792 5.792 8 8 8H12V16H8C5.792 16 4 14.208 4 12Z" fill="#A259FF"/>
-    <path d="M4 4C4 1.792 5.792 0 8 0H12V8H8C5.792 8 4 6.208 4 4Z" fill="#F24E1E"/>
-    <path d="M12 0H16C18.208 0 20 1.792 20 4C20 6.208 18.208 8 16 8H12V0Z" fill="#FF7262"/>
-    <path d="M20 12C20 14.208 18.208 16 16 16C13.792 16 12 14.208 12 12C12 9.792 13.792 8 16 8C18.208 8 20 9.792 20 12Z" fill="#1ABCFE"/>
-  </svg>
-);
-
-const GitHubIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0C5.374 0 0 5.373 0 12C0 17.302 3.438 21.8 8.207 23.387C8.806 23.498 9 23.126 9 22.81V20.576C5.662 21.302 4.967 19.16 4.967 19.16C4.421 17.773 3.634 17.404 3.634 17.404C2.545 16.659 3.717 16.675 3.717 16.675C4.922 16.759 5.556 17.912 5.556 17.912C6.626 19.746 8.363 19.216 9.048 18.909C9.155 18.134 9.466 17.604 9.81 17.305C7.145 17 4.343 15.971 4.343 11.374C4.343 10.063 4.812 8.993 5.579 8.153C5.455 7.85 5.044 6.629 5.696 4.977C5.696 4.977 6.704 4.655 8.997 6.207C9.954 5.941 10.98 5.808 12 5.803C13.02 5.808 14.047 5.941 15.006 6.207C17.297 4.655 18.303 4.977 18.303 4.977C18.956 6.63 18.545 7.851 18.421 8.153C19.191 8.993 19.656 10.064 19.656 11.374C19.656 15.983 16.849 16.998 14.177 17.295C14.607 17.667 15 18.397 15 19.517V22.81C15 23.129 15.192 23.504 15.801 23.386C20.566 21.797 24 17.3 24 12C24 5.373 18.627 0 12 0Z"/>
-  </svg>
-);
 
 const ComponentTemplate: React.FC<Props> = ({ data }) => {
   const component = data.sanityComponent;
-  const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
+  const { colors, theme } = useTheme();
+  const [hoveredAction, setHoveredAction] = useState<string | null>(null);
+
+  const platform = component.platform === "android" || component.platform === "web" ? component.platform : "ios";
+  const platformLabel = platform === "ios" ? "iOS" : platform === "android" ? "Android" : "Web";
+  const platformPath = `/docs/${platform}`;
+  const previewImage = theme === "dark"
+    ? component._rawPreviewImage?.dark?.asset || component._rawPreviewImage?.light?.asset
+    : component._rawPreviewImage?.light?.asset || component._rawPreviewImage?.dark?.asset;
+  const previewLabel = previewImage === component._rawPreviewImage?.dark?.asset ? "Dark mode preview" : "Light mode preview";
+  const hasPreview = Boolean(component._rawPreviewImage?.light?.asset || component._rawPreviewImage?.dark?.asset);
+  const hasDocumentation = Boolean(component._rawDocumentation?.length);
+
+  const sections: RailItem[] = [
+    ...(hasPreview ? [{ id: "preview", label: "Preview" }] : []),
+    { id: "resources", label: "Resources" },
+    ...(component.guidelines ? [{ id: "guidelines", label: "Guidelines" }] : []),
+    ...(component.usage ? [{ id: "usage", label: "Usage" }] : []),
+    ...(component.dosAndDonts ? [{ id: "dos-and-donts", label: "Do’s and don’ts" }] : []),
+    ...(component.accessibilityInfo ? [{ id: "accessibility", label: "Accessibility" }] : []),
+    ...(hasDocumentation ? [{ id: "documentation", label: "Documentation" }] : []),
+  ];
+
+  const sectionStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+    paddingBottom: "40px",
+    borderBottom: `1px solid ${colors.strokeSubtle}`,
+    scrollMarginTop: "112px",
+  };
+  const headingStyle: React.CSSProperties = {
+    margin: 0,
+    fontFamily: font.family,
+    fontWeight: 500,
+    fontSize: `${font.size.headingLg}px`,
+    lineHeight: `${font.lineHeight.headingLg}px`,
+    color: colors.text,
+  };
+  const bodyStyle: React.CSSProperties = {
+    margin: 0,
+    fontFamily: font.family,
+    fontSize: `${font.size.body}px`,
+    lineHeight: `${font.lineHeight.body}px`,
+    color: colors.textMuted,
+  };
+
+  const resourceAction = (key: string, icon: React.ReactNode, label: string, onClick?: () => void, href?: string) => {
+    const content = <>{icon}<span>{label}</span>{href ? <ExternalLinkIcon /> : null}</>;
+    const style: React.CSSProperties = {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+      minHeight: "44px",
+      padding: "10px 16px",
+      border: `1px solid ${key === "compare" ? colors.strokeAction : colors.strokeSubtle}`,
+      borderRadius: radius.md,
+      background: hoveredAction === key ? (key === "compare" ? colors.selectedSubtle : colors.surfaceAlt) : colors.surface,
+      color: key === "compare" ? colors.accent : colors.text,
+      fontFamily: font.family,
+      fontSize: `${font.size.small}px`,
+      lineHeight: `${font.lineHeight.small}px`,
+      fontWeight: 500,
+      cursor: "pointer",
+      textDecoration: "none",
+      transition: "background 0.15s ease, border-color 0.15s ease",
+    };
+
+    if (href) {
+      return (
+        <a key={key} href={href} target="_blank" rel="noreferrer" onMouseEnter={() => setHoveredAction(key)} onMouseLeave={() => setHoveredAction(null)} style={style}>
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <button key={key} type="button" onClick={onClick} onMouseEnter={() => setHoveredAction(key)} onMouseLeave={() => setHoveredAction(null)} style={style}>
+        {content}
+      </button>
+    );
+  };
 
   if (!component.name) {
     return (
-      <Layout currentPlatform="ios" currentPath="/docs/ios/components">
-        <div style={{ padding: "48px 40px" }}>
-          <p>Error: Component not found</p>
-        </div>
+      <Layout currentPlatform={platform} currentPath={`${platformPath}/components`}>
+        <PageShell contentStyle={{ maxWidth: "880px" }}>
+          <p style={bodyStyle}>Component not found.</p>
+        </PageShell>
       </Layout>
     );
   }
 
-  const platformLabel = (component.platform === "ios" ? "iOS" : "Android") || "Unknown";
-  const platformPath = `/docs/${component.platform || "ios"}`;
-
   return (
-    <Layout currentPlatform={component.platform as "ios" | "android"} currentPath={`${platformPath}/components`}>
-      <div style={{ padding: "48px 40px", maxWidth: "800px", background: isDark ? "#000000" : "#fff", color: isDark ? "#fff" : "#000", minHeight: "100vh" }}>
-        {/* Breadcrumb */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            fontSize: "14px",
-            color: isDark ? "#999" : "#666",
-            marginBottom: "24px",
-          }}
-        >
-          <Link to={platformPath} style={{ color: "#a5e1d2", textDecoration: "none" }}>
-            {platformLabel}
-          </Link>
-          <span>/</span>
-          <span>Components</span>
-          <span>/</span>
-          <span style={{ color: isDark ? "#fff" : "#1c1c1e" }}>{component.name}</span>
-        </div>
+    <Layout currentPlatform={platform} currentPath={`${platformPath}/components`}>
+      <PageShell contentStyle={{ maxWidth: "880px", gap: "40px" }} rail={<InPageRail items={sections} />}>
+        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px", fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
+          <Link to={platformPath} style={{ color: colors.accent, textDecoration: "none" }}>{platformLabel}</Link>
+          <span aria-hidden>/</span>
+          <Link to={platformPath} style={{ color: colors.textMuted, textDecoration: "none" }}>Components</Link>
+          <span aria-hidden>/</span>
+          <span style={{ color: colors.text }}>{component.name}</span>
+        </nav>
 
-        {/* Header */}
-        <div style={{ marginBottom: "32px" }}>
-          <div
-            style={{
-              display: "inline-block",
-              padding: "4px 10px",
-              background: component.platform === "ios" ? "#e3f2fd" : "#e8f5e9",
-              borderRadius: "4px",
-              fontSize: "12px",
-              fontWeight: 500,
-              color: component.platform === "ios" ? "#1565c0" : "#2e7d32",
-              marginBottom: "12px",
-            }}
-          >
+        <header style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
+          <span style={{ padding: "4px 10px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", lineHeight: "20px", fontWeight: 500 }}>
             {platformLabel}
-          </div>
-          <h1
-            style={{
-              fontSize: "36px",
-              fontWeight: 700,
-              color: isDark ? "#fff" : "#1c1c1e",
-              marginBottom: "12px",
-              letterSpacing: "-0.5px",
-            }}
-          >
+          </span>
+          <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
             {component.name}
           </h1>
-          {component.shortDescription && (
-            <p
-              style={{
-                fontSize: "18px",
-                lineHeight: 1.6,
-                color: isDark ? "#ccc" : "#555",
-                maxWidth: "600px",
-              }}
-            >
-              {component.shortDescription}
-            </p>
-          )}
-        </div>
+          {component.shortDescription ? <p style={{ ...bodyStyle, maxWidth: "680px" }}>{component.shortDescription}</p> : null}
+        </header>
 
-        {/* Preview Images */}
-        {(component._rawPreviewImage?.light?.asset || component._rawPreviewImage?.dark?.asset) && (
-          <div
-            style={{
-              marginBottom: "40px",
-              paddingBottom: "32px",
-              borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}`,
-            }}
-          >
-            {theme === "light" && component._rawPreviewImage?.light?.asset && (
-              <div>
-                <div style={{ fontSize: "12px", fontWeight: 500, marginBottom: "8px", color: isDark ? "#999" : "#666" }}>
-                  Light Mode
-                </div>
-                <img
-                  src={component._rawPreviewImage.light.asset.url || buildImageUrl(component._rawPreviewImage.light.asset._ref || "")}
-                  alt="Preview - Light Mode"
-                  style={{ width: "100%", height: "auto", borderRadius: "8px", border: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}
-                />
-              </div>
-            )}
-            {theme === "dark" && component._rawPreviewImage?.dark?.asset && (
-              <div>
-                <div style={{ fontSize: "12px", fontWeight: 500, marginBottom: "8px", color: isDark ? "#999" : "#666" }}>
-                  Dark Mode
-                </div>
-                <img
-                  src={component._rawPreviewImage.dark.asset.url || buildImageUrl(component._rawPreviewImage.dark.asset._ref || "")}
-                  alt="Preview - Dark Mode"
-                  style={{ width: "100%", height: "auto", borderRadius: "8px", border: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}
-                />
-              </div>
-            )}
+        {hasPreview && previewImage ? (
+          <section id="preview" style={sectionStyle}>
+            <h2 style={headingStyle}>Preview</h2>
+            <div style={{ overflow: "hidden", border: `1px solid ${colors.strokeSubtle}`, borderRadius: radius.lg, background: colors.surface }}>
+              <img src={previewImage.url || buildImageUrl(previewImage._ref || "")} alt={`${component.name} ${previewLabel.toLowerCase()}`} style={{ display: "block", width: "100%", height: "auto" }} />
+            </div>
+          </section>
+        ) : null}
+
+        <section id="resources" style={sectionStyle}>
+          <h2 style={headingStyle}>Resources</h2>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+            {resourceAction("compare", <CompareIcon />, "Compare", () => window.dispatchEvent(new Event("openSearchCompare")))}
+            {component.figmaLink ? resourceAction("figma", <FigmaIcon />, "Open in Figma", undefined, component.figmaLink) : null}
+            {component.githubLink ? resourceAction("github", <GitHubIcon />, "View source", undefined, component.githubLink) : null}
           </div>
-        )}
+        </section>
 
-        {/* Action Buttons Section */}
-        <div
-          style={{
-            display: "flex",
-            gap: "12px",
-            marginBottom: "40px",
-            paddingBottom: "32px",
-            borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}`,
-            flexWrap: "wrap",
-          }}
-        >
-          {/* Compare Button - Always First */}
-          <button
-            onClick={() => {
-              // Dispatch custom event to open search in compare mode
-              window.dispatchEvent(new Event("openSearchCompare"));
-            }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 14px",
-              background: isDark ? "#0d4637" : "#f0f7f7",
-              border: isDark ? "1px solid #1a5c5c" : "1px solid #b3dede",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 500,
-              color: isDark ? "#66c9c9" : "#a5e1d2",
-              cursor: "pointer",
-              textDecoration: "none",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = isDark ? "#1a4c4c" : "#e6f2f2";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = isDark ? "#0d4637" : "#f0f7f7";
-            }}
-          >
-            ↔ Compare
-          </button>
+        {component.guidelines ? (
+          <section id="guidelines" style={sectionStyle}>
+            <h2 style={headingStyle}>Guidelines</h2>
+            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.guidelines}</p>
+          </section>
+        ) : null}
 
-          {/* Figma Link */}
-          {component.figmaLink && (
-            <a
-              href={component.figmaLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 14px",
-                background: isDark ? "#1c1c1e" : "#fff",
-                border: `1px solid ${isDark ? '#333' : '#e0e0e0'}`,
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: isDark ? "#ccc" : "#333",
-                textDecoration: "none",
-              }}
-            >
-              <FigmaIcon />
-              Figma
-            </a>
-          )}
+        {component.usage ? (
+          <section id="usage" style={sectionStyle}>
+            <h2 style={headingStyle}>Usage</h2>
+            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.usage}</p>
+          </section>
+        ) : null}
 
-          {/* GitHub Link */}
-          {component.githubLink && (
-            <a
-              href={component.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 14px",
-                background: isDark ? "#1c1c1e" : "#fff",
-                border: `1px solid ${isDark ? '#333' : '#e0e0e0'}`,
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: 500,
-                color: isDark ? "#ccc" : "#333",
-                textDecoration: "none",
-              }}
-            >
-              <GitHubIcon />
-              GitHub
-            </a>
-          )}
-        </div>
+        {component.dosAndDonts ? (
+          <section id="dos-and-donts" style={sectionStyle}>
+            <h2 style={headingStyle}>Do’s and don’ts</h2>
+            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.dosAndDonts}</p>
+          </section>
+        ) : null}
 
-        {/* Guidelines Section */}
-        {component.guidelines && (
-          <div style={{ marginBottom: "40px", paddingBottom: "32px", borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}>
-            <h2 style={{ fontSize: "24px", fontWeight: 600, color: isDark ? "#fff" : "#1c1c1e", marginBottom: "16px" }}>Guidelines</h2>
-            <p style={{ fontSize: "16px", lineHeight: 1.7, color: isDark ? "#ccc" : "#444", marginBottom: "16px", whiteSpace: "pre-wrap" }}>{component.guidelines}</p>
-          </div>
-        )}
+        {component.accessibilityInfo ? (
+          <section id="accessibility" style={sectionStyle}>
+            <h2 style={headingStyle}>Accessibility</h2>
+            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.accessibilityInfo}</p>
+          </section>
+        ) : null}
 
-        {/* Usage Section */}
-        {component.usage && (
-          <div style={{ marginBottom: "40px", paddingBottom: "32px", borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}>
-            <h2 style={{ fontSize: "24px", fontWeight: 600, color: isDark ? "#fff" : "#1c1c1e", marginBottom: "16px" }}>Usage</h2>
-            <p style={{ fontSize: "16px", lineHeight: 1.7, color: isDark ? "#ccc" : "#444", marginBottom: "16px", whiteSpace: "pre-wrap" }}>{component.usage}</p>
-          </div>
-        )}
+        {hasDocumentation ? (
+          <section id="documentation" style={sectionStyle}>
+            <h2 style={headingStyle}>Documentation</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {component._rawDocumentation?.map((block) => renderBlock(block, colors))}
+            </div>
+          </section>
+        ) : null}
 
-        {/* Dos and Don'ts Section */}
-        {component.dosAndDonts && (
-          <div style={{ marginBottom: "40px", paddingBottom: "32px", borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}>
-            <h2 style={{ fontSize: "24px", fontWeight: 600, color: isDark ? "#fff" : "#1c1c1e", marginBottom: "16px" }}>Dos and Don'ts</h2>
-            <p style={{ fontSize: "16px", lineHeight: 1.7, color: isDark ? "#ccc" : "#444", marginBottom: "16px", whiteSpace: "pre-wrap" }}>{component.dosAndDonts}</p>
-          </div>
-        )}
-
-        {/* Accessibility Info Section */}
-        {component.accessibilityInfo && (
-          <div style={{ marginBottom: "40px", paddingBottom: "32px", borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}>
-            <h2 style={{ fontSize: "24px", fontWeight: 600, color: isDark ? "#fff" : "#1c1c1e", marginBottom: "16px" }}>Accessibility</h2>
-            <p style={{ fontSize: "16px", lineHeight: 1.7, color: isDark ? "#ccc" : "#444", marginBottom: "16px", whiteSpace: "pre-wrap" }}>{component.accessibilityInfo}</p>
-          </div>
-        )}
-
-        {/* Main Documentation content */}
-        {component._rawDocumentation && component._rawDocumentation.length > 0 && (
-          <div style={{ marginBottom: "40px", paddingBottom: "32px", borderBottom: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}>
-            <h2 style={{ fontSize: "24px", fontWeight: 600, color: isDark ? "#fff" : "#1c1c1e", marginBottom: "16px" }}>Documentation</h2>
-            <div>{component._rawDocumentation.map((block, i) => renderBlock(block, i, isDark))}</div>
-          </div>
-        )}
-
-        {/* Back link */}
-        <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: `1px solid ${isDark ? '#333' : '#e8e8e8'}` }}>
-          <Link
-            to={platformPath}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              fontSize: "14px",
-              color: "#a5e1d2",
-              textDecoration: "none",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Back to {platformLabel} Components
-          </Link>
-        </div>
-      </div>
+        <Link to={platformPath} style={{ display: "inline-flex", alignItems: "center", gap: "8px", width: "fit-content", fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.accent, textDecoration: "none" }}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+            <path d="m10 12-4-4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Back to {platformLabel} components
+        </Link>
+      </PageShell>
     </Layout>
   );
 };
 
 export default ComponentTemplate;
 
-export const Head: React.FC<Props> = ({ data }) => (
-  <title>Component | Eufemia Design System</title>
-);
+export const Head: React.FC<Props> = ({ data }) => <title>{data.sanityComponent.name || "Component"} | Eufemia Design System</title>;
 
 export const query = graphql`
   query ComponentQuery($id: String!) {
