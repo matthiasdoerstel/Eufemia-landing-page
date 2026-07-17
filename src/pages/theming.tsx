@@ -17,6 +17,35 @@ const CheckIcon = ({ color }: { color: string }) => (
   </svg>
 );
 
+// Theme-aware hero graphic: a brand color "translated" into an accessible
+// digital pairing. Uses the active theme tokens, so it adapts to light/dark and
+// to the brand accent — no static image to keep in sync.
+const ThemingHeroGraphic: React.FC = () => {
+  const { colors } = useTheme();
+  return (
+    <svg width="100%" viewBox="0 0 360 240" fill="none" role="img" aria-label="Brand color translated into an accessible digital palette" style={{ maxWidth: "360px" }}>
+      {/* Brand color source */}
+      <circle cx="96" cy="96" r="60" fill={colors.accent} />
+      {/* The digitally-adjusted variant, slightly offset and lighter */}
+      <circle cx="140" cy="120" r="60" fill={colors.accent} opacity="0.4" />
+
+      {/* Dotted translation path */}
+      <path d="M188 132 C 226 150, 244 150, 268 150" stroke={colors.textMuted} strokeWidth="1.5" strokeDasharray="2 6" strokeLinecap="round" />
+
+      {/* Digital palette chips */}
+      <rect x="256" y="40" width="88" height="26" rx="8" fill={colors.selectedSubtle} />
+      <rect x="256" y="74" width="88" height="26" rx="8" fill="none" stroke={colors.strokeSubtle} strokeWidth="1.5" />
+      <rect x="256" y="108" width="88" height="26" rx="8" fill="none" stroke={colors.strokeSubtle} strokeWidth="1.5" />
+
+      {/* Accessible contrast sample: "Aa" on the accent, with a check badge */}
+      <rect x="252" y="150" width="96" height="58" rx="12" fill={colors.accent} />
+      <text x="270" y="188" fontFamily="DNB, sans-serif" fontWeight="500" fontSize="26" fill={colors.pageBg}>Aa</text>
+      <circle cx="330" cy="164" r="13" fill={colors.surface} stroke={colors.strokeSubtle} strokeWidth="1" />
+      <path d="M324 164.5L328 168.5L336 160.5" stroke={colors.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+};
+
 const points = [
   {
     title: "Eufemia handles theming for you",
@@ -47,12 +76,17 @@ const ThemingPage: React.FC = () => {
     <Layout currentPlatform="web" currentPath="/theming">
       <PageShell contentStyle={{ gap: "32px" }}>
         {/* Hero */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <h1 style={h1}>Theming</h1>
-          <p style={para}>
-            Eufemia takes care of theming across brands and themes. This page explains how brand colors become the digital
-            palette — and why the digital colors may differ slightly from Brand Center.
-          </p>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "32px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", flex: "1 1 340px", minWidth: "min(100%, 340px)" }}>
+            <h1 style={h1}>Theming</h1>
+            <p style={para}>
+              Eufemia takes care of theming across brands and themes. This page explains how brand colors become the digital
+              palette — and why the digital colors may differ slightly from Brand Center.
+            </p>
+          </div>
+          <div style={{ flex: "1 1 300px", display: "flex", justifyContent: "center" }}>
+            <ThemingHeroGraphic />
+          </div>
         </div>
 
         {/* Key points */}
