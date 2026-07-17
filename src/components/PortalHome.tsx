@@ -3,110 +3,10 @@ import { Link } from "gatsby";
 import Layout from "./Layout";
 import { useTheme } from "../context/ThemeContext";
 import { radius, font } from "../theme/tokens";
-
-// Hero backdrop artwork (deep teal → maroon glow), matching the frontpage cards.
-const HERO_SVG = `<svg viewBox="0 0 1055 584" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" preserveAspectRatio="xMidYMid slice" style="display:block;height:auto">
-<g clip-path="url(#clip0_5369_3153)">
-<rect width="1055" height="584" transform="translate(1055 584) rotate(180)" fill="white"/>
-<g filter="url(#filter1_f_5369_3153)">
-<ellipse cx="641.329" cy="-16.7907" rx="861.328" ry="358.209" transform="rotate(180 641.329 -16.7907)" fill="#BCE5AC"/>
-</g>
-<g filter="url(#filter2_f_5369_3153)">
-<ellipse cx="643.484" cy="50.1957" rx="479.484" ry="173.196" transform="rotate(180 643.484 50.1957)" fill="#0D4637"/>
-</g>
-<g filter="url(#filter3_f_5369_3153)" style="mix-blend-mode:plus-lighter">
-<ellipse cx="982.822" cy="28.8046" rx="861.328" ry="173.196" transform="rotate(180 982.822 28.8046)" fill="white"/>
-</g>
-<g clip-path="url(#clip1_5369_3153)">
-<rect width="3840" height="2160" transform="translate(-1393 -788)" fill="white"/>
-<g filter="url(#filter5_f_5369_3153)">
-<path d="M3691.5 -257.388C3691.5 -10.2403 1584.86 1519.61 736 1519.61C-112.862 1519.61 -3928 2309.76 -3928 2062.61C-3928 1815.47 -1546.5 193.112 736 624.612C2667.5 884.111 3691.5 -504.535 3691.5 -257.388Z" fill="url(#paint0_linear_5369_3153)"/>
-</g>
-<g filter="url(#filter6_f_5369_3153)" style="mix-blend-mode:overlay">
-<path d="M196.94 325.3L-766.5 677L-1062.26 755.028C-1260.37 807.291 -1361.26 1027.61 -1271.42 1211.74C-1167.88 1423.94 -879.747 1458.38 -729.119 1276.54L-685.649 1224.07C-615.563 1139.47 -511.415 1090.5 -401.551 1090.5H-140.95C-8.14924 1090.5 107.617 1180.86 139.862 1309.69C169.862 1429.54 272.629 1517.15 395.723 1527.8L953.649 1576.07C1244.5 1601.23 1503.92 1393.74 1543.29 1104.47C1572.07 892.941 1475.27 683.976 1295.31 569.148L1061.33 419.859C803.65 255.443 484.073 220.484 196.94 325.3Z" fill="#390014"/>
-</g>
-<g filter="url(#filter7_f_5369_3153)" style="mix-blend-mode:overlay">
-<ellipse cx="1979" cy="718" rx="1219" ry="259" fill="#031117"/>
-</g>
-</g>
-<g clip-path="url(#clip2_5369_3153)">
-<rect width="1155.56" height="650" transform="translate(-29.9999 -49.9999)" fill="url(#paint_hero_bg)"/>
-<g filter="url(#filter9_f_5369_3153)">
-<ellipse cx="230" cy="470" rx="600" ry="278.206" fill="#390015"/>
-</g>
-<g filter="url(#filter10_f_5369_3153)">
-<ellipse cx="840" cy="430" rx="600" ry="220" fill="#041318"/>
-</g>
-<g filter="url(#filter11_f_5369_3153)" style="mix-blend-mode:overlay" transform="translate(0 -150)">
-<path d="M1223.36 262.963C1223.36 337.253 923.853 397.477 554.398 397.477C184.942 397.477 -114.56 337.253 -114.56 262.963C-114.56 188.673 184.942 128.449 554.398 128.449C923.853 128.449 1223.36 188.673 1223.36 262.963Z" fill="white"/>
-</g>
-</g>
-</g>
-<defs>
-<filter id="filter1_f_5369_3153" x="-422.72" y="-577.72" width="2128.1" height="1121.86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="101.36" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter2_f_5369_3153" x="-38.7202" y="-325.72" width="1364.41" height="751.832" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="101.36" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter3_f_5369_3153" x="-81.227" y="-347.111" width="2128.1" height="751.832" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="101.36" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter5_f_5369_3153" x="-4275.2" y="-634.2" width="8313.9" height="3091.89" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="173.6" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter6_f_5369_3153" x="-1651.7" y="-81.4059" width="3547.2" height="2006.74" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="173.6" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter7_f_5369_3153" x="412.8" y="111.8" width="3132.4" height="1212.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="173.6" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter9_f_5369_3153" x="-278.626" y="56.4678" width="1652.81" height="871.301" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="78.7222" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter10_f_5369_3153" x="-324.064" y="117.556" width="1607.06" height="583.917" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="78.7222" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter11_f_5369_3153" x="-272.005" y="-28.9953" width="1652.81" height="583.916" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="78.7222" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<linearGradient id="paint0_linear_5369_3153" x1="-3928" y1="911.745" x2="3691.5" y2="911.745" gradientUnits="userSpaceOnUse">
-<stop stop-color="#031117"/>
-<stop offset="1" stop-color="#390014"/>
-</linearGradient>
-<linearGradient id="paint_hero_bg" x1="0" y1="0" x2="1" y2="0">
-<stop stop-color="#390015"/>
-<stop offset="1" stop-color="#041318"/>
-</linearGradient>
-<clipPath id="clip0_5369_3153">
-<rect width="1055" height="584" fill="white" transform="translate(1055 584) rotate(180)"/>
-</clipPath>
-<clipPath id="clip1_5369_3153">
-<rect width="3840" height="2160" fill="white" transform="translate(-1393 -788)"/>
-</clipPath>
-<clipPath id="clip2_5369_3153">
-<rect width="1155.56" height="650" fill="white" transform="translate(-29.9999 -49.9999)"/>
-</clipPath>
-</defs>
-</svg>`;
+import heroGlow from "../images/home/hero-glow.png";
+import heroGlowLight from "../images/home/hero-glow-light.png";
+import sbankenHeroGlow from "../images/home/sbanken-hero-glow.png";
+import sbankenHeroGlowLight from "../images/home/sbanken-hero-glow-light.png";
 
 // Staggered "fade-in-up" that mirrors the Figma card motion. It stays static
 // (fully visible) until the card is hovered, then plays once.
@@ -210,8 +110,17 @@ const updateItems = [
 const tabs = ["Web", "Android", "iOS"];
 
 const PortalHome: React.FC = () => {
-  const { colors } = useTheme();
+  const { colors, theme, brand } = useTheme();
 
+  // Brand + theme specific hero glow.
+  const heroSrc =
+    brand === "Sbanken"
+      ? theme === "dark"
+        ? sbankenHeroGlow
+        : sbankenHeroGlowLight
+      : theme === "dark"
+      ? heroGlow
+      : heroGlowLight;
   const [tab, setTab] = useState("Web");
   const [hoverCard, setHoverCard] = useState<string | null>(null);
   const [moreHover, setMoreHover] = useState<string | null>(null);
@@ -219,42 +128,44 @@ const PortalHome: React.FC = () => {
   const divider = <div style={{ height: "1px", width: "761px", maxWidth: "100%", background: colors.strokeSubtle }} />;
 
   // Cards invert between themes (Figma): bright green on dark, dark navy on light.
-  // Fixed card colors (requested): Design = deep teal-black, Develop = deep maroon.
-  const cardTheme = {
-    design: "#041318",
-    develop: "#390015",
-    text: "#ffffff",
-    stroke: "#a5e1d2",
-    developStroke: "#e2a2a5",
-  };
+  const cardTheme =
+    brand === "Sbanken"
+      ? theme === "dark"
+        ? { design: "#d9b3ff", develop: "#ecd9ff", text: "#333333", stroke: "#6b2c91", developStroke: "#8a5cad" }
+        : { design: "#2a0e3a", develop: "#3d1259", text: "#ffffff", stroke: "#c9a3e6", developStroke: "#c9a3e6" }
+      : theme === "dark"
+      ? { design: "#99ff9a", develop: "#deffcd", text: "#333333", stroke: "#007272", developStroke: "#4a948d" }
+      : { design: "#0e1e26", develop: "#003842", text: "#ffffff", stroke: "#a5e1d2", developStroke: "#a5e1d2" };
 
   return (
     <Layout currentPath="/" currentPlatform="web">
       <style>{cardMotionCSS}</style>
       <div style={{ position: "relative", fontFamily: font.family, color: colors.text, overflow: "hidden" }}>
-        {/* Hero backdrop artwork — fades out towards the bottom into the page */}
-        <div
+        {/* Real hero glow image (exported from Figma). Dark: green→black raster
+            blended with `screen`; light: green→white raster blended with
+            `multiply` — both drop their base colour into the page seamlessly. */}
+        <img
+          src={heroSrc}
+          alt=""
           aria-hidden
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
+            top: "0",
+            left: "0",
             width: "100%",
-            lineHeight: 0,
+            height: "auto",
+            mixBlendMode: theme === "dark" ? "screen" : "multiply",
             pointerEvents: "none",
             userSelect: "none",
-            WebkitMaskImage: "linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.4) 75%, transparent 100%)",
-            maskImage: "linear-gradient(to bottom, #000 45%, rgba(0,0,0,0.4) 75%, transparent 100%)",
           }}
-          dangerouslySetInnerHTML={{ __html: HERO_SVG }}
         />
 
         {/* Hero */}
         <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", padding: "144px 40px 0", textAlign: "center" }}>
-          <h1 style={{ margin: 0, width: "464px", maxWidth: "100%", fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: "#ffffff" }}>
+          <h1 style={{ margin: 0, width: "464px", maxWidth: "100%", fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
             Welcome to Eufemia
           </h1>
-          <p style={{ margin: 0, width: "691px", maxWidth: "100%", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: "#ffffff" }}>
+          <p style={{ margin: 0, width: "691px", maxWidth: "100%", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
             Eufemia is DNB's design system, which consist of resources for designers and developers in
             order to maintain consistency and efficiency when building applications for web and our
             native platforms.

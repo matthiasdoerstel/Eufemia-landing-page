@@ -57,9 +57,13 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
     selected: boolean;
     onClick: () => void;
     checkbox?: boolean;
-  }> = ({ label, selected, onClick, checkbox }) => (
+    disabled?: boolean;
+    badge?: string;
+  }> = ({ label, selected, onClick, checkbox, disabled, badge }) => (
     <button
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
+      title={disabled && badge ? badge : undefined}
       style={{
         display: "flex",
         alignItems: "center",
@@ -71,7 +75,8 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
           : `1px solid ${colors.stroke}`,
         background: selected ? colors.selectedSubtle : colors.surface,
         color: selected ? colors.textSelected : colors.text,
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.45 : 1,
         fontFamily: font.family,
         fontSize: `${font.size.body}px`,
         lineHeight: `${font.lineHeight.body}px`,
@@ -95,6 +100,22 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
         </span>
       )}
       {label}
+      {badge && (
+        <span
+          style={{
+            marginLeft: "8px",
+            padding: "2px 8px",
+            borderRadius: `${radius.sm}`,
+            fontSize: `${font.size.small}px`,
+            lineHeight: 1.4,
+            fontWeight: 500,
+            background: colors.surfaceAlt,
+            color: colors.textMuted,
+          }}
+        >
+          {badge}
+        </span>
+      )}
     </button>
   );
 
@@ -256,7 +277,12 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
                   key={b}
                   label={b}
                   selected={brand === brandOf(b) && (brand !== "DNB" || b === "DNB")}
-                  onClick={() => setBrand(brandOf(b))}
+                  onClick={() => {
+                    const next = brandOf(b);
+                    // Carnegie has no dark mode yet — fall back to light.
+                    if (next === "Carnegie" && mode === "dark") setMode("light");
+                    setBrand(next);
+                  }}
                 />
               );
             })}
@@ -277,9 +303,19 @@ const PortalSettings: React.FC<PortalSettingsProps> = ({ isOpen, onClose }) => {
         <div style={section}>
           {labelBlock("Theming", helpText("theming", "https://eufemia.dnb.no/uilib/usage/customisation/theming/"))}
           <div style={chipRow}>
-            {themeModes.map((t) => (
-              <ToggleButton key={t.value} label={t.label} selected={mode === t.value} onClick={() => setMode(t.value)} />
-            ))}
+            {themeModes.map((t) => {
+              const darkDisabled = brand === "Carnegie" && t.value === "dark";
+              return (
+                <ToggleButton
+                  key={t.value}
+                  label={t.label}
+                  selected={mode === t.value}
+                  disabled={darkDisabled}
+                  badge={darkDisabled ? "Coming soon" : undefined}
+                  onClick={() => setMode(t.value)}
+                />
+              );
+            })}
           </div>
         </div>
 
