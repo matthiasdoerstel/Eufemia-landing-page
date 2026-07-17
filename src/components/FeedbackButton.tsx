@@ -62,6 +62,17 @@ const FeedbackButton: React.FC = () => {
     setTimeout(reset, 200);
   };
 
+  // Close on Escape so the panel (and its full-screen click-away backdrop) can't
+  // get stuck open and silently block clicks across the page.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const submit = () => {
     if (!message.trim()) return;
     addFeedback({
