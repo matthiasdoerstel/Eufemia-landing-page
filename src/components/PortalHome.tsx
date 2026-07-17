@@ -95,7 +95,7 @@ const moreHref: Record<string, string> = {
   Images: "https://eufemia.dnb.no/uilib/usage/best-practices/for-designers/",
   Animations: "https://eufemia.dnb.no/uilib/usage/animation/",
   Icons: "/icons/",
-  Theming: "https://eufemia.dnb.no/uilib/usage/customisation/theming/",
+  Theming: "/theming/",
   Grid: "https://eufemia.dnb.no/uilib/usage/layout/grid/",
   Tokens: "https://eufemia.dnb.no/uilib/usage/customisation/design-tokens/",
 };
