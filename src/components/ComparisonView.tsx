@@ -1,53 +1,8 @@
 import React from "react";
 import { useTheme } from "../context/ThemeContext";
-
-interface Block {
-  _key: string;
-  _type: string;
-  style?: string;
-  children?: Array<{
-    _key: string;
-    _type: string;
-    text?: string;
-    marks?: string[];
-  }>;
-  asset?: {
-    _ref?: string;
-    url?: string;
-  };
-}
-
-interface ComponentData {
-  id: string;
-  name: string;
-  platform: string;
-  shortDescription: string | null;
-  _rawDocumentation: Block[] | null;
-  _rawPreviewImage?: {
-    light?: {
-      asset?: {
-        _ref?: string;
-        url?: string;
-      };
-    };
-    dark?: {
-      asset?: {
-        _ref?: string;
-        url?: string;
-      };
-    };
-  } | null;
-  guidelines?: string;
-  usage?: string;
-  dosAndDonts?: string;
-  accessibilityInfo?: string;
-  figmaLink: string | null;
-  githubLink: string | null;
-  status?: string;
-  slug: {
-    current: string;
-  };
-}
+import { font, radius } from "../theme/tokens";
+import type { ColorTokens } from "../theme/tokens";
+import { Block, ComponentData } from "../data/sanity-component";
 
 interface Props {
   first: ComponentData;
@@ -61,7 +16,7 @@ const buildImageUrl = (ref: string) => {
 };
 
 // Render portable text blocks
-const renderBlock = (block: Block, index: number, isDark: boolean) => {
+const renderBlock = (block: Block, index: number, colors: ColorTokens) => {
   // Handle images
   if (block._type === "image" && block.asset?._ref) {
     const imageUrl = buildImageUrl(block.asset._ref);
@@ -70,9 +25,9 @@ const renderBlock = (block: Block, index: number, isDark: boolean) => {
         key={index}
         style={{
           margin: "24px 0",
-          borderRadius: "8px",
+          borderRadius: radius.md,
           overflow: "hidden",
-          border: `1px solid ${isDark ? "#333" : "#e8e8e8"}`,
+          border: `1px solid ${colors.strokeSubtle}`,
         }}
       >
         <img
@@ -102,10 +57,10 @@ const renderBlock = (block: Block, index: number, isDark: boolean) => {
         <code
           key={i}
           style={{
-            background: isDark ? "#222" : "#f5f5f5",
+            background: colors.surfaceAlt,
             padding: "2px 6px",
-            borderRadius: "4px",
-            fontSize: "14px",
+            borderRadius: radius.sm,
+            fontSize: `${font.size.small}px`,
           }}
         >
           {child.text}
@@ -118,25 +73,25 @@ const renderBlock = (block: Block, index: number, isDark: boolean) => {
   switch (block.style) {
     case "h2":
       return (
-        <h2 key={index} style={{ fontSize: "20px", fontWeight: 600, marginTop: "32px", marginBottom: "16px" }}>
+        <h2 key={index} style={{ fontFamily: font.family, fontSize: `${font.size.lead}px`, fontWeight: 500, marginTop: "32px", marginBottom: "16px", color: colors.text }}>
           {text}
         </h2>
       );
     case "h3":
       return (
-        <h3 key={index} style={{ fontSize: "18px", fontWeight: 600, marginTop: "24px", marginBottom: "12px" }}>
+        <h3 key={index} style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, fontWeight: 500, marginTop: "24px", marginBottom: "12px", color: colors.text }}>
           {text}
         </h3>
       );
     case "h4":
       return (
-        <h4 key={index} style={{ fontSize: "16px", fontWeight: 600, marginTop: "16px", marginBottom: "8px" }}>
+        <h4 key={index} style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, fontWeight: 500, marginTop: "16px", marginBottom: "8px", color: colors.text }}>
           {text}
         </h4>
       );
     default:
       return (
-        <p key={index} style={{ fontSize: "15px", lineHeight: 1.6, color: isDark ? "#999" : "#555", marginBottom: "16px" }}>
+        <p key={index} style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: 1.6, color: colors.textMuted, marginBottom: "16px" }}>
           {text}
         </p>
       );
@@ -158,10 +113,54 @@ const GitHubIcon = () => (
   </svg>
 );
 
-const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = ({ component, isDark }) => {
+const ResourceLink: React.FC<{ href: string; label: string; icon: React.ReactNode; colors: ColorTokens }> = ({ href, label, icon, colors }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "6px",
+      padding: "6px 12px",
+      background: colors.surface,
+      border: `1px solid ${colors.stroke}`,
+      borderRadius: radius.md,
+      fontFamily: font.family,
+      fontSize: `${font.size.small}px`,
+      fontWeight: 500,
+      color: colors.text,
+      textDecoration: "none",
+      transition: "border-color 0.2s, color 0.2s",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.borderColor = colors.accent;
+      e.currentTarget.style.color = colors.accent;
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.borderColor = colors.stroke;
+      e.currentTarget.style.color = colors.text;
+    }}
+  >
+    {icon}
+    {label}
+  </a>
+);
+
+// Shared section wrapper (heading + body) with a bottom divider.
+const Section: React.FC<{ title: string; children: React.ReactNode; colors: ColorTokens; preWrap?: boolean }> = ({ title, children, colors, preWrap }) => (
+  <div style={{ marginBottom: "24px", paddingBottom: "24px", borderBottom: `1px solid ${colors.strokeSubtle}` }}>
+    <h3 style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, fontWeight: 500, marginTop: 0, marginBottom: "12px", color: colors.text }}>
+      {title}
+    </h3>
+    <p style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: 1.6, color: colors.textMuted, whiteSpace: preWrap ? "pre-wrap" : "normal", margin: 0 }}>
+      {children}
+    </p>
+  </div>
+);
+
+const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean; colors: ColorTokens }> = ({ component, isDark, colors }) => {
   const platformLabel = component.platform === "ios" ? "iOS" : "Android";
-  const platformBg = component.platform === "ios" ? "#e3f2fd" : "#e8f5e9";
-  const platformColor = component.platform === "ios" ? "#1565c0" : "#2e7d32";
 
   return (
     <div style={{ padding: "0 20px" }}>
@@ -172,11 +171,12 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
             style={{
               display: "inline-block",
               padding: "4px 10px",
-              background: platformBg,
-              borderRadius: "4px",
-              fontSize: "12px",
+              background: colors.selectedSubtle,
+              borderRadius: radius.sm,
+              fontFamily: font.family,
+              fontSize: `${font.size.small}px`,
               fontWeight: 500,
-              color: platformColor,
+              color: colors.accent,
             }}
           >
             {platformLabel}
@@ -186,22 +186,23 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
               style={{
                 display: "inline-block",
                 padding: "4px 10px",
-                background: "#f0f0f0",
-                borderRadius: "4px",
-                fontSize: "12px",
+                background: colors.surfaceAlt,
+                borderRadius: radius.sm,
+                fontFamily: font.family,
+                fontSize: `${font.size.small}px`,
                 fontWeight: 500,
-                color: "#666",
+                color: colors.textMuted,
               }}
             >
               {component.status}
             </div>
           )}
         </div>
-        <h2 style={{ fontSize: "24px", fontWeight: 700, color: isDark ? "#fff" : "#1c1c1e", margin: "0 0 12px 0" }}>
+        <h2 style={{ fontFamily: font.family, fontSize: `${font.size.headingLg}px`, fontWeight: 500, color: colors.text, margin: "0 0 12px 0" }}>
           {component.name}
         </h2>
         {component.shortDescription && (
-          <p style={{ fontSize: "15px", lineHeight: 1.6, color: isDark ? "#999" : "#555", margin: 0 }}>
+          <p style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: 1.6, color: colors.textMuted, margin: 0 }}>
             {component.shortDescription}
           </p>
         )}
@@ -213,9 +214,9 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
         <div
           style={{
             marginBottom: "24px",
-            borderRadius: "8px",
+            borderRadius: radius.md,
             overflow: "hidden",
-            border: `1px solid ${isDark ? "#333" : "#e8e8e8"}`,
+            border: `1px solid ${colors.strokeSubtle}`,
           }}
         >
           {isDark && component._rawPreviewImage?.dark?.asset && (
@@ -251,131 +252,45 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
             gap: "12px",
             marginBottom: "24px",
             paddingBottom: "24px",
-            borderBottom: `1px solid ${isDark ? "#333" : "#e8e8e8"}`,
+            borderBottom: `1px solid ${colors.strokeSubtle}`,
           }}
         >
           {component.figmaLink && (
-            <a
-              href={component.figmaLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "6px 12px",
-                background: isDark ? "#1c1c1e" : "#fff",
-                border: `1px solid ${isDark ? "#333" : "#e0e0e0"}`,
-                borderRadius: "6px",
-                fontSize: "13px",
-                fontWeight: 500,
-                color: isDark ? "#ddd" : "#333",
-                textDecoration: "none",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = isDark ? "#a5e1d2" : "#007272";
-                e.currentTarget.style.color = isDark ? "#a5e1d2" : "#007272";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#e0e0e0";
-                e.currentTarget.style.color = "#333";
-              }}
-            >
-              <FigmaIcon />
-              Figma
-            </a>
+            <ResourceLink href={component.figmaLink} label="Figma" icon={<FigmaIcon />} colors={colors} />
           )}
           {component.githubLink && (
-            <a
-              href={component.githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "6px 12px",
-                background: isDark ? "#1c1c1e" : "#fff",
-                border: `1px solid ${isDark ? "#333" : "#e0e0e0"}`,
-                borderRadius: "6px",
-                fontSize: "13px",
-                fontWeight: 500,
-                color: isDark ? "#ddd" : "#333",
-                textDecoration: "none",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = isDark ? "#a5e1d2" : "#007272";
-                e.currentTarget.style.color = isDark ? "#a5e1d2" : "#007272";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#e0e0e0";
-                e.currentTarget.style.color = "#333";
-              }}
-            >
-              <GitHubIcon />
-              GitHub
-            </a>
+            <ResourceLink href={component.githubLink} label="GitHub" icon={<GitHubIcon />} colors={colors} />
           )}
         </div>
       )}
 
       {/* Guidelines */}
       {component.guidelines && (
-        <div style={{ marginBottom: "24px", paddingBottom: "24px", borderBottom: `1px solid ${isDark ? "#333" : "#e8e8e8"}` }}>
-          <h3 style={{ fontSize: "16px", fontWeight: 600, marginTop: 0, marginBottom: "12px", color: isDark ? "#fff" : "#1c1c1e" }}>
-            Guidelines
-          </h3>
-          <p style={{ fontSize: "14px", lineHeight: 1.6, color: isDark ? "#999" : "#555", margin: 0 }}>
-            {component.guidelines}
-          </p>
-        </div>
+        <Section title="Guidelines" colors={colors}>{component.guidelines}</Section>
       )}
 
       {/* Usage */}
       {component.usage && (
-        <div style={{ marginBottom: "24px", paddingBottom: "24px", borderBottom: `1px solid ${isDark ? "#333" : "#e8e8e8"}` }}>
-          <h3 style={{ fontSize: "16px", fontWeight: 600, marginTop: 0, marginBottom: "12px", color: isDark ? "#fff" : "#1c1c1e" }}>
-            Usage
-          </h3>
-          <p style={{ fontSize: "14px", lineHeight: 1.6, color: isDark ? "#999" : "#555", whiteSpace: "pre-wrap", margin: 0 }}>
-            {component.usage}
-          </p>
-        </div>
+        <Section title="Usage" colors={colors} preWrap>{component.usage}</Section>
       )}
 
       {/* Do's and Don'ts */}
       {component.dosAndDonts && (
-        <div style={{ marginBottom: "24px", paddingBottom: "24px", borderBottom: `1px solid ${isDark ? "#333" : "#e8e8e8"}` }}>
-          <h3 style={{ fontSize: "16px", fontWeight: 600, marginTop: 0, marginBottom: "12px", color: isDark ? "#fff" : "#1c1c1e" }}>
-            Do's and Don'ts
-          </h3>
-          <p style={{ fontSize: "14px", lineHeight: 1.6, color: isDark ? "#999" : "#555", whiteSpace: "pre-wrap", margin: 0 }}>
-            {component.dosAndDonts}
-          </p>
-        </div>
+        <Section title="Do's and Don'ts" colors={colors} preWrap>{component.dosAndDonts}</Section>
       )}
 
       {/* Accessibility */}
       {component.accessibilityInfo && (
-        <div style={{ marginBottom: "24px", paddingBottom: "24px", borderBottom: `1px solid ${isDark ? "#333" : "#e8e8e8"}` }}>
-          <h3 style={{ fontSize: "16px", fontWeight: 600, marginTop: 0, marginBottom: "12px", color: isDark ? "#fff" : "#1c1c1e" }}>
-            Accessibility
-          </h3>
-          <p style={{ fontSize: "14px", lineHeight: 1.6, color: isDark ? "#999" : "#555", whiteSpace: "pre-wrap", margin: 0 }}>
-            {component.accessibilityInfo}
-          </p>
-        </div>
+        <Section title="Accessibility" colors={colors} preWrap>{component.accessibilityInfo}</Section>
       )}
 
       {/* Documentation */}
       {component._rawDocumentation && component._rawDocumentation.length > 0 && (
         <div>
-          <h3 style={{ fontSize: "16px", fontWeight: 600, marginTop: 0, marginBottom: "12px", color: isDark ? "#fff" : "#1c1c1e" }}>
+          <h3 style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, fontWeight: 500, marginTop: 0, marginBottom: "12px", color: colors.text }}>
             Documentation
           </h3>
-          {component._rawDocumentation.map((block, i) => renderBlock(block, i, isDark))}
+          {component._rawDocumentation.map((block, i) => renderBlock(block, i, colors))}
         </div>
       )}
     </div>
@@ -383,15 +298,15 @@ const ComponentCard: React.FC<{ component: ComponentData; isDark: boolean }> = (
 };
 
 const ComparisonView: React.FC<Props> = ({ first, second }) => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { theme, colors } = useTheme();
+  const isDark = theme === "dark";
   return (
     <div
       style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "40px",
-        borderTop: `1px solid ${isDark ? "#333" : "#e8e8e8"}`,
+        borderTop: `1px solid ${colors.strokeSubtle}`,
         paddingTop: "32px",
         position: "relative",
       }}
@@ -404,13 +319,13 @@ const ComparisonView: React.FC<Props> = ({ first, second }) => {
           top: 0,
           bottom: 0,
           width: "1px",
-          background: "linear-gradient(to bottom, transparent, #d0e8e8, transparent)",
+          background: `linear-gradient(to bottom, transparent, ${colors.strokeSubtle}, transparent)`,
           transform: "translateX(-50%)",
         }}
       />
 
-      <ComponentCard component={first} isDark={isDark} />
-      <ComponentCard component={second} isDark={isDark} />
+      <ComponentCard component={first} isDark={isDark} colors={colors} />
+      <ComponentCard component={second} isDark={isDark} colors={colors} />
     </div>
   );
 };

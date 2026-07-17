@@ -11,17 +11,7 @@ const components: OverviewComponent[] = [
 ];
 
 const WebPage: React.FC = () => (
-  <PlatformOverview
-    platform="web"
-    title="Web Components"
-    intro={[
-      "Components are the core of any design system, crafted to tackle specific UI challenges. Eufemia Web is a comprehensive set of accessible React components, allowing you to create consistent DNB experiences across the web.",
-      "Just getting started? Take a look at the start designing and start developing guides.",
-    ]}
-    figmaUrl="https://www.figma.com/@dnb"
-    githubUrl="https://github.com/dnbexperience/eufemia"
-    components={components}
-  />
+  <PlatformOverview platform="web" components={components} />
 );
 
 export default WebPage;

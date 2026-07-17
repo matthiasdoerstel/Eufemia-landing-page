@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
 import PageShell from "./PageShell";
+import { CmsComponent } from "../data/sanity-component";
 
 export type PlatformKey = "web" | "ios" | "android";
 
@@ -14,12 +15,56 @@ export interface OverviewComponent {
   slug: string | null;
 }
 
-interface PlatformOverviewProps {
-  platform: PlatformKey;
+interface PlatformMeta {
   title: string;
   intro: string[];
   figmaUrl: string;
   githubUrl: string;
+}
+
+// Per-platform copy + resource links. Pages no longer pass these in — they only
+// supply the platform key and the component list.
+export const PLATFORM_META: Record<PlatformKey, PlatformMeta> = {
+  web: {
+    title: "Web Components",
+    intro: [
+      "Components are the core of any design system, crafted to tackle specific UI challenges. Eufemia Web is a comprehensive set of accessible React components, allowing you to create consistent DNB experiences across the web.",
+      "Just getting started? Take a look at the start designing and start developing guides.",
+    ],
+    figmaUrl: "https://www.figma.com/@dnb",
+    githubUrl: "https://github.com/dnbexperience/eufemia",
+  },
+  ios: {
+    title: "iOS Components",
+    intro: [
+      "Components are the core of any design system, crafted to tackle specific UI challenges. Eufemia Native iOS is a tailored set of components that blends with Apple's native elements, allowing you to create one-of-a-kind DNB experiences that feel right at home on the platform.",
+      "Just getting started? Take a look at the start designing and start developing guides.",
+    ],
+    figmaUrl: "https://www.figma.com/@dnb",
+    githubUrl: "https://github.com/dnbexperience/eufemia-native",
+  },
+  android: {
+    title: "Android Components",
+    intro: [
+      "Components are the core of any design system, crafted to tackle specific UI challenges. Eufemia Native Android is a tailored set of components that blends with Material Design, allowing you to create one-of-a-kind DNB experiences that feel right at home on the platform.",
+      "Just getting started? Take a look at the start designing and start developing guides.",
+    ],
+    figmaUrl: "https://www.figma.com/@dnb",
+    githubUrl: "https://github.com/dnbexperience/eufemia-native",
+  },
+};
+
+// Map raw Sanity component nodes to the overview card shape.
+export const mapCmsComponents = (nodes: CmsComponent[] | null | undefined): OverviewComponent[] =>
+  (nodes || []).map((c) => ({
+    id: c.id,
+    name: c.name,
+    description: c.shortDescription,
+    slug: c.slug?.current ?? null,
+  }));
+
+interface PlatformOverviewProps {
+  platform: PlatformKey;
   components: OverviewComponent[];
 }
 
@@ -46,9 +91,10 @@ const GithubLogo = ({ color }: { color: string }) => (
   </svg>
 );
 
-const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, title, intro, figmaUrl, githubUrl, components }) => {
+const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, components }) => {
   const { colors } = useTheme();
   const [hover, setHover] = useState<string | null>(null);
+  const { title, intro, figmaUrl, githubUrl } = PLATFORM_META[platform];
 
   const divider = (
     <div style={{ height: "1px", width: "100%", background: colors.strokeSubtle }} />

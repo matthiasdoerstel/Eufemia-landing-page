@@ -1,42 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
+import { graphql, navigate, useStaticQuery } from "gatsby";
 import Layout from "../../components/Layout";
 import ComparisonView from "../../components/ComparisonView";
 import { useTheme } from "../../context/ThemeContext";
 import { font, radius } from "../../theme/tokens";
 import PageShell from "../../components/PageShell";
-
-interface ComponentData {
-  id: string;
-  name: string;
-  platform: string;
-  shortDescription: string | null;
-  _rawDocumentation: any[] | null;
-  _rawPreviewImage?: {
-    light?: {
-      asset?: {
-        _ref?: string;
-        url?: string;
-      };
-    };
-    dark?: {
-      asset?: {
-        _ref?: string;
-        url?: string;
-      };
-    };
-  } | null;
-  guidelines?: string;
-  usage?: string;
-  dosAndDonts?: string;
-  accessibilityInfo?: string;
-  figmaLink: string | null;
-  githubLink: string | null;
-  status?: string;
-  slug: {
-    current: string;
-  };
-}
+import { ComponentData } from "../../data/sanity-component";
 
 // Note: Static components removed - only CMS components are compared now
 // The static iOS/Android components in SearchModal are just for search/navigation,
@@ -49,104 +18,74 @@ const ComparisonPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchComponents = async () => {
-      try {
-        const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
-        const firstParam = params.get("first");
-        const secondParam = params.get("second");
-
-        if (!firstParam || !secondParam) {
-          setError("Please provide both components using: ?first=platform/slug&second=platform/slug");
-          setLoading(false);
-          return;
+  // All Sanity components are baked in at build time; the ?first=/?second=
+  // params select which two to compare on the client.
+  const data = useStaticQuery(graphql`
+    query ComparisonComponentsQuery {
+      allSanityComponent {
+        nodes {
+          id
+          name
+          platform
+          shortDescription
+          _rawDocumentation
+          _rawPreviewImage
+          guidelines
+          usage
+          dosAndDonts
+          accessibilityInfo
+          status
+          figmaLink
+          githubLink
+          slug {
+            current
+          }
         }
-
-        // Parse the params (format: platform/slug)
-        const [firstPlatform, firstSlug] = firstParam.split("/");
-        const [secondPlatform, secondSlug] = secondParam.split("/");
-
-        if (!firstPlatform || !firstSlug || !secondPlatform || !secondSlug) {
-          setError("Invalid URL format. Use: ?first=platform/slug&second=platform/slug");
-          setLoading(false);
-          return;
-        }
-
-        // Query Gatsby's GraphQL API for all components
-        const response = await fetch(`/___graphql`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: `
-              {
-                allSanityComponent {
-                  nodes {
-                    id
-                    name
-                    platform
-                    shortDescription
-                    _rawDocumentation
-                    _rawPreviewImage
-                    guidelines
-                    usage
-                    dosAndDonts
-                    accessibilityInfo
-                    status
-                    figmaLink
-                    githubLink
-                    slug {
-                      current
-                    }
-                  }
-                }
-              }
-            `,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (data.errors) {
-          console.error("GraphQL errors:", data.errors);
-          setError(`Failed to fetch components: ${data.errors[0]?.message || "Unknown error"}`);
-          setLoading(false);
-          return;
-        }
-
-        // Filter components client-side (CMS only)
-        const allComponents = data.data?.allSanityComponent?.nodes || [];
-        console.log("All components:", allComponents);
-        console.log("Looking for:", { firstPlatform, firstSlug, secondPlatform, secondSlug });
-
-        const firstComponent = allComponents.find(
-          (c: any) => c.platform === firstPlatform && c.slug.current === firstSlug
-        );
-        const secondComponent = allComponents.find(
-          (c: any) => c.platform === secondPlatform && c.slug.current === secondSlug
-        );
-
-        console.log("Found components:", { firstComponent, secondComponent });
-
-        if (!firstComponent || !secondComponent) {
-          setError(`One or both components not found. Looking for: ${firstPlatform}/${firstSlug} and ${secondPlatform}/${secondSlug}. Only CMS components can be compared.`);
-          setLoading(false);
-          return;
-        }
-
-        setFirst(firstComponent);
-        setSecond(secondComponent);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching comparison data:", err);
-        setError("Failed to load comparison");
-        setLoading(false);
       }
-    };
+    }
+  `);
 
-    fetchComponents();
-  }, []);
+  useEffect(() => {
+    const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+    const firstParam = params.get("first");
+    const secondParam = params.get("second");
+
+    if (!firstParam || !secondParam) {
+      setError("Please provide both components using: ?first=platform/slug&second=platform/slug");
+      setLoading(false);
+      return;
+    }
+
+    // Parse the params (format: platform/slug)
+    const [firstPlatform, firstSlug] = firstParam.split("/");
+    const [secondPlatform, secondSlug] = secondParam.split("/");
+
+    if (!firstPlatform || !firstSlug || !secondPlatform || !secondSlug) {
+      setError("Invalid URL format. Use: ?first=platform/slug&second=platform/slug");
+      setLoading(false);
+      return;
+    }
+
+    // Match against the build-time component set (CMS only).
+    const allComponents: ComponentData[] = data?.allSanityComponent?.nodes || [];
+
+    const firstComponent = allComponents.find(
+      (c) => c.platform === firstPlatform && c.slug.current === firstSlug
+    );
+    const secondComponent = allComponents.find(
+      (c) => c.platform === secondPlatform && c.slug.current === secondSlug
+    );
+
+    if (!firstComponent || !secondComponent) {
+      setError(`One or both components not found. Looking for: ${firstPlatform}/${firstSlug} and ${secondPlatform}/${secondSlug}. Only CMS components can be compared.`);
+      setLoading(false);
+      return;
+    }
+
+    setFirst(firstComponent);
+    setSecond(secondComponent);
+    setLoading(false);
+  }, [data]);
 
   if (loading) {
     return (
