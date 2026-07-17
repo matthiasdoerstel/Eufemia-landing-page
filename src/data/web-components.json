@@ -1,8 +1,8 @@
 {
-  "generated": "2026-01-15T18:33:59.660Z",
+  "generated": "2026-07-17T09:48:02.680Z",
   "source": "https://github.com/dnbexperience/eufemia",
   "baseUrl": "https://eufemia.dnb.no/uilib/components",
-  "count": 52,
+  "count": 56,
   "components": [
     {
       "slug": "accordion",
@@ -141,6 +141,14 @@
       "external": true
     },
     {
+      "slug": "filter",
+      "name": "Filter",
+      "description": "filter component",
+      "path": "https://eufemia.dnb.no/uilib/components/filter/",
+      "category": "Web Components",
+      "external": true
+    },
+    {
       "slug": "form-label",
       "name": "Form Label",
       "description": "Accessible labels for form inputs",
@@ -229,6 +237,14 @@
       "external": true
     },
     {
+      "slug": "list",
+      "name": "List",
+      "description": "list component",
+      "path": "https://eufemia.dnb.no/uilib/components/list/",
+      "category": "Web Components",
+      "external": true
+    },
+    {
       "slug": "list-format",
       "name": "List Format",
       "description": "Format lists with proper separators",
@@ -241,6 +257,14 @@
       "name": "Logo",
       "description": "DNB logo component",
       "path": "https://eufemia.dnb.no/uilib/components/logo/",
+      "category": "Web Components",
+      "external": true
+    },
+    {
+      "slug": "menu",
+      "name": "Menu",
+      "description": "menu component",
+      "path": "https://eufemia.dnb.no/uilib/components/menu/",
       "category": "Web Components",
       "external": true
     },
@@ -321,6 +345,14 @@
       "name": "Slider",
       "description": "Select a value from a range",
       "path": "https://eufemia.dnb.no/uilib/components/slider/",
+      "category": "Web Components",
+      "external": true
+    },
+    {
+      "slug": "stat",
+      "name": "Stat",
+      "description": "stat component",
+      "path": "https://eufemia.dnb.no/uilib/components/stat/",
       "category": "Web Components",
       "external": true
     },
