@@ -22,111 +22,69 @@ const CheckIcon = ({ color }: { color: string }) => (
 // tokens and an accessible "Aa" sample. Uses live theme tokens, so it adapts to
 // light/dark and the brand accent. Animates in with a staggered fan-out and a
 // gentle float; respects prefers-reduced-motion.
-const HERO_SVG = `<svg viewBox="0 0 1055 584" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Eufemia brand gradient" style="display:block;height:auto">
-<g clip-path="url(#clip0_5369_3153)">
-<rect width="1055" height="584" transform="translate(1055 584) rotate(180)" fill="white"/>
-<g filter="url(#filter1_f_5369_3153)">
-<ellipse cx="641.329" cy="-16.7907" rx="861.328" ry="358.209" transform="rotate(180 641.329 -16.7907)" fill="#BCE5AC"/>
-</g>
-<g filter="url(#filter2_f_5369_3153)">
-<ellipse cx="643.484" cy="50.1957" rx="479.484" ry="173.196" transform="rotate(180 643.484 50.1957)" fill="#0D4637"/>
-</g>
-<g filter="url(#filter3_f_5369_3153)" style="mix-blend-mode:plus-lighter">
-<ellipse cx="982.822" cy="28.8046" rx="861.328" ry="173.196" transform="rotate(180 982.822 28.8046)" fill="white"/>
-</g>
-<g clip-path="url(#clip1_5369_3153)">
-<rect width="3840" height="2160" transform="translate(-1393 -788)" fill="white"/>
-<g filter="url(#filter5_f_5369_3153)">
-<path d="M3691.5 -257.388C3691.5 -10.2403 1584.86 1519.61 736 1519.61C-112.862 1519.61 -3928 2309.76 -3928 2062.61C-3928 1815.47 -1546.5 193.112 736 624.612C2667.5 884.111 3691.5 -504.535 3691.5 -257.388Z" fill="url(#paint0_linear_5369_3153)"/>
-</g>
-<g filter="url(#filter6_f_5369_3153)" style="mix-blend-mode:overlay">
-<path d="M196.94 325.3L-766.5 677L-1062.26 755.028C-1260.37 807.291 -1361.26 1027.61 -1271.42 1211.74C-1167.88 1423.94 -879.747 1458.38 -729.119 1276.54L-685.649 1224.07C-615.563 1139.47 -511.415 1090.5 -401.551 1090.5H-140.95C-8.14924 1090.5 107.617 1180.86 139.862 1309.69C169.862 1429.54 272.629 1517.15 395.723 1527.8L953.649 1576.07C1244.5 1601.23 1503.92 1393.74 1543.29 1104.47C1572.07 892.941 1475.27 683.976 1295.31 569.148L1061.33 419.859C803.65 255.443 484.073 220.484 196.94 325.3Z" fill="#390014"/>
-</g>
-<g filter="url(#filter7_f_5369_3153)" style="mix-blend-mode:overlay">
-<ellipse cx="1979" cy="718" rx="1219" ry="259" fill="#031117"/>
-</g>
-</g>
-<g clip-path="url(#clip2_5369_3153)">
-<rect width="1155.56" height="650" transform="translate(-29.9999 -49.9999)" fill="#031117"/>
-<g filter="url(#filter9_f_5369_3153)">
-<ellipse cx="547.777" cy="492.118" rx="668.958" ry="278.206" fill="#031117"/>
-</g>
-<g filter="url(#filter10_f_5369_3153)">
-<ellipse cx="479.468" cy="409.514" rx="646.088" ry="134.514" fill="#390014"/>
-</g>
-<g filter="url(#filter11_f_5369_3153)" style="mix-blend-mode:overlay">
-<path d="M1223.36 262.963C1223.36 337.253 923.853 397.477 554.398 397.477C184.942 397.477 -114.56 337.253 -114.56 262.963C-114.56 188.673 184.942 128.449 554.398 128.449C923.853 128.449 1223.36 188.673 1223.36 262.963Z" fill="white"/>
-</g>
-</g>
-</g>
-<defs>
-<filter id="filter1_f_5369_3153" x="-422.72" y="-577.72" width="2128.1" height="1121.86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="101.36" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter2_f_5369_3153" x="-38.7202" y="-325.72" width="1364.41" height="751.832" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="101.36" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter3_f_5369_3153" x="-81.227" y="-347.111" width="2128.1" height="751.832" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="101.36" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter5_f_5369_3153" x="-4275.2" y="-634.2" width="8313.9" height="3091.89" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="173.6" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter6_f_5369_3153" x="-1651.7" y="-81.4059" width="3547.2" height="2006.74" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="173.6" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter7_f_5369_3153" x="412.8" y="111.8" width="3132.4" height="1212.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="173.6" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter9_f_5369_3153" x="-278.626" y="56.4678" width="1652.81" height="871.301" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="78.7222" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter10_f_5369_3153" x="-324.064" y="117.556" width="1607.06" height="583.917" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="78.7222" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<filter id="filter11_f_5369_3153" x="-272.005" y="-28.9953" width="1652.81" height="583.916" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="78.7222" result="effect1_foregroundBlur_5369_3153"/>
-</filter>
-<linearGradient id="paint0_linear_5369_3153" x1="-3928" y1="911.745" x2="3691.5" y2="911.745" gradientUnits="userSpaceOnUse">
-<stop stop-color="#031117"/>
-<stop offset="1" stop-color="#390014"/>
-</linearGradient>
-<clipPath id="clip0_5369_3153">
-<rect width="1055" height="584" fill="white" transform="translate(1055 584) rotate(180)"/>
-</clipPath>
-<clipPath id="clip1_5369_3153">
-<rect width="3840" height="2160" fill="white" transform="translate(-1393 -788)"/>
-</clipPath>
-<clipPath id="clip2_5369_3153">
-<rect width="1155.56" height="650" fill="white" transform="translate(-29.9999 -49.9999)"/>
-</clipPath>
-</defs>
-</svg>`;
+const ThemingHeroGraphic: React.FC = () => {
+  const { colors } = useTheme();
+  const [playKey, setPlayKey] = React.useState(0);
+  return (
+    <svg
+      width="100%"
+      viewBox="0 0 360 260"
+      fill="none"
+      role="img"
+      aria-label="Themes and brands translated into an accessible palette"
+      onClick={() => setPlayKey((k) => k + 1)}
+      style={{ maxWidth: "360px", cursor: "pointer" }}
+    >
+      <title>Replay animation</title>
+      <style>{`
+        .thm-card { transform-box: fill-box; transform-origin: center; opacity: 0;
+          animation: thm-in 0.65s cubic-bezier(.2,.7,.2,1) forwards; }
+        .thm-c1 { --rot: -10deg; animation-delay: .05s; }
+        .thm-c2 { --rot: -4deg;  animation-delay: .16s; }
+        .thm-c3 { --rot: 4deg;   animation-delay: .28s; }
+        @keyframes thm-in {
+          from { opacity: 0; transform: translateY(20px) scale(.94) rotate(0deg); }
+          to   { opacity: 1; transform: translateY(0) scale(1) rotate(var(--rot)); }
+        }
+        .thm-badge { transform-box: fill-box; transform-origin: center; opacity: 0;
+          animation: thm-pop .4s cubic-bezier(.2,.9,.3,1.4) forwards; animation-delay: .95s; }
+        @keyframes thm-pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+        @media (prefers-reduced-motion: reduce) {
+          .thm-card { opacity: 1; animation: none; transform: rotate(var(--rot)); }
+          .thm-badge { animation: none; opacity: 1; }
+        }
+      `}</style>
 
-const ThemingHeroGraphic: React.FC = () => (
-  <div
-    style={{ width: "100%", maxWidth: "560px", borderRadius: radius.lg, overflow: "hidden", lineHeight: 0 }}
-    dangerouslySetInnerHTML={{ __html: HERO_SVG }}
-  />
-);
+      <g className="thm-float" key={playKey}>
+        {/* Back cards — the other brands/themes in the stack */}
+        <g className="thm-card thm-c1">
+          <rect x="108" y="46" width="150" height="168" rx="16" fill={colors.surfaceAlt} stroke={colors.strokeSubtle} strokeWidth="1.5" />
+        </g>
+        <g className="thm-card thm-c2">
+          <rect x="108" y="46" width="150" height="168" rx="16" fill={colors.selectedSubtle} />
+        </g>
+
+        {/* Front card */}
+        <g className="thm-card thm-c3">
+          <rect x="108" y="46" width="150" height="168" rx="16" fill={colors.surface} stroke={colors.strokeSubtle} strokeWidth="1.5" />
+          {/* brand accent dot */}
+          <circle cx="132" cy="76" r="12" fill={colors.accent} />
+          {/* token lines */}
+          <rect x="152" y="70" width="78" height="10" rx="5" fill={colors.strokeSubtle} />
+          <rect x="124" y="102" width="110" height="9" rx="4.5" fill={colors.strokeSubtle} />
+          <rect x="124" y="120" width="72" height="9" rx="4.5" fill={colors.strokeSubtle} />
+          {/* accessible contrast sample */}
+          <rect x="124" y="150" width="110" height="46" rx="10" fill={colors.accent} />
+          <text x="140" y="181" fontFamily="DNB, sans-serif" fontWeight="500" fontSize="24" fill={colors.pageBg}>Aa</text>
+          <g className="thm-badge">
+            <circle cx="212" cy="173" r="12" fill={colors.surface} stroke={colors.strokeSubtle} strokeWidth="1" />
+            <path d="M206.5 173.5L210.5 177.5L218 169.5" stroke={colors.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+};
 
 const points = [
   {
