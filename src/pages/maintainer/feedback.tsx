@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "gatsby";
+import { Breadcrumb } from "@dnb/eufemia";
 import Layout from "../../components/Layout";
 import PageShell from "../../components/PageShell";
+import EufemiaThemeScope from "../../components/EufemiaThemeScope";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
 import { font, radius } from "../../theme/tokens";
@@ -135,32 +136,24 @@ const MaintainerFeedbackPage: React.FC = () => {
     refresh();
   };
 
-  const backLink = (
-    <Link
-      to="/maintainer"
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "6px",
-        alignSelf: "flex-start",
-        fontFamily: font.family,
-        fontSize: `${font.size.small}px`,
-        color: colors.textMuted,
-        textDecoration: "none",
-      }}
-    >
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-        <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-      Maintainer tools
-    </Link>
+  const breadcrumb = (
+    <EufemiaThemeScope>
+      <Breadcrumb
+        variant="responsive"
+        navText="Page hierarchy"
+        data={[
+          { text: "Maintainer tools", href: "/maintainer" },
+          { text: "Feedback" },
+        ]}
+      />
+    </EufemiaThemeScope>
   );
 
   return (
     <Layout currentPlatform="web" currentPath="/maintainer/feedback">
       <PageShell contentStyle={{ gap: "24px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          {backLink}
+          {breadcrumb}
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
             <h1 style={h1}>
               Feedback

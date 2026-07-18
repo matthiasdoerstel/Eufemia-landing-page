@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { Link } from "gatsby";
-import { Button, Icon } from "@dnb/eufemia";
+import { Breadcrumb, Button, Icon } from "@dnb/eufemia";
 import { copy as copyIcon } from "@dnb/eufemia/icons";
 import { IsolatedStyleScope, Theme } from "@dnb/eufemia/shared";
 import { Highlight, themes } from "prism-react-renderer";
@@ -8,6 +7,7 @@ import { LiveContext, LiveEditor, LiveError, LivePreview, LiveProvider } from "r
 import Layout from "../../../../components/Layout";
 import PageShell from "../../../../components/PageShell";
 import InPageRail from "../../../../components/InPageRail";
+import EufemiaThemeScope from "../../../../components/EufemiaThemeScope";
 import { useTheme } from "../../../../context/ThemeContext";
 import { usePreviewStyles } from "../../../../hooks/usePreviewStyles";
 import { font, radius } from "../../../../theme/tokens";
@@ -390,13 +390,17 @@ const ButtonDocsPage: React.FC = () => {
   return (
     <Layout currentPlatform="web" currentPath="/docs/web/components">
       <PageShell contentStyle={{ gap: "56px" }} rail={<InPageRail items={railItems} />}>
-        <nav aria-label="Breadcrumb" style={{ display: "flex", flexWrap: "wrap", gap: "8px", color: colors.textMuted, fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px` }}>
-          <Link to="/docs/web" style={{ color: colors.accent, textDecoration: "none" }}>Web</Link>
-          <span aria-hidden>/</span>
-          <Link to="/docs/web" style={{ color: colors.textMuted, textDecoration: "none" }}>Components</Link>
-          <span aria-hidden>/</span>
-          <span style={{ color: colors.text }}>Button</span>
-        </nav>
+        <EufemiaThemeScope>
+          <Breadcrumb
+            variant="responsive"
+            navText="Page hierarchy"
+            data={[
+              { text: "Web", href: "/docs/web" },
+              { text: "Components", href: "/docs/web" },
+              { text: "Button" },
+            ]}
+          />
+        </EufemiaThemeScope>
 
         <header id="overview" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px", scrollMarginTop: "104px" }}>
           <span style={{ padding: "4px 10px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", fontWeight: 500, lineHeight: "20px" }}>

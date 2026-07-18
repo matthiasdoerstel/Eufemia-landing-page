@@ -207,7 +207,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     );
   };
 
-  const menuLink = (to: string, label: string, key: string, indent = false, badge = false) => {
+  const menuLink = (to: string, label: string, key: string, indent = false, badge = false, beta = false) => {
     const active = currentPath === to || currentPath.startsWith(`${to}/`);
     return (
       <Link
@@ -224,6 +224,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           play={active || click.key === key}
         />
         {label}
+        {beta && (
+          <span style={{ marginLeft: "auto", padding: "2px 7px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", fontWeight: 500, lineHeight: "20px" }}>Beta</span>
+        )}
         {badge && hasUnreadFeedback && notificationDot}
       </Link>
     );
@@ -258,7 +261,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {menuLink("/about", "About Eufemia", "about")}
           {menuLink("/docs/design", "Designer Guide", "designer-guide")}
           {menuLink("/getting-started", "Developer Guide", "developer-guide")}
-          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai")}
+          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai", false, false, true)}
           {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", false, true)}
         </nav>
 

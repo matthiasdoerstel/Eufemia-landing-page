@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Breadcrumb } from "@dnb/eufemia";
 import { graphql, Link } from "gatsby";
 import Layout from "../components/Layout";
 import PageShell from "../components/PageShell";
 import InPageRail, { RailItem } from "../components/InPageRail";
+import EufemiaThemeScope from "../components/EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
 
@@ -224,13 +226,17 @@ const ComponentTemplate: React.FC<Props> = ({ data }) => {
   return (
     <Layout currentPlatform={platform} currentPath={`${platformPath}/components`}>
       <PageShell contentStyle={{ maxWidth: "880px", gap: "40px" }} rail={<InPageRail items={sections} />}>
-        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px", fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
-          <Link to={platformPath} style={{ color: colors.accent, textDecoration: "none" }}>{platformLabel}</Link>
-          <span aria-hidden>/</span>
-          <Link to={platformPath} style={{ color: colors.textMuted, textDecoration: "none" }}>Components</Link>
-          <span aria-hidden>/</span>
-          <span style={{ color: colors.text }}>{component.name}</span>
-        </nav>
+        <EufemiaThemeScope>
+          <Breadcrumb
+            variant="responsive"
+            navText="Page hierarchy"
+            data={[
+              { text: platformLabel, href: platformPath },
+              { text: "Components", href: platformPath },
+              { text: component.name },
+            ]}
+          />
+        </EufemiaThemeScope>
 
         <header style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
           <span style={{ padding: "4px 10px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", lineHeight: "20px", fontWeight: 500 }}>

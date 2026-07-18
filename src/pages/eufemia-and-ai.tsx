@@ -5,16 +5,48 @@ import InPageRail from "../components/InPageRail";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
 
-const connectSnippet = `{
-  "mcpServers": {
+const hostedEndpoint = "https://eufemia-mcp.eufemia.workers.dev/mcp";
+const hostedCommand = `claude mcp add --transport http eufemia https://eufemia-mcp.eufemia.workers.dev/mcp
+# or
+raicode mcp add --transport http eufemia https://eufemia-mcp.eufemia.workers.dev/mcp`;
+
+const localInstallCommand = `npm install @dnb/eufemia @modelcontextprotocol/sdk
+# or
+yarn add @dnb/eufemia @modelcontextprotocol/sdk
+# or
+pnpm add @dnb/eufemia @modelcontextprotocol/sdk`;
+
+const localConfig = `{
+  "servers": {
     "eufemia": {
-      "url": "https://eufemia.dnb.no/mcp"
+      "command": "node",
+      "args": [
+        "\${workspaceFolder}/node_modules/@dnb/eufemia/mcp/mcp-docs-server.js"
+      ]
     }
   }
 }`;
 
+const localCommand = `claude mcp add --transport stdio eufemia -- node node_modules/@dnb/eufemia/mcp/mcp-docs-server.js
+# or
+raicode mcp add --transport stdio eufemia -- node node_modules/@dnb/eufemia/mcp/mcp-docs-server.js`;
+
+const eslintRecommended = `import eufemiaEslint from '@dnb/eufemia/plugins/eslint.js'
+
+export default [eufemiaEslint.recommended]`;
+
+const stylelintRecommended = `import eufemiaStylelint from '@dnb/eufemia/plugins/stylelint.js'
+
+export default eufemiaStylelint.recommended`;
+
+const postcssConfig = `import styleScopePlugin from '@dnb/eufemia/plugins/postcss-isolated-style-scope.js'
+
+export default {
+  plugins: [styleScopePlugin()],
+}`;
+
 const askExamples = [
-  "Which token do I use for a card background in Sbanken dark?",
+  "Find the spacing system rules in Eufemia.",
   "Give me the import and props for the Button component.",
   "Search for a date-picker component.",
   "Find an icon for a calendar.",
@@ -160,9 +192,13 @@ const EufemiaAndAiPage: React.FC = () => {
         rail={
           <InPageRail
             items={[
-              { id: "web-mcp", label: "Web MCP" },
-              { id: "connect", label: "Connect" },
-              { id: "ask", label: "What you can ask" },
+              { id: "mcp", label: "MCP server" },
+              { id: "hosted-mcp", label: "Hosted MCP" },
+              { id: "local-mcp", label: "Local MCP" },
+              { id: "how-to-use", label: "How to use" },
+              { id: "editor-extension", label: "VS Code" },
+              { id: "lint-plugins", label: "Lint plugins" },
+              { id: "postcss", label: "PostCSS" },
               { id: "native", label: "Native" },
               { id: "learn-more", label: "Learn more" },
             ]}
@@ -185,45 +221,117 @@ const EufemiaAndAiPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Web MCP */}
-        <section id="web-mcp" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+        {/* MCP server */}
+        <section id="mcp" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <h2 style={h2Style}>Web MCP</h2>
-            <Pill>Available</Pill>
+            <h2 style={h2Style}>AI Assistance and MCP Server</h2>
+            <Pill>Experimental</Pill>
           </div>
           <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
-            The Eufemia Web MCP exposes the web library to any MCP-compatible assistant (Cursor, Claude,
-            VS Code and others). Ask about the system in natural language and get answers backed by the
-            actual tokens, component guidelines and code — no copy-pasting from docs.
+            If your AI coding agent supports the Model Context Protocol (MCP), connect it to Eufemia’s documentation. The server helps assistants apply Eufemia patterns more accurately, but always review generated output carefully.
+          </p>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Choose hosted MCP for latest released documentation, or local MCP for documentation pinned to exact Eufemia version installed in your project.
           </p>
         </section>
 
-        {/* Connect */}
-        <section id="connect" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
-          <h2 style={h2Style}>Connect to the Web MCP</h2>
+        {/* Hosted MCP */}
+        <section id="hosted-mcp" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <h2 style={h2Style}>Hosted MCP server</h2>
+            <Pill>Recommended</Pill>
+          </div>
           <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
-            Add the server to your AI client's MCP configuration, then reload. It's a hosted (web) server,
-            so you only need the URL — nothing to install.
+            No installation needed. Hosted on Cloudflare Workers and always serves latest released Eufemia docs through Streamable HTTP.
           </p>
-          <CodeBlock code={connectSnippet} />
+          <CodeBlock code={hostedEndpoint} />
           <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
-            Once connected, the assistant picks up the Eufemia tools automatically and can call them while
-            it answers.
+            Health endpoint: {link("https://eufemia-mcp.eufemia.workers.dev/healthz", "https://eufemia-mcp.eufemia.workers.dev/healthz")}.
           </p>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Add it with Claude CLI or raicode:
+          </p>
+          <CodeBlock code={hostedCommand} />
         </section>
 
-        {/* What you can ask */}
-        <section id="ask" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
-          <h2 style={h2Style}>What you can ask</h2>
+        {/* Local MCP */}
+        <section id="local-mcp" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+          <h2 style={h2Style}>Local MCP server</h2>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Run locally for offline or air-gapped work, or when documentation must match installed <code style={{ fontFamily: MONO, fontSize: "0.9em" }}>@dnb/eufemia</code> version exactly.
+          </p>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Install Eufemia and MCP SDK in your project:
+          </p>
+          <CodeBlock code={localInstallCommand} />
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Then add this configuration, for example in <code style={{ fontFamily: MONO, fontSize: "0.9em" }}>.vscode/mcp.json</code>:
+          </p>
+          <CodeBlock code={localConfig} />
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Or add it directly from Claude CLI or raicode:
+          </p>
+          <CodeBlock code={localCommand} />
+        </section>
+
+        {/* How to use */}
+        <section id="how-to-use" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+          <h2 style={h2Style}>How to use MCP</h2>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            The server provides documentation context only. It does not execute code or access your network. Ask your AI tool to search or summarize Eufemia documentation.
+          </p>
           <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
-            {askExamples.map((q) => (
-              <li key={q} style={{ ...paraStyle, color: colors.textMuted }}>
-                {q}
-              </li>
+            {askExamples.map((question) => (
+              <li key={question} style={{ ...paraStyle, color: colors.textMuted }}>{question}</li>
             ))}
           </ul>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            If local server does not start, confirm Eufemia is installed and path points to <code style={{ fontFamily: MONO, fontSize: "0.9em" }}>node_modules/@dnb/eufemia/mcp/mcp-docs-server.js</code>.
+          </p>
         </section>
 
+        {/* VS Code */}
+        <section id="editor-extension" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+          <h2 style={h2Style}>Visual Studio Code extension</h2>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Eufemia’s VS Code extension supports px/rem conversion, px/rem value annotations, and autocomplete for spacing, font size, and line height.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {link("Install VS Code extension", "https://marketplace.visualstudio.com/items?itemName=dnbexperience.vscode-eufemia")}
+            {link("View extension source", "https://github.com/dnbexperience/vscode-eufemia")}
+          </div>
+        </section>
+
+        {/* Lint plugins */}
+        <section id="lint-plugins" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+          <h2 style={h2Style}>Lint plugins</h2>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Eufemia includes ESLint and Stylelint plugins. Install ESLint and/or Stylelint in your app if needed, then use recommended presets or configure rules directly.
+          </p>
+          <h3 style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>ESLint</h3>
+          <CodeBlock code={eslintRecommended} />
+          <h3 style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>Stylelint</h3>
+          <CodeBlock code={stylelintRecommended} />
+          <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
+            <li style={{ ...paraStyle, color: colors.textMuted }}><code style={{ fontFamily: MONO, fontSize: "0.9em" }}>eufemia/no-deprecated-color-variables</code> warns about deprecated <code style={{ fontFamily: MONO, fontSize: "0.9em" }}>--color-*</code> CSS variables and suggests design tokens.</li>
+            <li style={{ ...paraStyle, color: colors.textMuted }}><code style={{ fontFamily: MONO, fontSize: "0.9em" }}>eufemia/token-name-policy</code> validates token names, semantics, brand prefixes, and cross-brand parity.</li>
+          </ul>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            For SCSS, configure Stylelint with {link("postcss-scss", "https://www.npmjs.com/package/postcss-scss")} as custom syntax.
+          </p>
+        </section>
+
+        {/* PostCSS */}
+        <section id="postcss" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
+          <h2 style={h2Style}>PostCSS style isolation</h2>
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            When using Eufemia’s PostCSS style-isolation plugin, deprecated color-variable warnings are enabled at build time.
+          </p>
+          <CodeBlock code={postcssConfig} />
+          <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
+            Set <code style={{ fontFamily: MONO, fontSize: "0.9em" }}>warnOnDeprecatedColorVariables: false</code> to disable warnings.
+          </p>
+        </section>
         {/* Native */}
         <section id="native" style={{ display: "flex", flexDirection: "column", gap: "16px", scrollMarginTop: "88px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>

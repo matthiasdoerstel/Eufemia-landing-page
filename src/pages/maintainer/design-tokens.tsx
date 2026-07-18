@@ -1,7 +1,9 @@
 import React from "react";
+import { Breadcrumb } from "@dnb/eufemia";
 import { Link } from "gatsby";
 import Layout from "../../components/Layout";
 import PageShell from "../../components/PageShell";
+import EufemiaThemeScope from "../../components/EufemiaThemeScope";
 import TokenCatalog from "../../components/TokenCatalog";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
@@ -78,24 +80,16 @@ const MaintainerDesignTokensPage: React.FC = () => {
           doesn't force horizontal scrolling. */}
       <PageShell contentStyle={{ gap: "40px", maxWidth: "none" }} rail={<></>}>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <Link
-            to="/maintainer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              alignSelf: "flex-start",
-              fontFamily: font.family,
-              fontSize: `${font.size.small}px`,
-              color: colors.textMuted,
-              textDecoration: "none",
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Maintainer tools
-          </Link>
+          <EufemiaThemeScope>
+            <Breadcrumb
+              variant="responsive"
+              navText="Page hierarchy"
+              data={[
+                { text: "Maintainer tools", href: "/maintainer" },
+                { text: "Design Tokens" },
+              ]}
+            />
+          </EufemiaThemeScope>
           <h1 style={h1}>Design Tokens</h1>
           <p style={para}>
             Maintainer view of the Eufemia Web colour tokens. Select a token to see which components

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "@dnb/eufemia";
+import { user_feedback as feedbackIcon } from "@dnb/eufemia/icons";
+import EufemiaThemeScope from "./EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius, shadow } from "../theme/tokens";
 import { addFeedback, CATEGORY_LABELS, type FeedbackCategory } from "../lib/feedback";
@@ -92,38 +95,22 @@ const FeedbackButton: React.FC = () => {
   };
 
   return (
-    <>
-      {/* Launcher */}
-      <button
-        onClick={() => (open ? close() : setOpen(true))}
-        aria-label="Give feedback"
-        style={{
-          position: "fixed",
-          right: "24px",
-          bottom: `calc(24px + env(safe-area-inset-bottom, 0px) + ${lift}px)`,
-          zIndex: 300,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "12px 18px",
-          borderRadius: "999px",
-          border: `1px solid ${colors.strokeSubtle}`,
-          background: colors.accent,
-          color: colors.pageBg,
-          fontFamily: font.family,
-          fontSize: `${font.size.body}px`,
-          fontWeight: 500,
-          cursor: "pointer",
-          boxShadow: shadow.standard,
-        }}
-      >
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-          <path d="M3 4.5h14v9H8l-4 3v-3H3v-9Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-        </svg>
-        Feedback
-      </button>
+    <EufemiaThemeScope>
+      <>
+        <Button
+          text="Feedback"
+          icon={feedbackIcon}
+          iconPosition="right"
+          onClick={() => (open ? close() : setOpen(true))}
+          style={{
+            position: "fixed",
+            right: "24px",
+            bottom: `calc(24px + env(safe-area-inset-bottom, 0px) + ${lift}px)`,
+            zIndex: 300,
+          }}
+        />
 
-      {!open ? null : (
+        {!open ? null : (
         <>
           <div onClick={close} style={{ position: "fixed", inset: 0, zIndex: 300, background: "transparent" }} />
           <div
@@ -154,7 +141,7 @@ const FeedbackButton: React.FC = () => {
                 <span style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, color: colors.textMuted }}>
                   It's been sent to the Eufemia maintainers.
                 </span>
-                <button onClick={close} style={primaryBtn(colors)}>Done</button>
+                <Button text="Done" onClick={close} />
               </div>
             ) : (
               <>
@@ -244,30 +231,15 @@ const FeedbackButton: React.FC = () => {
                   />
                 </div>
 
-                <button onClick={submit} disabled={!message.trim()} style={{ ...primaryBtn(colors), opacity: message.trim() ? 1 : 0.5, cursor: message.trim() ? "pointer" : "default" }}>
-                  Send feedback
-                </button>
+                <Button text="Send feedback" onClick={submit} disabled={!message.trim()} />
               </>
             )}
           </div>
         </>
       )}
-    </>
+      </>
+    </EufemiaThemeScope>
   );
 };
-
-function primaryBtn(colors: { accent: string; pageBg: string }): React.CSSProperties {
-  return {
-    alignSelf: "flex-start",
-    padding: "10px 18px",
-    borderRadius: `${radius.md}`,
-    border: "none",
-    background: colors.accent,
-    color: colors.pageBg,
-    fontFamily: font.family,
-    fontSize: `${font.size.body}px`,
-    fontWeight: 500,
-  };
-}
 
 export default FeedbackButton;
