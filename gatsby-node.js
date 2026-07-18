@@ -66,6 +66,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const components = result.data.allSanityComponent.nodes;
 
   components.forEach((component) => {
+    // Button has a portal-native static page at src/pages/docs/web/components/button.tsx.
+    // Do not let the generic CMS template overwrite it during Gatsby page creation.
+    if (component.platform === "web" && component.slug?.current === "button") {
+      reporter.info("Using static Button page: /docs/web/components/button");
+      return;
+    }
+
     if (!component.slug?.current) {
       reporter.warn(`Component "${component.name}" has no slug - skipping`);
       return;

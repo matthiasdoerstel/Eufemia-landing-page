@@ -101,7 +101,7 @@ const Layout: React.FC<LayoutProps> = ({
         }}
       >
         <span style={{ display: "inline-flex", color: colors.text }}>
-          <Logo height={38} color="currentColor" aria-label="DNB" />
+          <Logo height="38px" inheritColor aria-label="DNB" />
         </span>
         <span
           style={{

@@ -130,7 +130,9 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
                 }}
               >
                 <span
-                  ref={(el) => (labelRefs.current[i] = el)}
+                  ref={(el) => {
+                    labelRefs.current[i] = el;
+                  }}
                   style={{
                     display: "inline-block",
                     fontFamily: font.family,
