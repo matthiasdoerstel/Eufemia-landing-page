@@ -261,6 +261,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {menuLink("/about", "About Eufemia", "about")}
           {menuLink("/docs/design", "Designer Guide", "designer-guide")}
           {menuLink("/getting-started", "Developer Guide", "developer-guide")}
+          {menuLink("/contribute", "Contribute", "contribute")}
           {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai", false, false, true)}
           {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", false, true)}
         </nav>

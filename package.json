@@ -11,7 +11,8 @@
     "clean": "gatsby clean",
     "typecheck": "tsc --noEmit",
     "fetch-components": "node scripts/fetch-components.js",
-    "prebuild": "npm run fetch-components",
+    "fetch-releases": "node scripts/fetch-releases.js",
+    "prebuild": "npm run fetch-components && npm run fetch-releases",
     "studio": "cd studio && npm run dev",
     "studio:build": "cd studio && npm run build",
     "studio:deploy": "cd studio && npm run deploy"

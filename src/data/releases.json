@@ -1,0 +1,3447 @@
+{
+  "generated": "2026-07-20T15:42:03.140Z",
+  "source": "https://github.com/dnbexperience/eufemia/releases",
+  "count": 100,
+  "releases": [
+    {
+      "tag": "v11.8.2",
+      "version": "11.8.2",
+      "date": "2026-07-03",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.8.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Form.Element: avoid invalid DOM id warning for non-string id (#8797) (cecf210)",
+            "Form.useData: return precise value types from getValue (#8811) (6acdc50), closes #8649",
+            "Form.useData: type update() value and updater callback param (#8813) (0c23284), closes #8811 #8811",
+            "GlobalError: prevent status-code translation keys leaking to DOM (#8774) (ad875a4)",
+            "InputMasked: guard against restoring an undefined input type (#8766) (2e174b6)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Dialog: export DialogAllProps to standardize prop-type naming (#8772) (7323095)"
+          ]
+        },
+        {
+          "title": "Tests",
+          "slug": "tests",
+          "items": [
+            "forms: test number validators directly to speed up the suite (#8748) (a624810)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.8.1",
+      "version": "11.8.1",
+      "date": "2026-06-29",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.8.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Logo: keep Carnegie logo legible since it only supports light mode (#8735) (da6887f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.8.0",
+      "version": "11.8.0",
+      "date": "2026-06-26",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.8.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Dialog: add status message prop (#8715) (88be468)",
+            "Provider: add missing component types to ContextComponents (#8703) (729e5d2)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Anchor: strip javascript:/vbscript: hrefs to prevent XSS (#8655) (eaacd6e)",
+            "Button: connect status message to button via aria-describedby (#8714) (942cd2a)",
+            "Dialog: link action status to a visible button in all cases (#8722) (66768ee)",
+            "DrawerList: keep keyboard focus ring visible when option is also hovered (#8656) (172a5ce)",
+            "Field.Number: show clear error for non-finite numbers (#8699) (c8926ee)",
+            "Forms: read not_multiple_of value from Zod v4 divisor property (#8706) (90212f8)",
+            "Forms: stabilize mounted fields to prevent field re-render loop on mount (#8720) (49fcecf)",
+            "Input: correct reference to undefined CSS custom property (#8667) (1d54c16)",
+            "List: add selected-subtle background to expanded accordion header (#8710) (12d66c4)",
+            "StepIndicator: connect step status message to step button via aria-describedby (#8721) (b3ef5b6)",
+            "Switch: connect status message to input via aria-describedby (#8718) (47e2f2b)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "clarify when to use classic inputs vs Eufemia Forms (#8708) (9a97b52)",
+            "Field.Number: make step controls discoverable in search (#8704) (8b28cf4)",
+            "Forms: clarify how non-finite numbers (Infinity, NaN) are validated (#8701) (12f3b35)",
+            "link related components on component info pages (#8709) (d605e9f)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Space: update responsive spacing values BETA (#8671) (9f4bdc1)",
+            "Typography: responsive font size BETA (#8425) (136034f)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Button: control status spacing via FormStatus shellSpace (#8716) (9c408c9)",
+            "Space: rename ResponsiveContext breakpoint prop to breakOn (#8719) (fce043c)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.7.0",
+      "version": "11.7.0",
+      "date": "2026-06-22",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.7.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "DatePicker: add onlyMonth=\"without-label\" variant to hide month label (#8579) (2f8dfef)",
+            "Forms: add Form.Outlet component to render form fields outside the Form.Handler subtree (#8648) (18039cb)",
+            "Forms: add Form.useDataValue('/path') hook for path-scoped data value (#8608) (78df2f5)",
+            "Forms: add useDataWithoutSubscription hook for non-subscribing data access (#8607) (7d05e67)",
+            "Forms: add type-checked paths support (#8649) (e46a3c4)",
+            "Forms: reduce rerenders for path-based fields (#8570) (fcc6d1d)",
+            "ListFormat: support locale prop (#8603) (18b0683)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: keep open button open when no-results is shown (#8644) (6673611)",
+            "Autocomplete: prevent show all crash for spaced numbers (#8605) (8dd2704)",
+            "change line-height sizes to corresponding font-size and design (#8613) (279ab13)",
+            "Forms: ensure PushContainer resolves section paths and validates schema correctly (#8618) (2d8fe46)",
+            "Heading: add proseMaxWidth (#8615) (f9b0385)",
+            "Input: prevent icon overlap with submit button when iconPosition is right (#8620) (8178ca3)",
+            "NumberFormat: preserve formatted part boundaries (#8629) (c1ff36a)",
+            "Stat.Currency: fix missing space between currency and suffix in flex layout (#8616) (a4f0f6b)",
+            "Stat.Currency: fix missing space between prefix and currency in flex layout (#8646) (809f676)",
+            "Stat.Currency: support custom currency codes (#8604) (72350c1)",
+            "Stat: align font-size when compact and auxiliarySize is used (#8611) (ce335a0)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Avatar: add grouped CountryFlag example (#8601) (ec6e737)",
+            "improve components discoverability with overview page (#8526) (3c6268d)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Sbanken typography values to be same as other brands (#8614) (f0e30d6)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.6.1",
+      "version": "11.6.1",
+      "date": "2026-06-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.6.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Filter: show only submit button when search is in manual mode (#8562) (3f99287)",
+            "Forms: show Wizard required errors during async validation (#8573) (9a39add), closes #6048",
+            "Tabs: restore page scrolling over tablist (#8566) (0c6da09)",
+            "Wizard: improve routed step history (#8569) (8321bfa)",
+            "Wizard: prevent duplicate route step changes (#8567) (7c37bc5)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "DatePicker: improve onlyMonth property description (#8578) (12529e6)",
+            "PortalRoot: mention Google Translate in BrowserTranslate headings (#8563) (ef6d10b)",
+            "prefer name fields in examples (#8568) (0ffa67f)"
+          ]
+        },
+        {
+          "title": "Design Changes",
+          "slug": "design-changes",
+          "items": [
+            "DatePicker: align border radius, font-size of days and relative horizontal placement (#8565) (0a7227e)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.6.0",
+      "version": "11.6.0",
+      "date": "2026-06-12",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.6.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "BrowserTranslate: add shared helper to prevent browser translation (Google Translate) on form components (#8429) (4a896e7)",
+            "Filter: add new filter component (#8366) (65824cb)",
+            "Form.SubmitIndicator: refine dots animation with scale in/out (#8459) (a83340f)",
+            "Forms: add validator options for submit control (withValidatorOptions including runOnSubmit) (#8534) (d4de11a)",
+            "MultiSelection: highlight filtered options to be easier to scan (#8554) (4579c52)",
+            "PortalRoot: forward HTML attributes to portal elements (#8422) (3d6f01e)",
+            "update icons with accessibility, ai, clearing_house, football, holiday_home, moneybag_in_hand, moon, passkey, plot, sun, stop_square (#8515) (e0cffd1)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: clear hide timeout on unmount (#8443) (f65c383)",
+            "DatePicker: preserve range focus contrast (#8525) (f730281)",
+            "DatePicker: prevent shortcuts from widening picker (#8523) (9c14678)",
+            "Field.Expiry: prevent disabled field focus (#8491) (77cce97)",
+            "Field.MultiSelection: align popover spacing (#8516) (20dc81b)",
+            "Field.MultiSelection: round nested list corners (#8517) (92e0660)",
+            "Form.SubmitIndicator: ensure correct dots color (#8448) (8e523cb)",
+            "Form.useTranslation: cache in sync (#8550) (922574b)",
+            "Forms: improve shared attachment render cascade (#8552) (42d4bb1)",
+            "InputMasked, Field.Currency, Field.Number: disambiguate dot as thousands or decimal separator (#8508) (8d3f68b)",
+            "Modal: fix controlled open prop not opening dialog (#8521) (6ad37ec)",
+            "MultiSelection: keep search input literal (#8555) (51b7ae5)",
+            "Theme: prevent nested Theme from overriding body color scheme (#8537) (1ddadc4)",
+            "VippsWalletButton: update pending state snapshot after dots color fix (#8451) (92ee001)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add dark surface context link in examples (#8529) (77f1201)",
+            "Flex: clarify align vs justify property descriptions (#8441) (0d7b732), closes #3166",
+            "Form.useSubmit: add Properties tab (#8471) (2b0a3bc)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Avatar: unify design (Sbanken) (#8437) (4478289)",
+            "Button: unify design (Sbanken) (#8449) (fba900e)",
+            "Card: unify design (#8452) (204f728)",
+            "Dialog: unify styling (#8470) (abbe888)",
+            "DrawerList: unify styling (Sbanken) (#8510) (b17c4fb)",
+            "Dropdown: unify styling (#8489) (726e926)",
+            "FieldBlock: unify design (Sbanken) (#8536) (422536e)",
+            "GlobalStatus: unify styles (Sbanken) (#8503) (01ada21)",
+            "HelpButton: unify design (Sbanken) (#8533) (e4386d4)",
+            "Input: unify styling (Sbanken) (#8514) (64a5227)",
+            "replace spacing custom properties with rem values in component styles (#8447) (5c8f54d)",
+            "Table: unify design (Sbanken) (#8528) (6950b93)"
+          ]
+        },
+        {
+          "title": "Design Changes",
+          "slug": "design-changes",
+          "items": [
+            "DatePicker: remove picker arrow (#8535) (37d0c08)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Autocomplete: improve highlighting for nested content (#8500) (93eb70b)",
+            "Input: change type=\"search\" text from Send to Search/Søk (#8544) (adb88f7)",
+            "Input: show search icon instead of submit button for type=\"search\" (#8548) (3b506f5)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.5.2",
+      "version": "11.5.2",
+      "date": "2026-06-05",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.5.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Accordion: remove redundant whatintent check from tertiary focus detection (#8412) (0627351)",
+            "Checkbox: fix preventChangeRef never being reset after preventDefault (#8414) (ade881c)",
+            "DatePicker: range mode showing same month in both calendar views (#8436) (198d45c)",
+            "DrawerList: add padding to scroll when list is on top (#8423) (21601fb)",
+            "HelpButton: prevent VoiceOver from announcing title twice (#8405) (0a72c76)",
+            "show focus ring on all keyboard key usage (#8420) (3cb4968)",
+            "Switch: prevent visual toggle when preventDefault is called in onClick (#8413) (65e90b7)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Anchor: unify design (Sbanken) (#8396) (1c7f387)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.5.1",
+      "version": "11.5.1",
+      "date": "2026-06-04",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.5.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete, Dropdown: scroll selected item to top when opening (#8400) (7f93986)",
+            "Dialog: close nested confirmation dialog when declining (#8404) (b341856)",
+            "Dialog: use role=\"dialog\" on all platforms to prevent VoiceOver double titles (#8308) (99c9958), closes #5919",
+            "Dropdown, Autocomplete, DrawerList: remove outline around divider on selected focused item (#8398) (767fb0a)",
+            "Dropdown, Autocomplete, DrawerList: show DrawerList focus border only with keyboard input (#8397) (441f192)",
+            "Dropdown, Autocomplete, DrawerList: use mask-image for DrawerList checkmark to support dark mode (#8399) (c2f401b)",
+            "Dropdown: correct portal positioning for right-aligned dropdowns (#8401) (b927c22)",
+            "Input: keep submit button icon at default size for medium inputs (#8386) (4ec53d6)",
+            "PaymentCard: remove visible border in dark mode (#8391) (8102d40), closes #ebebeb"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.5.0",
+      "version": "11.5.0",
+      "date": "2026-06-03",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.5.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Accordion: rename standalone Content id prop to connectedTo (#8364) (7acbe14)",
+            "Accordion: transition chevron icon during open/closing (#8289) (8624327)",
+            "allow atlassian-bot full access in robots.txt (#8335) (f042203)",
+            "Autocomplete: transition chevron icon during open/closing (#8290) (7999bb7)",
+            "Breadcrumb: transition chevron icon during open/closing (#8291) (7167b3f)",
+            "DatePicker: add rangeSingleCalendar prop (#8279) (a1fbb95)",
+            "Field.BankAccountNumber: allow typing beyond the 11-digit mask length (#8225) (127b547)",
+            "Field.Date: add rangeSingleCalendar prop (#8339) (fd03d8d)",
+            "Field.NationalIdentityNumber: allow typing beyond the 11-digit mask length (#8224) (1f65c18)",
+            "Field.OrganizationNumber: allow typing beyond the 9-digit mask length (#8226) (8744064)",
+            "Field.Password: transition visibility toggle icons (#8295) (f08129a)",
+            "Field.PhoneNumber: allow typing beyond the 8-digit mask length (#8227) (004f8c8)",
+            "Field.PostalCodeAndCIty: allow typing beyond the 4-digit postal code mask length (#8229) (bb46886)",
+            "HelpButton: transition inline icon during open/closing (#8292) (03c5b0a)",
+            "List: transition accordion chevron icon during open/closing (#8293) (6edc02a)",
+            "Menu: transition accordion chevron icon during open/closing (#8294) (2518e89)",
+            "StepIndicator: transition chevron icon during open/closing (#8296) (57f1728)",
+            "Table: transition sort/accordion icons during open/closing (#8297) (15d2a97)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Accordion: prevent tertiary button from stretching when expanded (#8384) (51edd08)",
+            "align Tailwind breakpoint variables with allAbove mixin (#8371) (c5644d2)",
+            "Breadcrumb: prevent chevrons on breadcrumb row from changing direction on smaller screen sizes (#8288) (9f449e8)",
+            "Breadcrumb: set background color for non collapsable breadcrumbs to transparent and correct paddings and indents (#8357) (1654729)",
+            "Button: add ondark background tokens for tertiary icon-only buttons (#8345) (0e11b26)",
+            "Button: symmetric focus ring padding for tertiary buttons with icons (#8346) (6ff6541)",
+            "DatePicker: remove calendar padding in inline mode to avoid unnecessary whitespace (#8358) (0698a59)",
+            "DatePicker: remove drop shadow when inline (#8348) (1e4165d)",
+            "DatePicker: support responsive range calendars and use transparent background color when inline (#8347) (bfa9bd5)",
+            "DatePicker: use focus color tokens for keyboard navigation (#8349) (3620d9f)",
+            "Field.MultiSelection: match popover border-radius on first and last items (#8298) (2f082af)",
+            "InputMasked, Field.Number: prevent input beyond MAX_SAFE_INTEGER (#8260) (daa7a2f)",
+            "List: scope CSS vars to prevent collision with other components inside (#8300) (50ac16e)",
+            "PaymentCard: inherit text color from card instead of typography token (#8367) (c27f3f1)",
+            "Textarea: add disabled placeholder color token to match input (#8356) (f1d8bdf)",
+            "Textarea: use consistent disabled background token with Input (#8355) (15d8d77)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "PaymentCard: add alternative CSS import for styles (#8369) (aa94472)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Dropdown, Autocomplete: unify design across brands (#7767) (ae6746f)",
+            "Field.Number: unify theme styles (Sbanken) (#8344) (0890ceb)"
+          ]
+        },
+        {
+          "title": "Design Changes",
+          "slug": "design-changes",
+          "items": [
+            "Accordion: update Sbanken styling (#8264) (61207ed)",
+            "update color design tokens (#8360) (0780387)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.4.0",
+      "version": "11.4.0",
+      "date": "2026-05-27",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.4.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add triggerProps support to DatePicker and Field.Date (#8179) (5e864fe)",
+            "Breadcrumb: implement new design (#7997) (02e4330)",
+            "Card: add clickable Card.Action and Card.List sub-components (#8233) (992e4ae)",
+            "Field.Number: add explicit placeholder prop with type and docs (#8275) (c7e4a2a)",
+            "Field.Time: add Time field (#8079) (7499134)",
+            "Forms: add Value.MultiSelection component (#8176) (edcb7a1)",
+            "Helpers: add isModifiedClickEvent (#8145) (2c4d1c9)",
+            "Icon: add Icon.transition() for animating between two icons (#8249) (a556039)",
+            "Pagination: add support for Anchor as navigation items (#8062) (36302d5)",
+            "Table: add striped={false} property to disable zebra striping (#8221) (436ce21)",
+            "Table: add support for border=\"horizontal\" for horizontal borders only (#8220) (469388e)",
+            "Table: add support for multiple tbody sections and rowgroup styling (#8206) (0b377cc)",
+            "upgrade @dnb/browserslist-config from 1.2.0 to 1.4.0 (#8158) (db0ac37)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Accordion: only focus content when opening tertiary variant (#8250) (86a5bfe)",
+            "DateFormat: preserve leading zeros when hideYear/hideCurrentYear used with dateStyle=\"short\" (#8280) (a973106)",
+            "DatePicker: add hover effect for within-selection days (#8198) (2faee88)",
+            "DatePicker: improve keyboard navigation in calendar (#8232) (d6ce0dd)",
+            "DatePicker: show picker view outline (#8199) (ba4931f)",
+            "Forms: ensure PushContainer empties InputMasked fields on reopen (#8228) (f8cd1ff)",
+            "Input: allow clicks through hidden clear button area (#8278) (610dcab)",
+            "MCP: stamp Eufemia version in serverInfo and docs_entry (#8173) (a0113a0)",
+            "PhoneNumber, PostalCodeAndCity: remove placeholders from PhoneNumber and postal code (#8223) (1b7dc8f)",
+            "prevent xmlns specificity boost from overriding text-align modifiers (#8268) (a7c8e01)",
+            "remove unused getComponents, getFragments, getElements, and formsExports (#8247) (8e1b7ee)",
+            "Table: hide sort icon on hover after cycling back to unsorted state (#8252) (cc87589)",
+            "Table: use stable totalCount state for isLast instead of mutable ref (#8253) (9ba8162)",
+            "ToggleButton: fix checked border width and make toggle state visible when focused (#8149) (ad1cccf)",
+            "Tooltip: reposition when children content changes (#8165) (02a6a17)",
+            "Tooltip: tooltip used wrong radius (#8148) (24c043c)",
+            "use CSS variable chain for primary button color in xmlns reset (#8269) (186e364)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Forms: add properties tabs for hook documentation (#8156) (04eab52)",
+            "Portal: add open in StackBlitz documentation (#8196) (f1cf4a5)",
+            "ProgressIndicator: improve documentation (#8261) (08eac1e)",
+            "Table: document aria-label for highlighted cells (#8171) (af25709)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Button: replace tertiary variant pseudo underline with text-decoration (#8241) (f36115f)",
+            "Card: use basis font size for card title (#8234) (da8eb81)"
+          ]
+        },
+        {
+          "title": "Design Changes",
+          "slug": "design-changes",
+          "items": [
+            "Table: sort button: use text color token for default state (black) (#8237) (8977a8d)",
+            "Table: use new row color and outline xl corner radius (#8208) (765d9c3), closes #8206"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "InfoCard: add acceptButtonProps and deprecate acceptButtonAttributes (#8189) (ee6da7b)",
+            "Modal, Dialog, Drawer, Popover: add triggerProps and deprecate triggerAttributes (#8181) (17851b9)",
+            "Modal, Drawer, InfoCard: add closeButtonProps and deprecate closeButtonAttributes (#8190) (b62dd0e)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.3.0",
+      "version": "11.3.0",
+      "date": "2026-05-19",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.3.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Forms: move more-fields to feature-fields and base-fields (#8067) (5aced8f)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Accordion: memoize store (rememberState) (#8128) (a815d9e)",
+            "ArraySelection: retain focus on checkbox when selecting/deselecting (#8125) (59061ba)",
+            "BankAccountNumber: sync valueRef with external value changes (#8074) (e30419b)",
+            "DateOfBirth: sync day/month/year refs with external value changes (#8075) (a5ad5e7)",
+            "Field.String: use showClearButton instead of clear prop (#8101) (f27bec9)",
+            "Flex: omit wrapper for spacing props in context-only providers (#8112) (512715a)",
+            "Form.SubmitButton: show loading indicator inside Field.Composition (#8052) (9276dc3)",
+            "Icon: prevent skeleton and other props leaking to SVG element (#8104) (d63f7c5)",
+            "Provider: use createSharedState to prevent infinite render loop (#8107) (390809a)",
+            "Tabs: add scroll navigation labels (#8124) (cb956f1)",
+            "Tabs: prevent setState during render in shared state initialization (#8127) (542c745)",
+            "TermDefinition: add skeleton support (#8103) (e5d1350)",
+            "ToggleButton: fix setState-during-render in group context registration (#8102) (d3cce59)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Accordion: add tertiary variant (#8121) (3115b67)",
+            "enhance Stylelint plugin with token-name-policy (#8030) (a600a51)",
+            "Forms: add MultiSelection field (#8048) (c0801e8)",
+            "Icon: add filled icon support to Icon component (fill prop) (#8022) (31ce06b)",
+            "MCP: add HTTP server with SSE + Streamable HTTP transports (#8087) (a83c5d2)",
+            "Space: add Space.ResponsiveContext component to enable responsive layout spacing (⚠️ Beta) (#8095) (be300b8)",
+            "Space: add useSpacing hook and apply to all components and deprecate applySpacing (#8089) (7aeb389)",
+            "Table: add highlight prop to Th and Td for highlighting cells (#8025) (4f95db7)"
+          ]
+        },
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "ToggleButton, Radio: ToggleButton redesign (#7974) (e38d0c7)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.104.2",
+      "version": "10.104.2",
+      "date": "2026-05-18",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.104.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "MCP: make @modelcontextprotocol/sdk a optional dependency — ⚠️ install it yourself to use the MCP server (beta) (#8132) (1e7b700)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.2.2",
+      "version": "11.2.2",
+      "date": "2026-05-11",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.2.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: ensure Form.useData is in sync when data prop changes (using id) (#8009) (d6a34df)",
+            "GlobalError: use Heading instead of H1 to respect heading level context (#8036) (fed7ec4)",
+            "Heading: ensure correct leveling during React hydration (#8035) (eefbe67)",
+            "include z-index tokens in basis stylesheet (#8044) (72c23c1), closes #7356",
+            "Table: add ref prop support and update keyboard navigation hook (#8028) (507ee0a)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.2.1",
+      "version": "11.2.1",
+      "date": "2026-05-08",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.2.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "add @babel/runtime-corejs3 dependency (#8016) (e071d7f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.2.0",
+      "version": "11.2.0",
+      "date": "2026-05-08",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.2.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add dark mode guide (#7960) (e8432b5)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Accordion: add border radius tokens for Sbanken theme (#7992) (96c0379)",
+            "Code: add border radius tokens (#7969) (d4d79ef)",
+            "DrawerList: use border radius tokens (#7970) (4b71dde)",
+            "Flex: rename --sizeCount CSS custom property to --size-count (#7985) (eaf43da)",
+            "ProgressIndicator: add border radius token (#7982) (632da45)",
+            "replace default React imports with named imports (#7681) (0b61f41)",
+            "Table: add border radius token for outline variant (#7983) (e2f14a7)",
+            "Timeline: add border radius tokens (#7940) (9143a88)",
+            "Tooltip: add correct border radius token (#7964) (ca33fee)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add ESLint and Stylelint Plugin to detecting deprecated color variable usage (#7971) (71fcb87)",
+            "generate markdown for all docs pages including MCP server docs (#7945) (72ed11c)",
+            "StyleIsolation: warn when deprecated color variables are used via PostCSS plugin (#7972) (8b278cf), closes #7971",
+            "Table: add selected state to Table Td (#7996) (b438f62)",
+            "Table: add verticalAlign prop to Tr (#7981) (1cbbdca), closes #7977",
+            "Table: add clickable table cells (#7977) (963b0f6)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Expiry: prevent focus when clicking outside the component (#7958) (af8cc4d)",
+            "HeightAnimation: fix hydration mismatches for SSR compatibility (#8002) (9421228)",
+            "HelpButtonInline: remove backgroundColor from Section (#8004) (35bb802)",
+            "Iterate.Array: clear open-delay timeout on unmount in ArrayItemArea (#7979) (fc5b963)",
+            "List: make entire Item.Action clickable, not just the text (#7993) (56d9512)",
+            "prevent whatinput from interfering with React hydration (SSR) (#8000) (ff44088)",
+            "remove unused @babel/runtime-corejs3 dependency (#7994) (c3b699e)",
+            "render help title in div instead of p to support block-level elements (#7942) (d4d949f)",
+            "Table: fix focus ring width on accordion and clickable rows (#7975) (753569c)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.1.1",
+      "version": "11.1.1",
+      "date": "2026-05-05",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.1.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Forms: cleanup of deduplicate translation examples (#7916) (dba9829)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Anchor: add border radius token (#7928) (fa0ede0)",
+            "Autocomplete: add border radius tokens (#7932) (364faaa)",
+            "Badge: add border radius tokens (#7924) (18cf1b7)",
+            "Dropdown: use border radius tokens (#7927) (2608893)",
+            "Input: add icon color tokens (#7913) (ea2d47b)",
+            "Input: use correct border radius tokens for Sbanken theme (#7909) (f859b15)",
+            "Menu: adjust hover (action) border radius (#7936) (85a3ad0)",
+            "Tabs: add border radius tokens (#7939) (82d926d)",
+            "Textarea: add border radius token (#7922) (d8c58dd)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: render help content in div instead of p to support block-level elements (#7930) (50911b2)",
+            "Heading, Ul, Ol, Dl, FormLabel, Hr: ensure surface=\"dark\" support (#7925) (118841d)",
+            "improve localized validation interpolation in useFieldError (#7931) (2d5d081)",
+            "InputMasked: disable spellcheck to prevent false positives on currency suffix (#7935) (04aa51a)",
+            "Modal: preserve triggerAttributes onClick in Modal trigger button (#7938) (786942a)",
+            "NumberFormat.Currency: support explicit currencies (#7929) (f0b0a57)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.1.0",
+      "version": "11.1.0",
+      "date": "2026-05-04",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.1.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Breadcrumb: ensure Sbanken dark mode compatibility (#7891) (a3893ab)",
+            "Logo: support dark mode (#7889) (8c27fe0)",
+            "Portal: use translationsLoader for dynamic locale loading (#7885) (ef2982b)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add opt-in ICU MessageFormat support for translations (#7894) (b87d879)",
+            "add shared focus-ring variable for border width --focus-ring-width (#7878) (29bd01c)",
+            "deprecate --color-* CSS custom properties and color documentation in favor of design tokens (#7888) (c1301fb)",
+            "Provider: add translationsLoader for async dynamic translations (#7870) (7cd5d04)",
+            "release tokens (beta) and dark mode support (#7871) (0055476)",
+            "Table: add useTableKeyboardNavigation \"plugin\" hook (#7779) (9337295)",
+            "Table: add verticalAlign prop to Td (#7884) (bb102bd), closes #7870"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Selection, Field.ArraySelection: pass width to FieldBlock to prevent label truncation (#7876) (fa1d666)",
+            "Forms: keep GlobalStatus visible until all errors are resolved (#7877) (7d8fe2d)",
+            "GlobalStatus: preserve provider state when state prop is not given (#7880) (50442b4)",
+            "Table: hide table bottom border when border is explicitly false (#7908) (22aac70)",
+            "Tabs: improve tabs scroll buttons handling (#7892) (4f41d45)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.0.4",
+      "version": "11.0.4",
+      "date": "2026-04-29",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.0.4",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "add border radius tokens to components (#7851) (00a0333)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Dialog, Drawer, ScrollView: handle content movement when scrollbar appears and add scrollbarGutter property (#7862) (430fac8)",
+            "Dropdown, Autocomplete: improve outline (border) of DrawerList (#7863) (c216d8b), closes #7759 #7854",
+            "Icon: return stable reference from prerenderIcon for function icons (#7847) (669407f)",
+            "Tools.Log: use variant prop instead of backgroundColor for dark mode support (#7852) (d884843)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "DatePicker: clarify minDate/maxDate behavior and reference Field.Date for input validation (#7866) (bcb1b21)",
+            "enable dark/light mode switch in code examples (#7843) (bb297b1)",
+            "Forms: add rationale for optional-by-default and optional label convention (#7868) (dc5792f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.0.3",
+      "version": "11.0.3",
+      "date": "2026-04-28",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.0.3",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Style Changes",
+          "slug": "style-changes",
+          "items": [
+            "Portal: enable dark mode ☀️🌑 (#7808) (3a9ac2a)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "PhoneNumber: prevent dashed country code digits from leaking into number field (#7828) (92552ca)",
+            "ScrollView: support callback refs in useInteractive (#7836) (28a989e)",
+            "Table: recalculate sticky header offset on scroll for dynamic layouts (#7815) (5a4f31b)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "DatePicker: use design tokens (#7822) (574d037)",
+            "SkipLink: use design tokens (#7824) (28aebf3)",
+            "StepIndicator: use design tokens (#7816) (51a3a91)",
+            "use design tokens for ::selection styles (#7838) (b6c6cfc)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.0.2",
+      "version": "11.0.2",
+      "date": "2026-04-28",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.0.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add design tokens guide (#7777) (938e4c9)",
+            "Portal: add missing syntax highlighting and support brand colors (#7775) (453acba)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "add missing dnb-page-background helper class (#7757) (7d745ff)",
+            "Button: accept ReactNode title and convert to string internally (#7756) (f438537)",
+            "DatePicker: use span instead of label for calendar header title (#7747) (fe72486)",
+            "Dropdown, Autocomplete, Dialog, Drawer, Popover: remove theming classes into PortalRoot (#7764) (491f6b6)",
+            "Dropdown, Autocomplete: add outline (border) to DrawerList (#7759) (4e57341)",
+            "FieldBlock: render label as span when not associated with a form field (#7746) (80058a4)",
+            "HelpButtonInline: pass ReactNode title for tooltip rendering (#7801) (8cb6f1d), closes #7752",
+            "MCP: make @modelcontextprotocol/sdk a devDependency — ⚠️ install it yourself to use the MCP server (beta) (#7769) (28ca92c)",
+            "Popover: clamp arrow at border-radius boundary to avoid rounded corner gap (#7765) (7651a8e)",
+            "prevent useMediaQuery hydration mismatch (#7773) (c7b0fc5)",
+            "read key from element instead of props for React 19 compatibility (#7793) (59bf60d)",
+            "scope :root sibling selectors in PostCSS isolation plugin (#7772) (2f0ed8c)",
+            "StepIndicator: render trigger label as span instead of label element (#7748) (045889e)",
+            "support React component titles in help button aria-label (#7755) (fa2043f)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Avatar: use design tokens (#7794) (db1d8ba)",
+            "Forms: use design tokens (#7802) (de88a6b)",
+            "Portal: use design tokens and implement new Eufemia logo (#7742) (cc2c1c8)",
+            "ProgressIndicator: use design tokens (#7797) (0fb42b7)",
+            "Timeline: use design tokens (#7766) (6395264)",
+            "Upload: use design tokens (#7754) (d1d79b8)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.0.1",
+      "version": "11.0.1",
+      "date": "2026-04-24",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.0.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Anchor: add missing style.ts entry (#7664) (08d6fdb)",
+            "Button, Tabs, PaymentCard: remove legacy class prop (#7657) (a805f45)",
+            "Card: allow outlineWidth to work on nested Cards (#7659) (2878f55), closes #7655",
+            "DrawerList: use overflow hidden instead of clip-path for arrow --run-all (#7668) (be20a28)",
+            "Field.Upload: align help background (#7717) (9c7c1a6)",
+            "List: improve a11y for List.Item.Action (#7723) (b77992b)",
+            "Stat: add en-GB currency spacing (#7660) (908fab1)",
+            "StyleIsolation: handle :root in multi-selector rules (#7733) (444949c)",
+            "Upload: ensure valid key in list items (#7718) (4d602fb)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Design Tokens: add radius (#7720) (68f65de)"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Badge: use design tokens for notification (#7590) (495e8af)",
+            "Field.Password: use design tokens (#7591) (b78415d)",
+            "HelpButtonInline: use design tokens (#7696) (053345b)",
+            "Hr: use design tokens (#7587) (1447c30)",
+            "InfoCard: use design tokens (#7593) (3233ad6)",
+            "replace React.FC type aliases with explicit function types (#7665) (c163fc0)",
+            "Scrollbar: use design tokens (#7699) (4b59d22)",
+            "Skeleton: use design tokens (#7701) (ff99369)",
+            "Slider: use design tokens (#7738) (8b4a3df), closes #7599",
+            "standardize icon import aliases to PascalCase (#7666) (6d09ca1)",
+            "Table: use design tokens (#7687) (12b6bed)",
+            "Tabs: use design tokens (#7740) (ae32c52)",
+            "Tag: use design tokens (#7644) (e88f179)",
+            "Value.Block: use design tokens (#7589) (4e9baa9)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v11.0.0",
+      "version": "11.0.0",
+      "date": "2026-04-21",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v11.0.0",
+      "kind": "major",
+      "intro": "For more info, migration guide, and detailed instructions, see the v11 release page.",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "React: add support for React v19",
+            "Menu: add new context menu component, closes #6372 (https://github.com/dnbexperience/eufemia/issues/6372) #7378 (https://github.com/dnbexperience/eufemia/issues/7378)",
+            "InputMasked: replace masking with new Maskito dependency",
+            "Forms: support native form submit in Form.Handler",
+            "DatePicker, Expiry: refactor input to work without text cursor, closes #6658 (https://github.com/dnbexperience/eufemia/issues/6658)",
+            "PhoneNumber: E.164 default output, auto-detect country codes",
+            "Section: add surface prop and provide it via Theme provider",
+            "Card: adjust outline thickness and border radius to new design",
+            "Card: add support for scoped dark mode",
+            "List: add List.ShowMoreButton to toggle items visibility",
+            "Autocomplete: add onItemMouseEnter event for dropdown items",
+            "Autocomplete: add onSubmit event for Enter key without selection",
+            "Forms: add id prop support to Form.SubmitIndicator",
+            "Forms: add id prop support to Form.Visibility",
+            "Forms: add id prop support to Iterate.Array",
+            "Forms: add support for Swedish bank account numbers and IBAN in BankAccountNumber",
+            "Forms: remove default outset from Form.Card, Wizard, and inline help; remove heading auto-indent",
+            "Forms: remove included Ajv instance creation from Form.Handler and fields",
+            "Design Tokens: generate tokens-tailwind.css for design tokens",
+            "Logo: remove brand and variant and make Sbanken opt-in",
+            "CSS: centralize z-index scale with CSS custom properties",
+            "Design Tokens: add design token support to Accordion, Anchor, Badge, Blockquote, Button, Card, Checkbox, Dialog, Dropdown, Autocomplete, FormLabel, FormStatus, GlobalError, GlobalStatus, Img, Input, Label, List, Modal, Drawer, Radio, Section, Switch, Textarea, TextCounter, Tooltip, and Typography (#7529 (https://github.com/dnbexperience/eufemia/issues/7529), #6874 (https://github.com/dnbexperience/eufemia/issues/6874), #6688 (https://github.com/dnbexperience/eufemia/issues/6688), #7581 (https://github.com/dnbexperience/eufemia/issues/7581), #6916 (https://github.com/dnbexperience/eufemia/issues/6916), #7253 (https://github.com/dnbexperience/eufemia/issues/7253), #7515 (https://github.com/dnbexperience/eufemia/issues/7515), #7357 (https://github.com/dnbexperience/eufemia/issues/7357), #7533 (https://github.com/dnbexperience/eufemia/issues/7533), #7363 (https://github.com/dnbexperience/eufemia/issues/7363), #7049 (https://github.com/dnbexperience/eufemia/issues/7049), #7259 (https://github.com/dnbexperience/eufemia/issues/7259), #7054 (https://github.com/dnbexperience/eufemia/issues/7054), #7584 (https://github.com/dnbexperience/eufemia/issues/7584), #7254 (https://github.com/dnbexperience/eufemia/issues/7254), #7586 (https://github.com/dnbexperience/eufemia/issues/7586), #7535 (https://github.com/dnbexperience/eufemia/issues/7535), #7631 (https://github.com/dnbexperience/eufemia/issues/7631), #7518 (https://github.com/dnbexperience/eufemia/issues/7518), #7394 (https://github.com/dnbexperience/eufemia/issues/7394), #7188 (https://github.com/dnbexperience/eufemia/issues/7188), #7386 (https://github.com/dnbexperience/eufemia/issues/7386), #7031 (https://github.com/dnbexperience/eufemia/issues/7031), #7396 (https://github.com/dnbexperience/eufemia/issues/7396), #7378 (https://github.com/dnbexperience/eufemia/issues/7378), #7403 (https://github.com/dnbexperience/eufemia/issues/7403))"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "remove en-NO documentation"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: prevent dropdown from reopening after Enter key selection",
+            "Icon: fix broken icon size detection in production builds",
+            "Button, Skeleton, PaymentCard, Pagination: preserve defaultProps behavior for undefined values, closes #6792 (https://github.com/dnbexperience/eufemia/issues/6792)",
+            "DatePicker: align popover arrow styling with DatePicker container",
+            "DrawerList: prevent value reset on blur for lazy-loaded data",
+            "DrawerList: refresh scroll observer on direction change or search results change",
+            "Dropdown: correct outline padding on focus and error state",
+            "FormStatus: remove loose string/boolean from FormStatusState type",
+            "getTranslation: prevent context corruption after unmounting",
+            "GlobalStatus: prevent unintended visibility when show defaults to auto",
+            "Icon: replace alt='no-alt' with empty string for data:image icons",
+            "List: inherit card border-radius on first/last items when used in Card without scroll view",
+            "FormStatus: rename remaining warn→warning and info→information status references, closes #6522 (https://github.com/dnbexperience/eufemia/issues/6522) #7174 (https://github.com/dnbexperience/eufemia/issues/7174)",
+            "StyleIsolation: handle :global(html[attr]) & when used in CSS module, closes #7429 (https://github.com/dnbexperience/eufemia/issues/7429)",
+            "Tabs: fix false overflow detection when tab title contains extra elements"
+          ]
+        },
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "PaymentCard: replace runtime type system with plain TypeScript discriminated unions"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.104.1",
+      "version": "10.104.1",
+      "date": "2026-04-20",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.104.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "List: align grid-template-areas column count with grid columns (#7578) (0f02685)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.104.0",
+      "version": "10.104.0",
+      "date": "2026-04-17",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.104.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "List: add to, elementand elementProps to List.Item.Action (#7337) (f904f56)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Provider: avoid overwriting parent translations with undefined (#7303) (593890c), closes #7220",
+            "List: prevent space-between gaps in accordion items (#7525) (f701c4b)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.103.0",
+      "version": "10.103.0",
+      "date": "2026-03-31",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.103.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add StackBlitz starter to /issue page (#7250) (74e765a)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Selection, ArraySelection: unique ids and correct fieldset/legend for radio groups (#7251) (6bbdb33)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Table: add variant=\"subtle\" to Th (#7252) (481aaf9)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.102.0",
+      "version": "10.102.0",
+      "date": "2026-03-26",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.102.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "move Form.Section test and fix formatting (#7236) (80c663e)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "List: add explicit aria-label and aria-labelledby props (#7231) (2fcb88c)",
+            "List: add explicit id prop to List sub-components (#7239) (c042750)",
+            "List: add onChange callback to ItemAccordion (#7100) (ea8c457)",
+            "Stat: add Stat.Text for custom text with colorizeBySign, fontSize, fontWeight (#7224) (b96adb1), closes #7215",
+            "Stat: add ariaLive prop to Stat.Content (#7230) (9380bf6)",
+            "Stat: add explicit id prop to Stat.Inline (#7237) (893ef1b)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Stat: add example using AriaLive for announcement during stat changes (#7242) (c4af73d)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Email: add default maxLength of 254 (#7244) (465f1e7)",
+            "Field.Upload: clear shared upload state on unmount to prevent file leaks (#7223) (a2658fb), closes #6684",
+            "Form.Section: prevent repeated translation injection (#7220) (1688710)",
+            "List: remove redundant borders on List items inside List.Card (#7226) (31625af)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.101.2",
+      "version": "10.101.2",
+      "date": "2026-03-25",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.101.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "add fontWeight prop to ItemTitle for API consistency with sibling components (#7178) (855de28)",
+            "List.Item.Accordion: guard AccordionHeader and AccordionContent against usage outside ItemAccordion (#7169) (9989d4c)",
+            "List: add missing style.ts entry point for per-component style imports (#7199) (9a3bfc0)",
+            "List: call onClick on mouse click when href is provided in ItemAction (#7201) (eacd563)",
+            "List: remove incorrect aria-expanded from accordion content panel (#7198) (2148e38)",
+            "List: remove stale open prop from ItemAccordionContext (#7187) (6088815)",
+            "pass appliedDisabled instead of raw disabled prop to ItemContent in ItemAction (#7176) (9df50b3)",
+            "remove unused open prop from AccordionHeaderProps (#7170) (cf8b32c)",
+            "Stat.Amount: clarify deprecation message (#7173) (cd3a07b)",
+            "Stat.Amount: display -0 instead of +0 for negative zero with signDisplay always (#7179) (f6e3be6)",
+            "Stat.Amount: handle negative zero in colorizeBySign (#7172) (7f5bda2)",
+            "Stat.Inline: add warning if used outside Stat.Root (#7171) (6f0b834)",
+            "Stat.Trend: treat sign-only string values as neutral (#7177) (ac192ca)",
+            "Stat: add inRoot warning to Info component (#7186) (540a04b)",
+            "Stat: align Rating aria-label precision with visual fill (#7190) (131e726)",
+            "Stat: handle sign-only strings consistently in Trend (#7183) (a92f0d9)",
+            "Stat: improve skeleton handling (#7166) (b6d5a4d)",
+            "Stat: prevent Label from shadowing Root skeleton context (#7185) (60cc42d)",
+            "Stat: propagate skeleton to non-Stat children via Provider in Label and Inline (#7189) (3135bb8)",
+            "Stat: warn when Trend cannot resolve value from children (#7184) (22a51be)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "List: add ItemAccordion onClick event to events tab (#7206) (85d95d5)",
+            "List: fix AccordionHeader inheritance note (#7209) (5711e38)",
+            "Stat: add relevant links section to stat info page (#7204) (e9847a7)",
+            "Stat: document deprecated 'default' variant in Label and Info (#7205) (eb98b7b)",
+            "Stat: use relative tab key paths in stat.mdx (#7208) (b5b82a0)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.101.1",
+      "version": "10.101.1",
+      "date": "2026-03-23",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.101.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "List: use distinct class for ItemFooter separator (#7144) (1a4ed68)"
+          ]
+        },
+        {
+          "title": "Tests",
+          "slug": "tests",
+          "items": [
+            "Stat: add Inline skeleton propagation edge case tests (#7149) (6bd3611)",
+            "Stat: add NaN and Infinity edge case tests for Stat.Number (#7107) (76b178f)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "List: add fontSize and fontWeight props to ItemCenter properties table (#7159) (9e2d4ab), closes #7157",
+            "List: add fontWeight prop to ItemStart properties table (#7158) (2e71467), closes #7156",
+            "List: improve ListCard documentation (#7082) (21e5454)",
+            "Stat: add Inline description and Amount deprecation note (#7103) (3c84b96)",
+            "Stat: add value prop to Trend documentation (#7120) (4dce0d3)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "List.Container: propagate skeleton to child items via context (#7101) (715f2a4)",
+            "List.ScrollView: propagate skeleton to child items (#7104) (0792d2e)",
+            "List: add disabled color overrides to Sbanken theme (#7155) (cf20fcd)",
+            "List: add disabled prop to interactive items (#7105) (d6d35a2)",
+            "List: add disabled prop to ItemAccordion via context (#7127) (3317e19)",
+            "List: add fontSize and fontWeight props to ItemCenter for consistency with ItemEnd (#7157) (0a6fd70)",
+            "List: add fontWeight prop to ItemStart for consistency with ItemEnd (#7156) (3189bc1)",
+            "List: add skeleton support to all cell components (#7128) (020f2e8)",
+            "List: always propagate skeleton and disabled through ScrollView context (#7160) (e412612)",
+            "List: apply skeleton class to AccordionHeader (#7143) (1c1cdc4)",
+            "List: correct Sbanken theme variable name to --item-background-color (#7131) (6302dc4)",
+            "List: default separated to false in Container (#7125) (cde4a39)",
+            "List: explicitly forward skeleton prop in ItemAccordion (#7140) (b73bf1c)",
+            "List: forward selected, variant and skeleton props in ItemAction (#7139) (3eacdd0)",
+            "List: inherit parent context values in ScrollView skeleton provider (#7117) (c3bf34c)",
+            "List: inherit skeleton from context in AccordionContent (#7135) (07e1daa)",
+            "List: inherit skeleton from SharedContext Provider (#7132) (b587cfc)",
+            "List: propagate skeleton property to children via shared Context (#7161) (4f96fda)",
+            "List: remove redundant HTMLDivElement type from Container and ItemContent props (#7109) (4496ae0)",
+            "List: remove redundant variant resolution from ItemBasic (#7111) (150e23c)",
+            "List: remove trailing comma from CSS var() fallback (#7134) (7d2e9a4)",
+            "List: support disabled prop on Container to disable all child items (#7142) (af504ac)",
+            "List: use FlexItem props for ItemIcon instead of ItemContentProps (#7115) (83cd047)",
+            "List: use FlexItemProps for cell components instead of ItemContentProps (#7121) (87a2501)",
+            "List: use FlexItemProps for ItemSubline instead of ItemContentProps (#7126) (33b2add)",
+            "Stat: add explicit id prop to Label, Content, Trend, Rating, and Info (#7114) (653b83f)",
+            "Stat: add id and style props to Root type and documentation (#7130) (31e88c2)",
+            "Stat: add NumberExport.ts for standalone import (#7091) (4d21ea0)",
+            "Stat: add runtime deprecation warning for Stat.Amount (#7138) (771bd13)",
+            "Stat: add skeleton support to Stat.Inline (#7099) (71a0014)",
+            "Stat: add style prop to Trend, Rating, Info, and Content types (#7085) (d77f674)",
+            "Stat: apply skeleton class and aria-disabled to Content element (#7090) (ce459b3)",
+            "Stat: colorizeBySign works without signDisplay (962c09f)",
+            "Stat: default Content to span element when used outside Root (#7147) (9bf77ff)",
+            "Stat: default Label to span element when used outside Root (#7146) (a739107)",
+            "Stat: explicitly destructure and pass style prop in Info (#7136) (4c6579d)",
+            "Stat: explicitly destructure and pass style prop in Rating (#7118) (cb8b2f5)",
+            "Stat: explicitly destructure and pass style prop in Trend (#7119) (729b4da)",
+            "Stat: propagate skeleton context from Inline to children (#7137) (186b98f)",
+            "Stat: render NaN and Infinity as em dash in Trend (#7092) (a30024a)",
+            "Stat: warn when Content appears before Label in Root (#7089) (47bdb29)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.101.0",
+      "version": "10.101.0",
+      "date": "2026-03-20",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.101.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "improve naming docs (#7020) (b398e5a)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Date: add validation error when range start date is after end date (#7019) (3142120)",
+            "Field.Email: improve error message (#7034) (7446b9c)",
+            "Input, Autocomplete: memoize icon for ProgressIndicator (#7027) (5b69748), closes #6449",
+            "List: preserve direct li children in List.Container (#7079) (d86275a)",
+            "Stat.Number: add missing Number export to barrel index (#7024) (069e9d0)",
+            "Stat: ensure amounts are accessible to screen readers (#7022) (3131116)",
+            "update forms validation messages across all locales (#7043) (7557016)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Forms: support return messages from onSubmitRequest (#7078) (b63b9fe)",
+            "List: add List.Card and List.ScrollView (#7080) (91a04d2)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.100.1",
+      "version": "10.100.1",
+      "date": "2026-03-12",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.100.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Refactoring",
+          "slug": "refactoring",
+          "items": [
+            "Stat.Amount: replace React.cloneElement with span wrapper in renderAffix (#7014) (c3d19d2)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: preserve digit order when overwriting selected input values (#7015) (babb42d)",
+            "List: add support to be wrapped in Flex.Stack (#7009) (4831397)",
+            "Stat.Amount: rename to Stat.Number (#6999) (5ca798a)",
+            "Stat.Info: rename variant \"default\" to \"plain\" (#7005) (0fa047f)",
+            "Stat.Label: rename variant 'default' to 'plain' (#7008) (9d46532)",
+            "Stat.Rating: clamp max and warn for large values (#7001) (4ebdcdd)",
+            "Stat.Rating: compute progressive heights dynamically (#7000) (778cf0e)",
+            "Stat: ensure all sub-components support skeleton (#7007) (b0f7d9f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.100.0",
+      "version": "10.100.0",
+      "date": "2026-03-11",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.100.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Forms: add totalSteps to WizardContainer.onStepChange (#6878) (a0f2acd)",
+            "NumberFormat: add new useNumberFormatWithParts hook (#6807) (83369c0), closes #6755",
+            "Stat: add new component for hero amounts with composition, rating and trend (#6755) (dc4ba5d)",
+            "VippsWalletButton: add pending state with SubmitIndicator (#6932) (c1c670e)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Currency: allow typing minus sign (#6984) (ba0cab6)",
+            "Field.Date: forward tooltip prop from DatePicker (#6967) (0641068)",
+            "Field.Date: should not display error message when clearing range (#6960) (c38f89c)",
+            "Field.Date: should reset to initial value when clicking reset button (#6962) (6392bde)",
+            "Field.Upload: display required message when removing files (#5535) (9128b3f)",
+            "Forms: errorSummaryTitle translation should override GlobalStatus title (#5951) (ce2bc75)",
+            "Forms: ensure consistent cursor in Form.SubmitButton (#6945) (9a1d024), closes #6931",
+            "Forms: omit double import of styles (#6860) (f3aaeea), closes #6816",
+            "GlobalStatus: reduce spacing when not using text property (#6963) (c19d011)",
+            "List: only make form elements full-row clickable in basic items when selected is defined (#6966) (61c04ef)",
+            "Table: prevent cross-fade morphing on accordion content rows (#6965) (5e503ea)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.99.0",
+      "version": "10.99.0",
+      "date": "2026-02-26",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.99.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: safeguard Form.clearData when id is invalid (#6774) (f6c45f0)",
+            "Tabs: fix overflow when using Badge in tab title (#6734) (c32730e)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "List.Item.Accordion: add keepInDOM property to keep content in the DOM when closed (#6735) (565e525)",
+            "NumberFormat: omit space before suffix when it starts with slash (#6744) (e2d74a6)",
+            "Table: for accordion mode – add keepInDOM property to keep content in the DOM when closed (#6790) (d40a2af)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.98.0",
+      "version": "10.98.0",
+      "date": "2026-02-19",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.98.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Accordion: improve on_change (#6696) (0a701f1)",
+            "add en-NO with examples to relevant documentation (#6644) (0a86c43)",
+            "Badge: correct status values (#6670) (8631989)",
+            "Button: add example using SVG inside a button (#6647) (a73e63a)",
+            "Forms: improve documentation on forms best practices and getting started (#6659) (2625a7f)",
+            "improve translation docs on how to use sv_SE (#6620) (5a48fcb)",
+            "Slider: improve docs for onDragStart & onDragEnd (#6695) (00db3c2)",
+            "Switch: improve onChange & onChangeEnd (#6693) (74529a5)",
+            "Tabs: improve on_change, on_click & on_focus (#6692) (842b4d2)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: make showNoOptionsItem callable during async mode (#6646) (ca7549e)",
+            "Drawer: improve sticky header on iPhone (#6703) (30f3422)",
+            "Field.Upload: async fileHandler and onFileDelete should work in Iterate.Array (#6684) (faf7930), closes #6156",
+            "Field.Upload: prevents async delete from having their loading states overwritten (#6689) (4ab6657)",
+            "Forms: upgrade ajv from to v8.18.0 (#6636) (40b4ea9)",
+            "GlobalStatus: improve event types (#6694) (1ee4f07)",
+            "List: ensure Item.End flex column alignmnet (#6634) (69131d5)",
+            "Space: support inline and block for responsive innerSpace (#6621) (1979458), closes #6595"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add VippsWalletButton extension (#6690) (1ad467e)",
+            "Autocomplete: type events (#6687) (747e909)",
+            "Autocomplete: type events (#6691) (158f311)",
+            "Eufemia: warn when old version is used (#6639) (f224978)",
+            "Field.Upload: add onValidationError event (#6616) (e9cc4d2)",
+            "Forms: add statusPosition=\"above\" to all Field.* components (#6666) (d5a4b92)",
+            "improve translations (#6674) (c67e8b0)",
+            "Modal, Dialog, Drawer: add sticky close button for Dialog component (#6649) (1cc5ebb)",
+            "PaymentCard: use stop icon for not_active, reset icon for renewed (#6622) (f67b88d)",
+            "Tag: improve typing of onClick & onDelete events (#6698) (731d13b)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.97.0",
+      "version": "10.97.0",
+      "date": "2026-02-12",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.97.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add best practices page for number formatting (#6564) (f808ad3)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Form.useSubmit: make it work properly outside of Form.Handler (#6592) (40e691d)",
+            "Form.useValidation: make hook reactive (#6599) (0d7e165)",
+            "Form.useValidation: prevent faulty status when changing locale (#6601) (d2cfb45)",
+            "Forms: should update required error message when locale changes (#6602) (7d35900)",
+            "List: reset browser given margin on ul element (#6567) (299c344)",
+            "Tabs: ensure Badge styles do not effect content styles (#6606) (f285b0f)",
+            "Upload: stop loading spinner when rejecting promise (#6607) (2869a1e)",
+            "Value.Currency: fix correct empty placeholder when locale is en-GB (#6565) (e9e33d0)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Field.Selection: deprecate radio-list in favor of the new List component (#6570) (ff77078)",
+            "Forms: add support for children given in a function to Field.Selection and Field.ArraySelection (#6568) (8df1fd2)",
+            "NumberFormat: add when to display the sign for the number (signDisplay) (#6604) (cfc4479)",
+            "Space: add inline and block support to innerSpace (#6595) (91ae029)",
+            "Upload: remove link for files by using removeLink (#6608) (ef29eeb)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.96.0",
+      "version": "10.96.0",
+      "date": "2026-02-05",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.96.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Forms: document where styles are imported (#6531) (16f0981)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Email: support unicode in the local part (before @) (#6543) (5149cfc)",
+            "Upload: reduce description size and filename hover width (#6498) (fef4011)",
+            "Wizard.useStep: ensure setActiveIndex can always be called (#6546) (86a3e8f)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "DateFormat: add hideCurrentYear and hideYear property (#6536) (f7fe82d), closes #6520",
+            "DateFormat: show Tooltip with more information (#6545) (b8a6175)",
+            "Forms: add Form.useSubmit for easy submit outside the context (#6533) (164ad1d)",
+            "List: add new component for displaying rows of content (#6520) (eb3b31f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.95.2",
+      "version": "10.95.2",
+      "date": "2026-01-29",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.95.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: improve Field.Email validation to catch more invalid emails (6328745)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.95.1",
+      "version": "10.95.1",
+      "date": "2026-01-27",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.95.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "AI: improve initial docs guidance for MCP Server (#6459) (e38e314)",
+            "DateFormat: add support for timezones (#6457) (187fc65)",
+            "Forms: minor locale improvements for PostalCode, Upload and Email fields (#6455) (27f0d2b)",
+            "Iterate: fix redundant rendering of ItemNo (#6470) (62569a4)",
+            "PaymentCard: add /style/isolated for style isolation import (#6458) (64e644d)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.95.0",
+      "version": "10.95.0",
+      "date": "2026-01-26",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.95.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Forms: improve title of pages and search results (#6371) (83bf555)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add reduced motion support (#6446) (7b53563)",
+            "AI: include MCP Server with Eufemia documentation (#6437) (028e751)",
+            "Badge: add hideBadge prop (#6311) (90ae62a)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: ensure better results when search_numbers is used (#6436) (309eff8)",
+            "Autocomplete: ensure stricter searchMatch=\"starts-with\" to allow a strict matching search (#6362) (fd85631)",
+            "Badge: ensure number formatting gets not inherited (#6444) (f53c8c7)",
+            "Forms: improve typing for setFieldStatus (#6435) (6be4843)",
+            "AI: improve llms.txt output and remove metadata.json and llm.json (#6370) (1f81129)",
+            "Input: only memoize icon for ProgressIndicator (#6449) (18454a7)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.94.3",
+      "version": "10.94.3",
+      "date": "2026-01-16",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.94.3",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "llms.txt: add markdown files as source (#6341) (3bfe222)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Bundle: prevent circular dependency (#6342) (702fe82)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.94.2",
+      "version": "10.94.2",
+      "date": "2026-01-16",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.94.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Bundle: remove exports field to ensure running Vite builds (#6334) (9ff30bc)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.94.1",
+      "version": "10.94.1",
+      "date": "2026-01-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.94.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Bundle: refactor exports field of package.json to improve Vitest performance (#6332) (122d172)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.94.0",
+      "version": "10.94.0",
+      "date": "2026-01-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.94.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Autocomplete: add searchMatch=\"starts-with\" to allow a strict matching search (#6277) (909c72c)",
+            "Badge: implement new default design and features with status (neutral, positive, warning, negative) and subtle (#6240) (38af5b6)",
+            "Bundle: add exports field in package.json (#6271) (42582ea), closes #6270",
+            "Bundle: ensure fully specified ESM bundle with type=module (#6270) (d5c97c6), closes #6248",
+            "Bundle: ensure fully specified file extensions (#6248) (468a234)",
+            "DateFormat: add relativeTimeStyle to control relative time formatting (#6283) (9525054), closes #6279",
+            "DateFormat: add timeStyle including dateTimeSeparator (#6279) (0545a32)",
+            "ensure Browserslist targets are fully supported in the bundle with needed polyfills (#6242) (6c62def)",
+            "Forms: support parent data access using dot paths ../myPath (#6219) (1b03121), closes #6206",
+            "Tabs: add support for Badge notification inside a tab (#6123) (908b193)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Anchor: ensure the disabled property does disable the anchor (#6303) (61d7eaf)",
+            "Button: ensure correct disabled style when href is given (#6325) (d2bd6ba)",
+            "Provider: should cascade translations from parent to nested provider (#6309) (04ed8f9)",
+            "replace Object.prototype.hasOwnProperty.call -> Object.hasOwn (#6220) (c35e571)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.93.1",
+      "version": "10.93.1",
+      "date": "2026-01-09",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.93.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Anchor: prevent reverse tabnabbing (#6223) (867de87)",
+            "Autocomplete: XSS prevention (#6238) (206dc70)",
+            "Field.Email: add support for leading underscore among several more characters (atext) (#6252) (6fa0ecf)",
+            "Form.SubmitButton: add secondary variant option (#6251) (d949953), closes #6250",
+            "Form.SubmitButton: show indicator only on current button (#6250) (750d7f4)",
+            "GlobalError: remove redundant spacing classes (#6221) (78fd9dc)",
+            "GlobalError: remove usage of dangerouslySetInnerHTML (#6218) (0004654)",
+            "PaymentCard: remove import of non-existent cardDataPropTypes (#6253) (e38aed1)",
+            "Provider: clear corrupted session storage data and use defaultData when parsing error (#6225) (a674ac2)",
+            "validateDOMAttributes: prevent prototype pollution (#6226) (2f72669)",
+            "Wizard: prevent navigation when ongoing async fileHandler in Field.Upload in a Iterate.Array (#6159) (b05145f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.93.0",
+      "version": "10.93.0",
+      "date": "2026-01-06",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.93.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.DateOfBirth: support labelSize (#6135) (47701fc)",
+            "Field.DateOfBirth: support labelSrOnly (#6136) (3d158a0)",
+            "Field.Expiry: adjust required message (#6143) (c6fe7e0)",
+            "Field.Expiry: should not display error borders when providing info or warning (#6138) (4a8ade7)",
+            "Field.Password: adjust required message (#6144) (c49ac98)",
+            "Form.InfoOverlay: should work correctly with reduceToVisibleFields (#6146) (86e3eff)",
+            "Forms: improve type safety for custom validators for Field.BankAccountNumber (#6134) (81540dd), closes #6127",
+            "Forms: improve type safety for custom validators for Field.Date (#6133) (2380aaf), closes #6127",
+            "Forms: improve type safety for custom validators for Field.DateOfBirth (#6132) (24a3bf6), closes #6127",
+            "Forms: improve type safety for custom validators for Field.Expiry (#6131) (c11914f), closes #6127",
+            "Forms: improve type safety for custom validators for Field.Name (#6130) (cba32bb), closes #6127",
+            "Forms: improve type safety for custom validators for Field.NationalIdentityNumber (#6129) (ad0cc50), closes #6127",
+            "Forms: improve type safety for custom validators for Field.OrganizationNumber (#6128) (d428979), closes #6127",
+            "InputMasked: fix events argument type (#6122) (c6fa08e), closes /github.com/dnbexperience/eufemia/pull/5581#discussion_r2619387062"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Portal: optimize a11y for search results (#6157) (a8560e4)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "CardFigure: rewrite to TypeScript (#6200) (4a98bc3)",
+            "ChildrenWithAge: remove 0 as placeholder for age of children (#6207) (dc61dcb)",
+            "Form.Section.EditButton: add support for custom properties (#6155) (2884106)",
+            "Forms: access root data by using double slash //myPath path (#6206) (d2949fc)",
+            "Img: rewrite to TypeScript (#6198) (5023eb5)",
+            "Skeleton: rewrite Article figure to TypeScript (#6196) (dc3c540)",
+            "Skeleton: rewrite Circle figure to TypeScript (#6195) (37d0036)",
+            "Skeleton: rewrite Product figure to TypeScript (#6194) (eea4b93)",
+            "Skeleton: rewrite SkeletonHelper to TypeScript (#6197) (2f3b0fe)",
+            "Skeleton: rewrite Table figure to TypeScript (#6193) (75447cd)",
+            "SkipContent: add aria-live\"polite\" when visible (#6212) (2630322)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.92.1",
+      "version": "10.92.1",
+      "date": "2025-12-16",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.92.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.DateOfBirth: remove unsupported props layout, layoutOptions & labelSize (#6100) (870f00e)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Button: ensure tooltip is rendered when initially active (#6109) (5403fe4)",
+            "DatePicker, TermDefinition: add translated string to \"focus trap\" buttons (#6099) (ffc6c10)",
+            "Field.DateOfBirth: adjust sizing of month and year fields (#6080) (9ff21bb), closes #6064",
+            "Field.DateOfBirth: width in horizontal layout (#6106) (fc1bb0f)",
+            "Field.PhoneNumber: support labelDescriptionInline property (#6101) (3d03336)",
+            "Field.PhoneNumber: width in horizontal layout (#6105) (448b53a)",
+            "Field.PostalCodeAndCity: width in horizontal layout (#6104) (9b4f5cb)",
+            "Field.Upload: correctly handle fileMaxSize error using async fileHandler (#6107) (afc5ffe)",
+            "Portal: append sub-page to page title (#6110) (95f95d9)",
+            "Portal: improve search results for sub-pages (#6111) (7c6ad10)",
+            "TermDefinition: improve performance by disabling keepInDOM (#6096) (c0cbf78)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.92.0",
+      "version": "10.92.0",
+      "date": "2025-12-11",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.92.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Avatar: add example using CountryFlag in Badge of Avatar (#6078) (f275842)",
+            "Badge: add notification badge info (#6067) (663230f)",
+            "Badge: remove unused alternatives (#6055) (558d72b)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Badge: add variant content (#6079) (9c4cb1f)",
+            "Badge: align to latest UX and render numbers as given (without 9+) (#6053) (ec64de1)",
+            "CountryFlag: add sizes xx-small & x-small (#6071) (6744856)",
+            "Field.Expiry: export expiryValidator (#6065) (d019ad5)",
+            "Field.Upload: add labelSuffix property (#6077) (3f0dea2)",
+            "Form.Section: add schema support (#6068) (6afc552)",
+            "Forms: add onStatusChange event to all Field.* components (#6076) (66a7a99)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: remove incorrect aria-hidden from popover container (#6090) (5dcef90)",
+            "Dialog, Drawer: add translation support for title (#6092) (eb2347e)",
+            "Field.DateOfBirth: display optional label when required={false} (#6073) (8479892)",
+            "Field.PhoneNumber: phone number label should overflow its field (#6081) (0278ca8)",
+            "Field.Upload: display optional label when required={false} (#6072) (eff7a46)",
+            "Forms: automatically use onBlurValidator as onChangeValidator when validateContinuously is enabled (#6087) (074a7cb)",
+            "Forms: improve pattern and length of Field.Name and handle validation with onBlurValidator (#6082) (2b69d25)",
+            "Icon: render large icons with correct stroke width (#6069) (1e9f2bf)",
+            "Tooltip: remove flickering while positioning (#6093) (39c92e5)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.91.1",
+      "version": "10.91.1",
+      "date": "2025-12-09",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.91.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "DatePicker: automatically alignment of calendar using alignPicker (#6017) (a2270b3)",
+            "Forms: add example for dependent Ajv schema (#6043) (e854266)",
+            "TermDefinition: add examples of how to use inside label and help text (#6028) (b908569)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Checkbox: improve focus handling when clicking (#6040) (2caad7a)",
+            "DatePicker: ensure backwards compatibility for when used inside Nucleus (#6024) (5f81914)",
+            "DatePicker: improve \"today\" highlight styling (#6015) (c7670e5)",
+            "Field.Upload: should not display error removing file using async fileHandler (#6025) (57418f1)",
+            "Forms: ensure help property works in Field.Boolean when variant is checkbox (#6034) (76be2f7)",
+            "Forms: improve async validator detection and behavior (#6045) (b1ba42f), closes #6032",
+            "Forms: prevent Wizard step navigation during pending validation (#6044) (d713f6f), closes #6032 #6045",
+            "HelpButtonInline: improve focus handling when opening and closing (#6038) (a182d0c), closes #6036",
+            "Iterate.Array: set data context value to undefined when no value was given (#6050) (21be4b0)",
+            "NumberFormat: improve focus handling when selecting (#6039) (7d6fbad), closes #6036",
+            "NumberFormat: omit select & copy helper on touch devices (#6041) (1d4e782), closes #6033",
+            "NumberFormat: show Tooltip on user copy action (#6027) (16091ea)",
+            "Popover: make VoiceOver focus handling reliable (#6030) (57a3c57)",
+            "Slider: adjust Tooltip position when value changes (#6060) (6a8bf15), closes #6059",
+            "TermDefinition: improve focus handling when closing (#6036) (3f15653)",
+            "TermDefinition: prevent hover when inside FormLabel (#6029) (eb51459)",
+            "Tooltip,TermDefinition,DatePicker: improve handling of screen-reader focus when navigating out of content (#6019) (71b17d5)",
+            "Tooltip: improve element validity check (#6012) (f39dc69)",
+            "Tooltip: improve performance by disabling keepInDOM (#6026) (cec63e3), closes #6011",
+            "Wizard: prevent navigation when there's an ongoing async fileHandler in Field.Upload (#6032) (381b6e2), closes #6044 #6045"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.91.0",
+      "version": "10.91.0",
+      "date": "2025-11-28",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.91.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "DatePicker: add example how to define \"today\" highlighting (#5983) (fac4567), closes #5982",
+            "Form.clearData: display in side menu (#5997) (f83bf3a)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: add onClear event (#6004) (6df5aad)",
+            "Currency formatting: place currency sign before value when currencyDisplay is code (#6002) (9867ecb)",
+            "Field.DateOfBirth: onChange should return undefined after removing input (#5991) (75f01cd)",
+            "Field.Expiry: onChange should return undefined after removing input (#5992) (4d803e7)",
+            "Field.PhoneNumber: should set undefined in Form.Handler when phoneNumber is not set (#5993) (e63fef0)",
+            "Field.Upload: onChange should return undefined after removing input (#5998) (79ee68f)",
+            "Logo: ensure support of ui as the brand value (#6005) (b3de26f)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "DateFormat: add getOsloDate (#5982) (f7205cb)",
+            "DateFormat: add relativeTimeReference property to handle relative time reference (#5971) (47dd1ec)",
+            "DatePicker: auto align position if needed (implement Popover) (#5969) (52022fd)",
+            "NumberFormat: TypeScript improvements for spacing props (#5955) (97734bb)",
+            "Paragraph: add abbr example (#5996) (b5b391a)",
+            "Popover: add new component (for internal use only) (#5966) (11ed174)",
+            "TermDefinition: add new component (#5970) (1089136)",
+            "Tooltip: implement Popover (#5968) (bbe7e72), closes #5966",
+            "useSharedContext: add hook for easier typing and usage (#5965) (1817ea6)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.90.1",
+      "version": "10.90.1",
+      "date": "2025-11-25",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.90.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Tailwind: update usage for alignment utilities (#5953) (a13e91f)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: prevent closing Modal/Dialog/Drawer when escape key is pressed (#5975) (4fa6948), closes #5974",
+            "DrawerList: prevent closing Modal/Dialog/Drawer when escape key is pressed (#5974) (e015e94)",
+            "Dropdown: prevent closing Modal/Dialog/Drawer when escape key is pressed (#5973) (d688c5e), closes #5974",
+            "Field.Number: only display default max/min errors when no exceeding maximum/minimum errors exist (#5987) (8a2e122)",
+            "GlobalStatus: title should override title in Eufemia Forms (#5950) (21fa3d5)",
+            "GlobalStatus: add escape case alongside esc case (#5976) (30f6639)",
+            "HelpButtonInline: prevent closing Modal/Dialog/Drawer when escape key is pressed (#5972) (44cbe4b)",
+            "Modal: ensure the user can always select text (#5967) (575f817)",
+            "Modal: ensure using open_state works with React v19 (#5959) (3828bd0)",
+            "P: reset nesting inside Dialog, Drawer and Modal (render p instead of span) (#5985) (dca9b47)",
+            "Tabs: Tabs.Content in React v19 (#5962) (82d2b24)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.90.0",
+      "version": "10.90.0",
+      "date": "2025-11-20",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.90.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Contribution Guide: add \"How to structure components\" (#5922) (6187d04)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Button: styling of error state in variant=\"tertiary\" (#5935) (443f4d3)",
+            "DatePicker: only render border when there's a footer (#5949) (8883874)",
+            "Dialog, Drawer and Modal: correct usage and documentation about rootId and root_id (#5933) (a54997f)",
+            "Field.PostalCodeAndCity: TypeScript issues for spacing properties (#5956) (7979d29)",
+            "Pagination: remove usage of findDOMNode (#5960) (b2d1467)",
+            "Value.Number: TypeScript issues for spacing props (#5954) (2657a36)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Forms: add disableEditing to Form.Section (#5945) (df61abc)",
+            "GlobalStatus: redesign spacing (#5946) (e08fe7e)",
+            "PortalRoot: allow custom portal root placement with id, beforeSelector, insideSelector and PortalRoot.Provider (#5923) (9dd9e66)",
+            "Upload: add deleteButtonProps to FileItem (#5952) (88144a3)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.89.0",
+      "version": "10.89.0",
+      "date": "2025-11-05",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.89.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Autocomplete: correct type of showAll to be React.Node (#5914) (a26101c)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Field.PhoneNumber: add numberLabel and forward label to the field block (legend/fieldset) (#5888) (ec2a11a)",
+            "Logo: add DNB Eiendom (#5881) (1689f37)",
+            "Pagination: swap navigation buttons with page number buttons (#5916) (1be0b6d)",
+            "Typography: add support for proseMaxWidth (for default width) to P and H2 etc. (#5885) (ea5cf6b), closes #5857"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Dropdown, Autocomplete: keyboard navigation fixes (#5444) (96b6e3a)",
+            "Field.DateOfBirth: support labelDescription (#5893) (2f53eff)",
+            "Field.Date: should reset value when pressing reset button (#5898) (b8a2ba2)",
+            "InfoOverlay: should not bleed content property to data (#5897) (e39e9ae)",
+            "Modal: should only render one title text content at the time (#5917) (51a02af)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.88.0",
+      "version": "10.88.0",
+      "date": "2025-10-29",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.88.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.Upload: add example of how to validate custom file sizes (#5856) (2622d1b)",
+            "Upload: button is rendered when onFileClick (#5859) (3a97516)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Upload: error message when acceptedFileTypes is AcceptedFileType[] (#5861) (ae09090)",
+            "Upload: left align button when onFileClick (#5860) (00b2b15)",
+            "Upload: should not call setInternalFiles on setFiles (#5873) (fd1e388)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Typography: introduce --prose-max-width for CSS and proseMaxWidth for Headings and the P paragraph element (#5857) (1bd08ad)",
+            "Upload: add clearFiles to clear files of Upload component (#5864) (8d83ff2)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.87.0",
+      "version": "10.87.0",
+      "date": "2025-10-24",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.87.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Form.Iterate: preserve JSX when replacing {itemNo} in labels (#5725) (eb388b2)",
+            "renderWithFormatting: enhance performance (#5742) (6d52a07), closes #5744"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "generate per-page metadata.json + llms.txt (#5825) (cc42ad2)",
+            "rewrite Getting Started (#5816) (654216c)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add support for DNB Carnegie (#5817) (a2ad34a)",
+            "Logo: add svg property for providing a custom (imported) logo (#5783) (8cc170f)",
+            "Translation: add support for formatted text (simple markdown like) by using renderWithFormatting (#5744) (4e19327), closes #5727",
+            "Translation: enhance support for typing via generic id={(t) => t.my.string} /> (#5727) (44e872f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.86.0",
+      "version": "10.86.0",
+      "date": "2025-10-17",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.86.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "use makeAjvInstance to create an Ajv instance (#5614) (304e8eb)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: skip unnecessary render of AriaLive (#5667) (754a1e0)",
+            "Field.DateOfBirth: ensure smart autofill when tabbing out of day and month (#5603) (ac85b76)",
+            "Field.Expiry: ensure support for transformIn and transformOut (#5591) (2e32e65)",
+            "Field.Slider: ensure support for transformIn and transformOut (#5592) (1b953ef)",
+            "HeightAnimation: resolve stale height issue when adjusting to content changes (#5621) (56abab6)",
+            "NumberFormat: address TypeScript issues introduced in recent changes (#5600) (7eff844)",
+            "Tooltip: enhance performance (#5666) (864796e)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "properties-tailwind.css: generate predefined properties file to be used with Tailwind (#5583) (79bb858), closes #5527",
+            "renderWithFormatting: add new text formatter (simple markdown like) to shared tools (#5702) (35aa0d2)",
+            "useTranslation: fallback to translation key and log warning on missing entries (#5577) (eee83fb), closes #5563"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.85.1",
+      "version": "10.85.1",
+      "date": "2025-10-14",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.85.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.DateOfBirth: ensure support for transformIn and transformOut (#5586) (208e605)",
+            "Tabs: address TypeScript issues introduced in recent changes (#5597) (f7760dd)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.85.0",
+      "version": "10.85.0",
+      "date": "2025-10-10",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.85.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "DateFormat: document formatDate helper function (#5568) (fb4f44c)",
+            "Forms: add import statement to info docs (#5562) (4a6adb4)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Form.Isolation: inherit schema from Form.Handler (#5567) (d83184d)",
+            "Forms: enhance typing for complex additional arguments in transformIn and transformOut (#5587) (ec7e572), closes #5584",
+            "InputMasked: rewrite to TypeScript (part 2 of 2) (#5581) (25a7112), closes #5520",
+            "Iterate.PushContainer: inherit schema from Form.Handler (#5570) (79bba2d), closes #5567"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "ChildrenWithAge: add translations for locale da-DK & sv-SE (#5563) (718be47)",
+            "Field.Email: crashes when validating long values (#5582) (092f155)",
+            "Field.PhoneNumber: ensure support for transformIn and transformOut (#5588) (95aa9c7), closes #5584 #5587",
+            "Forms: add Zod schema translations support (#5572) (8b3aa2e)",
+            "Forms: enhance schema prioritization when using Zod schema (#5566) (43d82a0)",
+            "Upload: call setInternalFiles on setFiles (#5571) (ae170ca)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.84.0",
+      "version": "10.84.0",
+      "date": "2025-10-02",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.84.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Dropdown, Autocomplete: add groups in lists (#5415) (6cee965)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: improve Swedish: Återställa -> Återställ (#5555) (fb89a2a)",
+            "DatePicker: improve Swedish: Stänga -> Stäng (#5554) (f76a20d)",
+            "GlobalStatus: scroll into view on Firefox (#5550) (c8235a7)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.83.0",
+      "version": "10.83.0",
+      "date": "2025-09-26",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.83.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "how to use Tailwind with Eufemia (#5527) (16fd835)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "attach scopeElement when calling Eufemia.versions (#5496) (6bb01f1)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.DateOfBirth: add support for data handling via path=\"/myPath\" (#5539) (3097364)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.82.1",
+      "version": "10.82.1",
+      "date": "2025-09-25",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.82.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Dialog: gracefully handle focus during async submit (#5492) (a0ae155)",
+            "Dropdown: default align_dropdown=\"right\" for independent_width (#5524) (1ca9a88)",
+            "Field.DateOfBirth: adjust widths of fields (#5511) (a14f46f)",
+            "Field.DateOfBirth: space above legend (#5502) (c7bf2f5)",
+            "Field.Number: ensure the field reacts on locale without currency variant (#5503) (bc6b96c)",
+            "Field.Number: show error immediately when the input exceeds the maximum possible number (#5498) (c2e5222)",
+            "Field.Number: show formatted numbers in error messages (#5510) (8b5d878)",
+            "Input: use browser autofill background color (#5526) (32113fa)",
+            "use en-GB translation strings when en-US is given (#5507) (f547c8f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.82.0",
+      "version": "10.82.0",
+      "date": "2025-09-19",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.82.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Forms: add Zod support and use it internally (#5471) (547f952)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.81.0",
+      "version": "10.81.0",
+      "date": "2025-09-19",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.81.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "NumberFormat: added source and rationale for recommending en-GB number formatting. (#5474) (137d5a8)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Card: add backgroundColor and outline property support (#5473) (8932b90)",
+            "Forms: add Field.DateOfBirth for selecting date of birth (#5019) (3449904)",
+            "Forms: ask user for confirmation when cancel button is pressed in Form.Iterate and Form.Section (#5472) (632f904)",
+            "Upload: add buttonProps property (#5452) (bb8a741)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Dialog, Drawer: enhance screen reader support and focus management (#5491) (00289ae)",
+            "Field.BankAccountNumber: danish translations (#5475) (571a26b)",
+            "Field.Date: should not display error when clearing the value (#5464) (dd809e8)",
+            "Field.Expiry: should not display error when clearing the value (#5465) (c654b81)",
+            "Field.NationalIdentityNumber: danish translations (#5477) (7aa7dd7)",
+            "Field.OrganizationNumber: danish translations (#5476) (1f55851)",
+            "Field.Selection, Field.ArraySelection, Field.Toggle, Field.Boolean: enhance accessibility for radio and button variants (#5489) (f13ac84)",
+            "Field.Selection: support search_content in data for variant=\"autocomplete\" (#5487) (a39eac5)",
+            "Lists: support UL inside OL (#5488) (5de61a0)",
+            "Table: ensure smooth animation when Td.AccordionContent or Tr.AccordionContent is used (#5490) (bcce7d3)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.80.1",
+      "version": "10.80.1",
+      "date": "2025-09-10",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.80.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: ensure list shows up after input has cleared (#5457) (9d8841b)",
+            "Button: prevent navigation when disabled with href prop (#5447) (f207d09)",
+            "Button: remove disabled attribute when disabled with href (#5454) (105c744), closes #5447",
+            "CopyOnClick: use original Tooltip component to show tooltip for better support (#5449) (80c0a56)",
+            "Form.Section: avoid showing view and edit container at the same time (#5455) (2c07e30), closes #5431",
+            "Forms: ensure Form.Iterate and Form.Section runs validation when cancel button is pressed (#5463) (516d71a), closes #5431",
+            "Tooltip: make Tooltip controlled when active prop is set (#5446) (3a6656b)",
+            "Upload: input element overflow (#5458) (633bc68)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.80.0",
+      "version": "10.80.0",
+      "date": "2025-09-05",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.80.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add support for locale da-DK (#5432) (d4a94a2)",
+            "DateFormat: show Tooltip on hover when rendering relativeTime (#5425) (25c0b11)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Button: make button text selectable (#5429) (22f4ad8)",
+            "CopyOnClick: show Tooltip after copy (#5442) (2629e83)",
+            "DrawerList: swap aria-selected and aria-current (#5435) (8b818bd)",
+            "Input: correct value in on_submit events (#5434) (bedf377)",
+            "Input: ensure error, focus, and hover states work with autofilled content (#5424) (484f341), closes #5217",
+            "Norwegian translation of Christmas Island (#5433) (4625f54)",
+            "Table: style table inside of an accordion mode table (#5428) (3a77c0e)",
+            "Tooltip: remove click event to make screen reader not read out \"clickable\" (#5426) (4e13600)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.79.0",
+      "version": "10.79.0",
+      "date": "2025-08-28",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.79.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "update change log of Eufemia (#5409) (3ce9fd9)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: input icon should be red when opened in error state (#5419) (91357d6)",
+            "correct mismatched style index imports (#5414) (a31f930)",
+            "Field.Date: properly handle required error (#5412) (642fc0d)",
+            "Field.Date: valid range value should not display required error (#5410) (69a1b00)",
+            "Forms: add type for innerRef to Form.Handler (#5408) (a2a7ca6)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add sharp shadow (#5401) (e578ada)",
+            "replace rollup with tsdown for UMD and ESM bundles (#5417) (7ef926c)",
+            "SelectCurrency: make country names searchable (#5405) (929cccd)",
+            "upgrade date-fns to latest version (v4) – ⚠️ It may effect your direct usage of date-fns (#5413) (3ddb89c)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.78.0",
+      "version": "10.78.0",
+      "date": "2025-08-20",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.78.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add links to Figma, docs, and source code (#5319) (f874a9a)",
+            "Forms: add docs about unique paths (#5197) (f1511e0)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add support for Eufemia.versions (#5322) (e4c1530)",
+            "Anchor: add noIcon and noLaunchIcon (#5256) (5b5d644)",
+            "Avatar: add icon prop and auto size icons (#5390) (6d7e1c9)",
+            "DateFormat: add support for relative time (auto updated) (#5326) (7e3c404)",
+            "DNB Carnegie: add ArizonaFlare font to CDN (#5397) (7baf1db)",
+            "upgrade internal Node.js version to latest LTS (#5400) (7a6762f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.9",
+      "version": "10.77.9",
+      "date": "2025-08-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.9",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: ensure labels from Value. components can be served from a Value. component itself (#5398) (bc7bd39)",
+            "NumberFormat: ensure en-GB locale uses comma for thousand separator (#5393) (202236e)",
+            "NumberFormat: remove role=\"text\" (#5386) (019bd3e)",
+            "StepIndicator, Wizard: screen reader improvements (#5388) (e247409)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.8",
+      "version": "10.77.8",
+      "date": "2025-08-13",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.8",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.Upload: add how to use transformIn (#5387) (f4e8463)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: highlight letters inside words when filter is disabled with disable_filter (#5385) (dee31c9)",
+            "Forms: ensure error is not shown in Wizard when Iterate.Array is required in next step (#5389) (69d8cf9)",
+            "Iterate.Array: cannot delete from array when initial data is incomplete (#5365) (b5b6601)",
+            "PushContainer: styling of variant filled in error state on small screen (#5376) (5a1347b)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.7",
+      "version": "10.77.7",
+      "date": "2025-08-12",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.7",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "PushContainer: should not open when error exists in other fields in step (#5364) (d6cd11b)",
+            "remove unused CSS reset input-placeholder (#5370) (5766c6c)",
+            "Wizard: should not report a change when comparing files/objects (#5363) (90349e2)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.6",
+      "version": "10.77.6",
+      "date": "2025-08-07",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.6",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Form.Section.Toolbar: add events and properties (#5358) (2ffc3ff)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Drawer: adjust shadow when updating navigation header (#5357) (d701844)",
+            "Dropdown: support CountryFlag in selected_value (#5362) (e9d7890)",
+            "ensure media queries with xx-small max-width do work (#5366) (aa38320)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.5",
+      "version": "10.77.5",
+      "date": "2025-07-30",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.5",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.String: add demo example using TextCounter together with maxLength property (#5335) (bf1510c)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: make reset button clear the date value if the date props is undefined (#5336) (f19fd34)",
+            "GlobalStatus: color contrast of close button in success state (#5354) (2d8a19b)",
+            "NumberFormat: display dash - for values null, undefined, and '' (#5351) (7fb3244)",
+            "skip-link styling (#5334) (1351090)",
+            "StyleIsolation: change font base path (#5333) (2e0d68a)",
+            "Table: allow expand and close by keydown when text is selected (#5344) (ad6049f)",
+            "Table: allow expanding by chevron when text is selected (#5343) (aff2e1d)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.4",
+      "version": "10.77.4",
+      "date": "2025-07-16",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.4",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Autocomplete: list is hidden when there are no results and no_options is set to false (#5327) (90cef0b)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.3",
+      "version": "10.77.3",
+      "date": "2025-07-14",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.3",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Number: ensure custom mask support (#5323) (a3c29a5)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.2",
+      "version": "10.77.2",
+      "date": "2025-07-04",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "a11y: add info about 320px screen width (#5310) (86e6d05)",
+            "add link to Eufemia's Figma file in menu bar (#5318) (4956115)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "FieldBlock: alignment helper when used in HTML v4 limited-quirks (#5321) (15f4105)",
+            "Table: allow outline in Card with inner space (#5320) (4e0ca02)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.1",
+      "version": "10.77.1",
+      "date": "2025-06-30",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.PostalCodeAndCity: postalCode and city should override existing props (#5300) (875d903)",
+            "isolated-style-scope-plugin: enhance handling of global selectors (#5306) (b76da83), closes /github.com/dnbexperience/eufemia/pull/5267/files#diff-8340e54205c44e8ff3c7985e33afe76d2ff212b5cdf38eebcc9d307f7b9e80f4",
+            "isolated-style-scope-plugin: ensure CJS support (#5307) (503f00a)",
+            "IsolatedStyleScope: enhance typing for getStyleScopeHash (#5281) (dbe62ad)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.77.0",
+      "version": "10.77.0",
+      "date": "2025-06-20",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.77.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add style isolation support (#5267) (53bbf04)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.76.1",
+      "version": "10.76.1",
+      "date": "2025-06-20",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.76.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Button: fix alignment helper to support HTML v4 limited-quirks (#5276) (02d45a6)",
+            "DrawerList: move width and height style handling to local component styles (#5275) (8988f3f)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.76.0",
+      "version": "10.76.0",
+      "date": "2025-06-19",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.76.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Upload: support children (#5259) (a3f0c16)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Indeterminate: add support for required property (#5155) (d451ae9)",
+            "Field.PhoneNumber: truncate to 8 digits when changing country code to NO (#5266) (f8cb9d1)",
+            "InfoCard: align max character width (#5262) (daf9e4e)",
+            "Tooltip: enhance handling of z-index when behind Dialog or Drawer (#5268) (cacd8ca)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add PortalRoot (React Portal) component and use it for Dialog, Drawer, Modal, DrawerList, DatePicker and Tooltip (#5261) (45a61f7)",
+            "Breadcrumbs: add onToggle property (#5253) (a010a9c)",
+            "DateFormat: add date formatting component (#5167) (b72aaae)",
+            "Field.Upload: support children (#5260) (895ce25)",
+            "Forms: add address suggestions and autofill to the Bring API connector (#4575) (25ea537), closes #4554",
+            "Forms: add variant radio to Field.Boolean & Field.Toggle (#5251) (17ce8d6)",
+            "Forms: add variant switch to Field.Boolean & Field.Toggle (#5247) (1042fde)",
+            "Section, FormStatus, GlobalStatus: update sbanken info color to green (#5190) (f9fa0b0)",
+            "Upload: add compact variant (#5254) (54e8cbb)",
+            "Upload: hide upload button when filesAmountLimit is met (#5240) (2bec964)",
+            "Wizard: add option to gracefully handle layout edge cases for nested cards (#5157) (610ac1b)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.75.4",
+      "version": "10.75.4",
+      "date": "2025-06-11",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.75.4",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DrawerList: add & export DrawerListSize-type (#5248) (a7f547b)",
+            "Field.Selection: hover state in variant radio-list (#5245) (0ebcf02)",
+            "issue with CJS files used in the build (BuildInfo.cjs) (#5246) (a293947)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.75.3",
+      "version": "10.75.3",
+      "date": "2025-06-06",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.75.3",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Accordion: allow for text selection in Firefox (#5225) (033f51e)",
+            "Accordion: fix Accordion toggle behavior when not used inside an Accordion.Group (#5224) (25056b5)",
+            "Autocomplete: empty string input_value should clear the input value (#5237) (144af33)",
+            "Button, Input: update alignment helper to use a more widely supported zero-width character (#5223) (2b1dba0)",
+            "Field.Date: required validation with date ranges (#5231) (a8e854a)",
+            "Field.Indeterminate: set aria-controls (#5226) (e9c0ffb)",
+            "Field.Selection & Field.ArraySelection: remove error border when info or warning message text (#5232) (8e59d01)",
+            "PaymentCard: export formatCardNumber from PaymentCard (#5227) (04b0491), closes /github.com/dnbexperience/eufemia/pull/5085/files#diff-cd973396bf87032377f68be76ef20ff81ea8a3c68086b9de38bb4f490f49b820L191",
+            "useMedia: fix re-render and wrong initial value issue (#5213) (61099b9)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.75.2",
+      "version": "10.75.2",
+      "date": "2025-05-28",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.75.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.BankAccountNumber: list string and field props correctly (#5210) (e192972)",
+            "Field.NationalIdentityNumber: list string and field props correctly (#5209) (2f1afa1)",
+            "Field.OrganizationNumber: list string and field props correctly (#5208) (0f67a95)",
+            "Field.Password: list string and field props correctly (#5207) (ec1ce2d)",
+            "Forms: document Tools.Errors and Tools.Log for debugging (#5192) (3209dd5)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "ChildrenWithAge: set 9 as maximum amount of children (#5183) (74b7343)",
+            "Dropdown: title=\"[object Object]\" (#5173) (1b61cec)",
+            "Dropdown: support Icon in selected_value (#5172) (8eaa44e)",
+            "ensure line-height-lead has correct value when consumed via JavaScirpt in DNB Eiendom (#5212) (c4c92ad)",
+            "Field.PhoneNumber: remove unsupported label properties (#5206) (a214eba)",
+            "Field.Upload: remove support for props not supported (#5187) (178d74f)",
+            "Field.Upload: support disabled property (#5189) (65189a5)",
+            "FieldBlock: should not render boolean values as labelSuffix (#5196) (7a27c79)",
+            "Forms: call every onStepChange assigned to Wizard.useStep (#5181) (118f444)",
+            "Forms: ensure preventUncommittedChanges with handler schema does not prevent Wizard navigation (#5193) (0536de4)",
+            "Upload: style disabled state (#5188) (6596a42)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.75.1",
+      "version": "10.75.1",
+      "date": "2025-05-22",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.75.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: enhance change detection when using preventUncommittedChanges on a Iterate.PushContainer (#5177) (30e5bf9)",
+            "Forms: ensure fields don't report errors when hidden inside Visibility (#5176) (cb84095)",
+            "Forms: run filterData on every data entry, not only on mounted fields (#5175) (c9124fc)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.75.0",
+      "version": "10.75.0",
+      "date": "2025-05-22",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.75.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "CountryFlag: list available countries (#5170) (00081e2)",
+            "Field.PhoneNumber: list available countries (#5171) (fd9adc2)",
+            "Value.SelectCountry: list available countries (#5169) (636cf32)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: show month label when onlyMonth is true (#5166) (5bc6a0e)",
+            "Forms: add support for Iterate.Array in a Form.Section with a path (#5156) (33f0ac4), closes #3995",
+            "Forms: ensure reduceToVisibleFields works properly within Wizard (#5174) (3f74b9d)",
+            "Forms: ensure Iterate.Array with required prop removes error in Wizard step (#5162) (e38027c), closes #5159",
+            "Provider: enhance handling of translations with potential to be overwritten (#4827) (f45bc93)",
+            "useTranslation: ensure correct TypeScript typing support (#5148) (db95526)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "DatePicker: deprecate correctInvalidDate (#4916) (eced11b)",
+            "Forms: add support for country names in sv-SE locale (#5168) (1383d7a), closes #4769",
+            "Forms: add minItems and maxItems properties to Iterate.Array (#5164) (85d2e7e)",
+            "Iterate.RemoveButton: add support for itemNo (#5158) (681c549)",
+            "PaymentCard: update PaymentCard designs (#5085) (91947b1)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.74.0",
+      "version": "10.74.0",
+      "date": "2025-05-19",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.74.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "DatePicker: add year navigation to calendar (#4978) (b927430)",
+            "Field.Date: add yearNavigation (#5121) (65928d0)",
+            "Forms: add preventUncommittedChanges in Form.Isolation to show error during submit after user input (#5102) (fbc5402), closes #5005 #5127",
+            "Forms: add resetAfterCommit to Form.Isolation (#5127) (353271d)",
+            "Iterate.PushContainer: deprecate requireCommit in favor of preventUncommitedChanges (#5134) (9596abb)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Button: bold font weight issue when type=\"submit\" on iPhone (#5147) (ac12151)",
+            "Checkbox: add support for preventDefault in onClick (#4768) (c03a930)",
+            "DatePicker: cancel and reset functionality (#5021) (3db9c0e)",
+            "Drawer: bottom containerPlacement on small screen (#5123) (1afada9)",
+            "DrawerList: refactor TypeScript (#4687) (5697c2c)",
+            "Dropdown: fix React.ReactNode support for title prop (#5124) (9d2b653)",
+            "Field.Selection: apply correct width to prevent label wrapping (#5120) (a2d7928)",
+            "Field.Toggle, Field.Boolean: add support for preventDefault in onClick for checkbox variant (#5117) (a34700f), closes #4768",
+            "Forms: ensure Form.Isolation does work within a Form.Section (#5142) (0db7aa3)",
+            "Forms: support required in Field.Selection with dropdown variant (#5106) (d1202b9)",
+            "Heading: warning when increasing heading to be h2 when previous sibling is h1 (#4914) (393e765)",
+            "InputMasked: allow value 0 when disallowLeadingZeroes is set (#4918) (c08e51a)",
+            "NumberFormat: render minus sign correctly for negative decimal values (#5116) (b1b31d4), closes #4788"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.73.2",
+      "version": "10.73.2",
+      "date": "2025-05-12",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.73.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: ensure support for labelSrOnly in Field.PhoneNumber (#5108) (d58ca56)",
+            "Forms: ensure support for labelSrOnly in Field.Toggle (#5109) (a0d2031)",
+            "Forms: support required in Field.ArraySelection with button & checkbox-button variant (#5074) (1daab13)",
+            "Forms: support required in Field.Toggle with button & checkbox-button variant (#5104) (be31978)",
+            "Forms: support required in Field.Toggle with buttons variant (#5105) (3147d17)",
+            "Upload: display files amount message as warning (#5110) (7da42cb)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.73.1",
+      "version": "10.73.1",
+      "date": "2025-05-09",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.73.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Drawer, Dialog: display Modal translations in properties docs (#5083) (ab3fae7)",
+            "Modal: closeTitle, hideCloseButton, spacing is not deprecated (#5082) (4753910), closes /github.com/dnbexperience/eufemia/commit/ebe8e6a597c87885c081fcdfd76339780e90befc#diff-f1c94bc3bf35a0cb7181e56dab45c760dfa612539ab3fcd8c903e3c76b6b9f6"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.PhoneNumber: list country code beneath country name (#5097) (070c9ce)",
+            "Field.PhoneNumber: select country code input value on single click (#5086) (4027fc1)",
+            "Field.PhoneNumber: validate field as required even if country code was given (#5088) (a8bbd45)",
+            "Field.SelectCountry: select country input value on single click (#5094) (6462f8c)",
+            "Field.SelectCurrency: select currency input value on single click (#5093) (fa66807)",
+            "Field.Selection: select input value on single click (#5095) (d6181fc)",
+            "Forms: don't show red border on errors when EditContainer or PushContainer use the basic variant (#5092) (c3362e6), closes #4985 /github.com/dnbexperience/eufemia/issues/4985#issuecomment-2862757367 #5051",
+            "Forms: help button on Field.* components should not wrap alone (#5096) (e07b8e6)",
+            "Forms: help button on Value.* components should not wrap alone (#5091) (7d342c3)",
+            "Upload: remove file by id or file equality (#5087) (eb051a1)",
+            "Value.SummaryList: support maxWidth in nested Value.* components (#5068) (dbc3be6)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.73.0",
+      "version": "10.73.0",
+      "date": "2025-05-08",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.73.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "CopyOnClick: add tooltipContent to be displayed when text has been copied (#5008) (d68a031)",
+            "CountryFlag: update country-flags to v7.3.2 (#5063) (680bfbe)",
+            "DatePicker: add labelAlignment (#4994) (171edd6)",
+            "DatePicker: copy whole formatted date when coping from input field (#5053) (9eb9bda)",
+            "DatePicker: replace locale based date-fns formatting with Intl (#4766) (c44d58d)",
+            "Field.Composition: support help property (#5070) (4b91598)",
+            "Field.Expiry: remove width & contentWidth properties (#5057) (5a6a9f9)",
+            "Forms: add radio-list variant to Field.Selection (#5015) (ad68737)",
+            "Forms: add requireCommit property to Iterate.PushContainer to show error during submit or next step after user input (#5005) (37b8d6f), closes #4985 #4072",
+            "Forms: add support for labelSize to all Field.* (#5029) (58119ec)",
+            "Forms: always validate fields in all Wizard steps (without keepInDOM) (#5041) (e6af499)",
+            "Icons: add digital_advise, aino, lightningstrike (#5059) (bf080e4)",
+            "Pagination: add support for horizontal paginationBarLayout (#5072) (20a8458)",
+            "StepIndicator: animate chevron on expand/collapse (#4987) (f409073)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: prevent selection of invalid dates when navigating the calendar with arrow keys (#5006) (549a1b5)",
+            "Field.Block: render labelDescription without spacing above (#5025) (05879e9)",
+            "Field.Date: support width (#5038) (8ba70cc)",
+            "Field.PhoneNumber: ensure large width has correct size (#5042) (1e2f5bd)",
+            "Field.PhoneNumber: support width (#5036) (cbe360c)",
+            "Field.Upload: support width (#5033) (877d355)",
+            "Forms: ensure edit containers for Iterate and Section shows red border on submit errors (#5051) (7dc34cc)",
+            "Forms: ensure Field.Composition sets correct width if given (#5071) (07dd346)",
+            "Forms: ensure fields do not overflow in width on a certain screen size (#5049) (cacd703)",
+            "Forms: ensure keepInDOM in Wizard step does not pre-render step (#5002) (3969a15)",
+            "Forms: ensure support for labelSrOnly for all fields (#5050) (948d6bc)",
+            "Forms: ensure values of fields inside Form.Isolation write their initial value to the isolated data context (#5056) (583a55c)",
+            "Forms: support required in Field.Selection with button variant (#5064) (55be79d)",
+            "FormStatus: always render with a max-width to enhance readability (#5039) (3271021), closes /github.com/dnbexperience/eufemia/pull/5039/files#diff-9205ae17277da7b891bb7d4ee2b32336046e4f3376537a44a65cf0279f5bb582",
+            "Forms: use default outline color on Cards used inside Wizard (#5054) (b7cb237), closes #4462",
+            "HeightAnimation: always end animation properly when animation has finished (#5028) (b1287ba), closes #4493",
+            "Lead: correct line height (#5055) (3e6dd43)",
+            "Selection: support undefined value from data context (#5027) (a3129f1), closes #4584",
+            "Upload: gracefully handle undefined file input (#5045) (d1dea57)",
+            "Value.BankAccountNumber: should not render when value is empty (#4998) (2d694a6)",
+            "Value.NationalIdentityNumber: should not render when value is empty (#4995) (7982070)",
+            "Value.OrganizationNumber: should not render when value is empty (#4997) (fb8987c)",
+            "Value.PhoneNumber: should not render when value is empty (#4996) (dbc1cbf)",
+            "Value.SelectCountry: handle invalid iso code values (#4992) (5f87e61)",
+            "Value.SelectCurrency: handle invalid iso code values (#4993) (09a12f2)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.72.3",
+      "version": "10.72.3",
+      "date": "2025-04-28",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.72.3",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "CopyOnClick: copy textContent when given children is empty (#5014) (9b59d56)",
+            "CopyOnClick: display copy cursor for all children (#5011) (cbff90c)",
+            "Forms: ensure Field.Composition with horizontal layout will still wrap (#5007) (29c3055)",
+            "Forms: ensure Field.Selection with the autocomplete variant receives showIndicator in the first onType parameter object (#5012) (ed8a5d1)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.72.2",
+      "version": "10.72.2",
+      "date": "2025-04-22",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.72.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: ensure Iterate.Array schema validation (#4986) (7e10a4a), closes #4956"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.72.1",
+      "version": "10.72.1",
+      "date": "2025-04-22",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.72.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "StepIndicator: align trigger button (#4981) (80e05aa)",
+            "StepIndicator: font size of step items (#4982) (6d0d266)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.72.0",
+      "version": "10.72.0",
+      "date": "2025-04-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.72.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "StepIndicator: redesign (#4462) (b541600)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.71.2",
+      "version": "10.71.2",
+      "date": "2025-04-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.71.2",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Tooltip: improve alignment of tooltip with long texts (#4970) (b728c6a)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.71.1",
+      "version": "10.71.1",
+      "date": "2025-04-15",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.71.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: display correct dates when props are updated with useLayoutEffect in React.StrictMode (#4950) (b57392d)",
+            "Tooltip: alignment issues (#4968) (1e528e3), closes /github.com/dnbexperience/eufemia/pull/1613/files#diff-b2805e65ae4b7b277abc5b023aae4c0962edf5c86c8fd5dcdcbdf7350f1ed536R224"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.71.0",
+      "version": "10.71.0",
+      "date": "2025-04-11",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.71.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: display correct dates when props are updated with useLayoutEffect (#4937) (cbaf535)",
+            "InputMasked: ensure correct cursor position when suffix changes during typing (#4939) (17d5da5)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "DatePicker: remove stepped date change on ArrowUp a ArrowDown key press (#4917) (9569617)",
+            "Forms: add iso (country) to additional args in PhoneNumber field (#4929) (6ee934a)",
+            "Forms: add support for string and JSX format to Field.* error prop and validators (#4928) (ee0183f)",
+            "Upload: add description to fileItem (#4935) (688e340)",
+            "Upload: add disableDragAndDrop (#4905) (7205f96)",
+            "Upload: add removeDeleteButton to fileItem (#4936) (00e7b81)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.70.1",
+      "version": "10.70.1",
+      "date": "2025-04-10",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.70.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "DatePicker: enhance typing in input (#4893) (1162c72)",
+            "Forms: prevent form submit when error prop is set on a Field.* (#4908) (687c249)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.70.0",
+      "version": "10.70.0",
+      "date": "2025-04-04",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.70.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Avatar: add properties color & backgroundColor (#4897) (2d1a675)",
+            "Field.Password: set default autocomplete attribute to current-password (#4874) (c6b1454)",
+            "GlobalError: deprecate code in favor of errorMessageCode (#4872) (3634bce)",
+            "GlobalError: deprecate status in favor of statusCode (#4819) (6aeca86)",
+            "InfoCard: add children property (#4831) (7d61f14)",
+            "Pagination: rename place_maker_before_content to place_marker_before_content (#4875) (51974fa)",
+            "Upload: add property allowDuplicates (#4880) (192d98b)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Avatar.Group: forward size, variant, color, backgroundColor to single child (#4903) (f4ad737)",
+            "DatePicker: update calendar views based on input value when range is true (#4859) (99d7c72)",
+            "Forms: correctly report error during Wizard step navigation with async event handler or field validator (#4899) (995aff6), closes #4892",
+            "Forms: ensure hasValue runs in Form.Visibility when path is missing (#4870) (01cd306), closes #4864",
+            "Upload: compare existing properties to determine duplicate (#4895) (7286a33)",
+            "Upload: correct displaying of only text (#4896) (ef9c565)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.69.1",
+      "version": "10.69.1",
+      "date": "2025-04-01",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.69.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.SelectCountry: add link to list of countries (#4809) (c663a6a)",
+            "Field.SelectCountry: display list of available countries (#4813) (bdbce5b)",
+            "Field.SelectCurrency: add link to list of currencies (#4810) (3f70c3b)",
+            "Field.SelectCurrency: display list of available currencies (#4814) (9e4ce2a)",
+            "Value.SelectCurrency: add regions to docs (#4797) (2ba9d11)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Upload: async removal of file with same file name as other file (#4834) (9381ac2)",
+            "Forms: enhance Wizard Step rendering routine (#4811) (e8b8277), closes #4789",
+            "Forms: remove error from Wizard menu when field gets unmounted (#4812) (7ecde87), closes #4811 #4804",
+            "Tabs: conditional render Tabs.Content (#4835) (906173e)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.69.0",
+      "version": "10.69.0",
+      "date": "2025-03-21",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.69.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "Field.SelectCountry: add autoComplete support (#4781) (176760b)",
+            "Field.SelectCountry: enhance value type (#4782) (a51ec61)",
+            "Forms: add CountryISO as the value type to Field.SelectCountry (#4791) (b8491ed)",
+            "Forms: add Field.SelectCurrency and Value.SelectCurrency (#4770) (279d03e)",
+            "InfoCard: add stretch property and don't stretch by default (#4765) (d7c850d)",
+            "NumberFormat: use component's translation for invalid aria text (#4763) (f446639)",
+            "Table: add view transition support to inserted table rows (accordion) (#4764) (29273c8)"
+          ]
+        },
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "add link to localization docs in portal tools menu (#4762) (d39353b)",
+            "DatePicker: add rationale behind why correctInvalidDate is not on by default (#4776) (c414463)",
+            "Field.SelectCountry: improve event arguments (#4784) (644f9e8)",
+            "Forms: add example on how to use onInput (#4792) (2294b68)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Forms: don't show Wizard step error on small screens for the same step (#4774) (74afa5e)",
+            "Forms: enhance typing for FieldBlock and useFieldProps (#4785) (64070a6)",
+            "Forms: ensure Wizard does not show invalid error (#4786) (e5f913c)",
+            "NumberFormat: ensure -0 is displayed as 0 when formatted as currency (#4788) (aa02d37), closes #4691"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.68.1",
+      "version": "10.68.1",
+      "date": "2025-03-17",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.68.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "mergeTranslations: add support for nested objects (#4756) (7dc074b), closes #4752 #4754",
+            "NumberFormat: render properly when sv-SE locale is given (#4760) (a71ab73)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.68.0",
+      "version": "10.68.0",
+      "date": "2025-03-14",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.68.0",
+      "kind": "minor",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "Field.PostalCodeAndCity: add link to ISO 3166-1 alpha-2 code (#4736) (eaccd44)",
+            "Localization: list available translations (#4746) (f3cf554)",
+            "Value: add help button to example (#4728) (dee0bd3)"
+          ]
+        },
+        {
+          "title": "Features",
+          "slug": "features",
+          "items": [
+            "add Swedish translation (beta) (#4719) (cec1b24)",
+            "Field.Date: show error messages on invalid date (#4508) (83fbb92)",
+            "Forms: add countryCode property to Form.Handler (#4735) (7679a95)",
+            "Forms: adjust the \"widths\" of Value.* components (#4745) (602fc0f)",
+            "Forms: adjust the label \"widths\" of Field.* components (#4748) (2488e7c), closes #4745",
+            "Forms: render labelDescription beneath label and place HelpButton after label (#4705) (64a7ca9), closes #4693"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Dialog, Drawer, Modal: ensure onClose is not called in React.StrictMode (#4729) (22628c7), closes #4525",
+            "Field.BankAccountNumber: 0000 00 00000 should be invalid (#4733) (b9955e3)",
+            "Field.Name.Company: must consist of at least 3 norwegian letters (#4734) (9e3708f)",
+            "Field.OrganizationNumber: 000 000 000 should be invalid (#4732) (55032db)",
+            "Forms: don't show error in Wizard step menu for the active/current step (#4751) (e2b4a7d)",
+            "Forms: ensure minDate/maxDate does not interrupt first form submit (#4726) (061e41e)",
+            "Forms: ensure Value.Composition inherits props defined i Value.Provider (#4747) (05f9f92)",
+            "Value.SummaryList: styling Value.* components with help button (#4727) (fb17aa4)",
+            "Wizard.Container: not displaying error when user enters required data (#4742) (5cf20ee)"
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "v10.67.1",
+      "version": "10.67.1",
+      "date": "2025-03-11",
+      "url": "https://github.com/dnbexperience/eufemia/releases/tag/v10.67.1",
+      "kind": "patch",
+      "intro": "",
+      "categories": [
+        {
+          "title": "Documentation",
+          "slug": "documentation",
+          "items": [
+            "correct broken link to uutilsynet about WCAG (34f4001)",
+            "Field.Date: remove date property (#4718) (b0e34a0)",
+            "Field.Date: remove startDate property (#4720) (4181d04)",
+            "Field.Date: remove endDate property (#4721) (f1fa1cd)",
+            "Field.Date: remove startDate property (81fedcd)",
+            "PushContainer: move events docs to events tab (#4717) (86dfa3f)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "slug": "bug-fixes",
+          "items": [
+            "Field.Date: validate minDate & maxDate by the start of the day (00:00) (#4716) (98996bd)",
+            "Input: remove value attribute (⚠️ Use element.value instead in e.g. tests) (#4713) (dd2ae1a)"
+          ]
+        }
+      ]
+    }
+  ]
+}

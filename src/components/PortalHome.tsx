@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
+import { Button, Tabs } from "@dnb/eufemia";
 import Layout from "./Layout";
+import EufemiaThemeScope from "./EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
 import { radius, font } from "../theme/tokens";
+import {
+  formatReleaseDate,
+  releases,
+  type Release,
+} from "../data/release-data";
 import heroGlow from "../images/home/hero-glow.png";
 import heroGlowLight from "../images/home/hero-glow-light.png";
 import sbankenHeroGlow from "../images/home/sbanken-hero-glow.png";
@@ -28,6 +35,31 @@ const cardMotionCSS = `
 @media (prefers-reduced-motion: reduce) { .pieces--play .pc { animation: none; opacity: 1; } }
 `;
 
+const updateMotionCSS = `
+.update-link .update-date {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.15s ease;
+}
+.update-link .update-arrow {
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+.update-link:hover .update-date,
+.update-link:focus-visible .update-date {
+  text-decoration-color: currentColor;
+}
+.update-link:hover .update-arrow,
+.update-link:focus-visible .update-arrow {
+  transform: translateX(6px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .update-link .update-date,
+  .update-link .update-arrow { transition: none; }
+}
+`;
 const ArrowRight = ({ color }: { color: string }) => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color }}>
     <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -102,14 +134,61 @@ const moreHref: Record<string, string> = {
   Tokens: "https://eufemia.dnb.no/uilib/usage/customisation/design-tokens/",
 };
 
-const updateItems = [
-  { date: "November, 12. 2021", text: "Updated icon sizes for component Button variant tertiary (16px default, 24px for icon position top)." },
-  { date: "November, 12. 2021", text: "Updated icon sizes for component Button variant secondary." },
-  { date: "October, 08. 2021", text: "Default shadow (defaultDropShadow() and .dnb-drop-shadow) was changed to 0.8pc 16px rgba (51,51,51, 0.08)" },
-  { date: "October, 08. 2021", text: "Default shadow (defaultDropShadow() and .dnb-drop-shadow) was changed to 0.8pc 16px rgba (51,51,51, 0.08)" },
-];
+const updatePlatforms = [
+  { key: "web", title: "Web" },
+  { key: "ios", title: "iOS" },
+  { key: "android", title: "Android" },
+] as const;
 
-const tabs = ["Web", "Android", "iOS"];
+type UpdatePlatform = (typeof updatePlatforms)[number]["key"];
+
+type MockUpdate = {
+  date: string;
+  text: string;
+};
+
+const mockNativeUpdates: Record<Exclude<UpdatePlatform, "web">, MockUpdate[]> = {
+  ios: [
+    { date: "July 16, 2026", text: "Updated Avatar guidance with accessibility examples for profile and payment flows." },
+    { date: "July 9, 2026", text: "Added iOS token examples for spacing and color usage." },
+    { date: "June 25, 2026", text: "Refined component anatomy guidance for native navigation patterns." },
+    { date: "June 12, 2026", text: "Published accessibility notes for iOS component states." },
+  ],
+  android: [
+    { date: "July 15, 2026", text: "Added Android guidance for Avatar in payment and profile contexts." },
+    { date: "July 2, 2026", text: "Updated Android design token examples for typography and color." },
+    { date: "June 18, 2026", text: "Refined native component documentation for Material-aligned layouts." },
+    { date: "June 4, 2026", text: "Published accessibility guidance for Android interaction states." },
+  ],
+};
+
+const ReleaseSummary: React.FC<{
+  release: Release;
+  colors: ReturnType<typeof useTheme>["colors"];
+}> = ({ release, colors }) => {
+  const category = release.categories.find(
+    (item) => item.slug === "features" || item.slug === "bug-fixes"
+  );
+  const summary = category ? (
+    <>
+      {release.tag}: <strong style={{ color: colors.accent, fontWeight: 500 }}>{category.title}</strong>: {category.items[0]}
+    </>
+  ) : (
+    `${release.tag}: ${release.intro}`
+  );
+
+  return (
+    <a className="update-link" href={release.url} target="_blank" rel="noreferrer" style={{ display: "flex", flexDirection: "column", gap: "8px", minWidth: 0, color: colors.text, textDecoration: "none" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <span className="update-date" style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.accent }}>{formatReleaseDate(release.date)}</span>
+        <span className="update-arrow"><ArrowRight color={colors.accent} /></span>
+      </div>
+      <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
+        {summary}
+      </p>
+    </a>
+  );
+};
 
 const PortalHome: React.FC = () => {
   const { colors, theme, brand } = useTheme();
@@ -123,7 +202,6 @@ const PortalHome: React.FC = () => {
       : theme === "dark"
       ? heroGlow
       : heroGlowLight;
-  const [tab, setTab] = useState("Web");
   const [hoverCard, setHoverCard] = useState<string | null>(null);
   const [moreHover, setMoreHover] = useState<string | null>(null);
 
@@ -145,7 +223,7 @@ const PortalHome: React.FC = () => {
 
   return (
     <Layout currentPath="/" currentPlatform="web">
-      <style>{cardMotionCSS}</style>
+      <style>{cardMotionCSS}{updateMotionCSS}</style>
       <div style={{ position: "relative", fontFamily: font.family, color: colors.text, overflow: "hidden" }}>
         {isCarnegie ? (
           /* Carnegie hero — pre-rendered artwork (PNG for performance), fades out at the bottom */
@@ -244,9 +322,9 @@ const PortalHome: React.FC = () => {
 
           {divider}
 
-          {/* More */}
+          {/* Eufemia resources */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "761px", maxWidth: "100%" }}>
-            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>More</span>
+            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Eufemia resources</span>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "8px", rowGap: "8px" }}>
               {moreCols.map((col, ci) => (
                 <div key={ci} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -269,36 +347,53 @@ const PortalHome: React.FC = () => {
           {divider}
 
           {/* Updates */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px", width: "761px", maxWidth: "100%" }}>
-            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Updates</span>
-            <div style={{ display: "flex", gap: "40px", borderBottom: `1px solid ${colors.strokeSubtle}` }}>
-              {tabs.map((t) => {
-                const active = tab === t;
-                return (
-                  <button key={t} onClick={() => setTab(t)}
-                    style={{ position: "relative", background: "none", border: "none", cursor: "pointer", padding: "8px 0", fontFamily: font.family, fontWeight: active ? 500 : 400, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: active ? colors.textSelected : colors.textMuted }}>
-                    {t}
-                    {active && <span style={{ position: "absolute", left: 0, right: 0, bottom: "-1px", height: "2px", borderRadius: "2px", background: colors.selected }} />}
-                  </button>
-                );
-              })}
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "368px 368px", gap: "25px 18px", maxWidth: "100%" }}>
-              {updateItems.map((u, i) => (
-                <div key={i} style={{ display: "flex", flexDirection: "column", gap: "8px", maxWidth: "368px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.accent }}>{u.date}</span>
-                    <ArrowRight color={colors.accent} />
-                  </div>
-                  <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>{u.text}</p>
-                </div>
-              ))}
-            </div>
-            <a href="https://eufemia.dnb.no/uilib/getting-started/versions/" target="_blank" rel="noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px", width: "fit-content", padding: "8px 24px", borderRadius: `${radius.xl}`, border: `1px solid ${colors.accent}`, background: colors.surface, color: colors.accent, textDecoration: "none", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px` }}>
-              See all Eufemia updates
-            </a>
-          </div>
+          <section aria-labelledby="updates-heading" style={{ display: "flex", flexDirection: "column", gap: "24px", width: "761px", maxWidth: "100%", marginTop: "-24px" }}>
+            <h2 id="updates-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Updates</h2>
+
+            <EufemiaThemeScope>
+              <Tabs
+                id="portal-updates"
+                label="Platform updates"
+                breakout={false}
+                data={updatePlatforms}
+              />
+
+              <Tabs.Content id="portal-updates" contentInnerSpace={{ block: "large", inline: false }}>
+                {({ key }: { key: UpdatePlatform }) => (
+                  key === "web" ? (
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: "25px 18px", width: "100%" }}>
+                      {releases.slice(0, 4).map((release) => (
+                        <ReleaseSummary key={release.tag} release={release} colors={colors} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: "25px 18px", width: "100%" }}>
+                      {mockNativeUpdates[key].map((update) => (
+                        <article key={update.date} className="update-link" style={{ display: "flex", flexDirection: "column", gap: "8px", minWidth: 0 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span className="update-date" style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.accent }}>{update.date}</span>
+                            <span className="update-arrow"><ArrowRight color={colors.accent} /></span>
+                          </div>
+                          <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>{update.text}</p>
+                        </article>
+                      ))}
+                    </div>
+                  )
+                )}
+              </Tabs.Content>
+            </EufemiaThemeScope>
+
+            <EufemiaThemeScope>
+              <Button
+                variant="secondary"
+                text="See all Eufemia updates"
+                icon="chevron_right"
+                href="https://github.com/dnbexperience/eufemia/releases"
+                target="_blank"
+                rel="noreferrer"
+              />
+            </EufemiaThemeScope>
+          </section>
         </div>
       </div>
     </Layout>

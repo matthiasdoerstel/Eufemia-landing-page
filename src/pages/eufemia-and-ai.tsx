@@ -128,8 +128,8 @@ const EufemiaAndAiPage: React.FC = () => {
     <a
       key={label}
       href={href}
-      target={href.startsWith("#") ? undefined : "_blank"}
-      rel={href.startsWith("#") ? undefined : "noreferrer"}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noreferrer" : undefined}
       onMouseEnter={() => setHover(label)}
       onMouseLeave={() => setHover(null)}
       style={{
@@ -217,7 +217,7 @@ const EufemiaAndAiPage: React.FC = () => {
           </p>
           <p style={{ ...paraStyle, color: colors.textMuted, maxWidth: "680px" }}>
             We're striving to make Eufemia and its documentation readable and navigable for both humans
-            and AI. This is an ongoing effort, and your feedback is always appreciated — {link("tell us what would help", "https://eufemia.dnb.no/contribute/")}.
+            and AI. This is an ongoing effort, and your feedback is always appreciated — {link("tell us what would help", "/contribute")}.
           </p>
         </div>
 

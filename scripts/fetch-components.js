@@ -135,6 +135,12 @@ async function fetchComponents() {
     return output;
 
   } catch (error) {
+    const outputPath = path.join(__dirname, '..', 'src', 'data', 'web-components.json');
+    if (fs.existsSync(outputPath)) {
+      console.warn(`Could not refresh components (${error.message}); using ${outputPath}`);
+      return JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+    }
+
     console.error('Error fetching components:', error.message);
     process.exit(1);
   }

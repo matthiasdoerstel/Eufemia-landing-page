@@ -36,7 +36,7 @@ const choosePath: { label: string; href: string }[] = [
   { label: "Theming and brand customization", href: "https://eufemia.dnb.no/uilib/usage/customisation/theming/" },
   { label: "Internationalization (i18n)", href: "https://eufemia.dnb.no/uilib/usage/customisation/localization/" },
   { label: "Helpers and tools", href: "https://eufemia.dnb.no/uilib/helpers/" },
-  { label: "Contribution guide", href: "https://eufemia.dnb.no/contribute/" },
+  { label: "Contribution guide", href: "/contribute" },
   { label: "Forms, validation and schema", href: "https://eufemia.dnb.no/uilib/extensions/forms/" },
 ];
 
@@ -135,8 +135,8 @@ const GettingStartedPage: React.FC = () => {
     <a
       key={label}
       href={href}
-      target={href.startsWith("#") ? undefined : "_blank"}
-      rel={href.startsWith("#") ? undefined : "noreferrer"}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noreferrer" : undefined}
       onMouseEnter={() => setHover(label)}
       onMouseLeave={() => setHover(null)}
       style={{
