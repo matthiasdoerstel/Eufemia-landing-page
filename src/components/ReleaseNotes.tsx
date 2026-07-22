@@ -1,7 +1,44 @@
 import React from "react";
-import { font, radius } from "../theme/tokens";
-import { isPrimaryCategory, type Release } from "../data/release-data";
+import { font } from "../theme/tokens";
+import type { Release } from "../data/release-data";
 import type { ColorTokens } from "../theme/tokens";
+
+const eufemiaRepositoryUrl = "https://github.com/dnbexperience/eufemia";
+const referencePattern = /(\(#\d+\)|\([a-f0-9]{7,}\))/gi;
+
+const renderReleaseNoteItem = (item: string, colors: ColorTokens) => {
+  const componentMatch = /^([^:]+):\s*/.exec(item);
+  const text = componentMatch ? item.slice(componentMatch[0].length) : item;
+  const content = text.split(referencePattern).map((part, index) => {
+    const match = /^\((#\d+|[a-f0-9]{7,})\)$/i.exec(part);
+    if (!match) return <React.Fragment key={index}>{part}</React.Fragment>;
+
+    const reference = match[1];
+    const href = reference.startsWith("#")
+      ? `${eufemiaRepositoryUrl}/issues/${reference.slice(1)}`
+      : `${eufemiaRepositoryUrl}/commit/${reference}`;
+
+    return (
+      <a
+        key={index}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        style={{ color: colors.accent, textDecoration: "underline", textUnderlineOffset: "3px" }}
+      >
+        {part}
+      </a>
+    );
+  });
+
+  return componentMatch ? (
+    <>
+      <strong style={{ fontWeight: 500 }}>{componentMatch[1]}</strong>: {content}
+    </>
+  ) : (
+    <>{content}</>
+  );
+};
 
 const ReleaseNotes: React.FC<{
   release: Release;
@@ -10,8 +47,7 @@ const ReleaseNotes: React.FC<{
 }> = ({ release, colors, compact = false }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
     {release.categories.map((category) => {
-      const primary = isPrimaryCategory(category);
-      const visibleItems = category.items.slice(0, compact ? (primary ? 3 : 1) : undefined);
+      const visibleItems = category.items.slice(0, compact ? 2 : undefined);
       const remaining = category.items.length - visibleItems.length;
 
       return (
@@ -22,19 +58,15 @@ const ReleaseNotes: React.FC<{
             display: "flex",
             flexDirection: "column",
             gap: "8px",
-            padding: primary ? "14px 16px" : "0",
-            borderLeft: primary ? `3px solid ${colors.accent}` : undefined,
-            background: primary ? colors.selectedSubtle : "transparent",
-            borderRadius: primary ? `0 ${radius.md} ${radius.md} 0` : undefined,
           }}
         >
-          <span style={{ fontFamily: font.family, fontWeight: primary ? 500 : 400, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: primary ? colors.text : colors.textMuted }}>
+          <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
             {category.title}
           </span>
           <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "6px" }}>
             {visibleItems.map((item, index) => (
               <li key={index} style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.text }}>
-                {item}
+                {renderReleaseNoteItem(item, colors)}
               </li>
             ))}
           </ul>

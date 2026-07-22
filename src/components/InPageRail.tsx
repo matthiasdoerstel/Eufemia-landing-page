@@ -6,19 +6,32 @@ import { font, layout } from "../theme/tokens";
 export interface RailItem {
   id: string;
   label: string;
+  sectionIds?: string[];
 }
 
 // Sticky right-hand "on this page" rail. Highlights every section currently
 // visible in the viewport with a bright segment that hugs the label glyphs,
 // over a subtle full-list track. Sections are located by DOM id.
-const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, hidden = false }) => {
+const InPageRail: React.FC<{
+  items: RailItem[];
+  hidden?: boolean;
+  scrollable?: boolean;
+  autoFollow?: boolean;
+}> = ({
+  items,
+  hidden = false,
+  scrollable = false,
+  autoFollow = false,
+}) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState<Set<number>>(() => new Set([0]));
   const [hl, setHl] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
   const [track, setTrack] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
   const [hoverStep, setHoverStep] = useState<number | null>(null);
+  const [scrollFade, setScrollFade] = useState<"none" | "top" | "bottom" | "both">("none");
   const labelRefs = useRef<(HTMLElement | null)[]>([]);
   const railRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -26,10 +39,14 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
       const topEdge = NAV_HEIGHT + 8;
       const next = new Set<number>();
       items.forEach((it, i) => {
-        const el = document.getElementById(it.id);
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        if (r.top < vh - 8 && r.bottom > topEdge) next.add(i);
+        const sectionIds = it.sectionIds ?? [it.id];
+        const isVisible = sectionIds.some((id) => {
+          const el = document.getElementById(id);
+          if (!el) return false;
+          const r = el.getBoundingClientRect();
+          return r.top < vh - 8 && r.bottom > topEdge;
+        });
+        if (isVisible) next.add(i);
       });
       if (next.size === 0) next.add(0);
       setVisible((prev) => (prev.size === next.size && [...next].every((n) => prev.has(n)) ? prev : next));
@@ -62,11 +79,71 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
+    const scrollContainer = scrollRef.current;
+    scrollContainer?.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      scrollContainer?.removeEventListener("scroll", onScroll);
     };
   }, [items]);
+
+  useEffect(() => {
+    if (!scrollable) {
+      setScrollFade("none");
+      return;
+    }
+
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    const updateScrollFade = () => {
+      const hasTopOverflow = scrollContainer.scrollTop > 1;
+      const hasBottomOverflow =
+        scrollContainer.scrollTop + scrollContainer.clientHeight <
+        scrollContainer.scrollHeight - 1;
+      const next = hasTopOverflow
+        ? hasBottomOverflow
+          ? "both"
+          : "top"
+        : hasBottomOverflow
+          ? "bottom"
+          : "none";
+      setScrollFade((current) => (current === next ? current : next));
+    };
+
+    updateScrollFade();
+    scrollContainer.addEventListener("scroll", updateScrollFade, {
+      passive: true,
+    });
+    const observer = new ResizeObserver(updateScrollFade);
+    observer.observe(scrollContainer);
+    railRef.current && observer.observe(railRef.current);
+
+    return () => {
+      scrollContainer.removeEventListener("scroll", updateScrollFade);
+      observer.disconnect();
+    };
+  }, [scrollable, items]);
+
+  useEffect(() => {
+    if (!autoFollow) return;
+    const activeIndex = [...visible][0];
+    const activeLabel = labelRefs.current[activeIndex];
+    const scrollContainer = scrollRef.current;
+    if (!activeLabel || !scrollContainer) return;
+
+    const labelBounds = activeLabel.getBoundingClientRect();
+    const containerBounds = scrollContainer.getBoundingClientRect();
+    scrollContainer.scrollTo({
+      top:
+        scrollContainer.scrollTop +
+        labelBounds.top -
+        containerBounds.top -
+        (scrollContainer.clientHeight - labelBounds.height) / 2,
+      behavior: "smooth",
+    });
+  }, [autoFollow, visible]);
 
   const scrollTo = (i: number) => {
     const el = document.getElementById(items[i].id);
@@ -93,62 +170,89 @@ const InPageRail: React.FC<{ items: RailItem[]; hidden?: boolean }> = ({ items, 
         </span>
       </div>
 
-      <div ref={railRef} style={{ position: "relative" }}>
-        {/* Subtle track spanning the labels' text extent */}
-        <div style={{ position: "absolute", left: 0, top: `${track.top}px`, height: `${track.height}px`, width: "1px", background: colors.stroke }} />
-        {/* Bright segment spanning the visible steps */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            width: "2px",
-            top: `${hl.top}px`,
-            height: `${hl.height}px`,
-            background: colors.accent,
-            transition: "top 0.2s ease, height 0.2s ease",
-          }}
-        />
+      <style>{`.in-page-rail-scroll { scrollbar-width: none; } .in-page-rail-scroll::-webkit-scrollbar { display: none; }`}</style>
+      <div
+        ref={scrollRef}
+        className={scrollable ? "in-page-rail-scroll" : undefined}
+        style={{
+          maxHeight: scrollable ? `calc(100vh - ${NAV_HEIGHT + 152}px)` : undefined,
+          overflowY: scrollable ? "auto" : undefined,
+          overscrollBehavior: scrollable ? "contain" : undefined,
+          WebkitMaskImage:
+            scrollFade === "top"
+              ? "linear-gradient(to bottom, transparent, black 40px)"
+              : scrollFade === "bottom"
+                ? "linear-gradient(to bottom, black calc(100% - 40px), transparent)"
+                : scrollFade === "both"
+                  ? "linear-gradient(to bottom, transparent, black 40px, black calc(100% - 40px), transparent)"
+                  : undefined,
+          maskImage:
+            scrollFade === "top"
+              ? "linear-gradient(to bottom, transparent, black 40px)"
+              : scrollFade === "bottom"
+                ? "linear-gradient(to bottom, black calc(100% - 40px), transparent)"
+                : scrollFade === "both"
+                  ? "linear-gradient(to bottom, transparent, black 40px, black calc(100% - 40px), transparent)"
+                  : undefined,
+        }}
+      >
+        <div ref={railRef} style={{ position: "relative" }}>
+          {/* Subtle track spanning the labels' text extent */}
+          <div style={{ position: "absolute", left: 0, top: `${track.top}px`, height: `${track.height}px`, width: "1px", background: colors.stroke }} />
+          {/* Bright segment spanning the visible steps */}
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              width: "2px",
+              top: `${hl.top}px`,
+              height: `${hl.height}px`,
+              background: colors.accent,
+              transition: "top 0.2s ease, height 0.2s ease",
+            }}
+          />
 
-        <div style={{ display: "flex", flexDirection: "column", paddingLeft: "16px" }}>
-          {items.map((it, i) => {
-            const isActive = visible.has(i);
-            const isHover = hoverStep === i;
-            return (
-              <button
-                key={it.id}
-                onClick={() => scrollTo(i)}
-                onMouseEnter={() => setHoverStep(i)}
-                onMouseLeave={() => setHoverStep(null)}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  padding: "0 0 24px",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  textAlign: "left",
-                }}
-              >
-                <span
-                  ref={(el) => {
-                    labelRefs.current[i] = el;
-                  }}
+          <div style={{ display: "flex", flexDirection: "column", paddingLeft: "16px" }}>
+            {items.map((it, i) => {
+              const isActive = visible.has(i);
+              const isHover = hoverStep === i;
+              return (
+                <button
+                  key={it.id}
+                  onClick={() => scrollTo(i)}
+                  onMouseEnter={() => setHoverStep(i)}
+                  onMouseLeave={() => setHoverStep(null)}
                   style={{
-                    display: "inline-block",
-                    fontFamily: font.family,
-                    fontSize: `${font.size.bodyMedium}px`,
-                    lineHeight: `${font.lineHeight.body}px`,
-                    fontWeight: isActive ? 500 : 400,
-                    color: isActive || isHover ? colors.text : colors.textMuted,
-                    transform: isHover ? "translateX(3px)" : "translateX(0)",
-                    transition: "color 0.15s ease, transform 0.15s ease",
+                    display: "block",
+                    width: "100%",
+                    padding: "0 0 24px",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    textAlign: "left",
                   }}
                 >
-                  {it.label}
-                </span>
-              </button>
-            );
-          })}
+                  <span
+                    ref={(el) => {
+                      labelRefs.current[i] = el;
+                    }}
+                    style={{
+                      display: "inline-block",
+                      fontFamily: font.family,
+                      fontSize: `${font.size.bodyMedium}px`,
+                      lineHeight: `${font.lineHeight.body}px`,
+                      fontWeight: isActive ? 500 : 400,
+                      color: isActive || isHover ? colors.text : colors.textMuted,
+                      transform: isHover ? "translateX(3px)" : "translateX(0)",
+                      transition: "color 0.15s ease, transform 0.15s ease",
+                    }}
+                  >
+                    {it.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </nav>

@@ -4,10 +4,11 @@ import PageShell from "./PageShell";
 import InPageRail from "./InPageRail";
 import { NAV_HEIGHT } from "./Header";
 import { useTheme } from "../context/ThemeContext";
-import { font } from "../theme/tokens";
+import { font, radius } from "../theme/tokens";
 
 type Block =
   | { type: "p"; text: string }
+  | { type: "structure" }
   | { type: "names"; items: string[] }
   | { type: "bullets"; items: string[] }
   | { type: "subhead"; text: string }
@@ -28,6 +29,7 @@ const sections: Section[] = [
     step: "The Vision",
     blocks: [
       { type: "p", text: "Eufemia is DNB's design system, providing resources for designers and developers to maintain consistency and efficiency when building accessible web applications. The goal is a single source of truth for design-covering color, typography, layout guidelines, and fully coded components for applications." },
+      { type: "structure" },
     ],
   },
   {
@@ -130,6 +132,48 @@ const AboutEufemia: React.FC = () => {
     switch (b.type) {
       case "p":
         return <p key={key} style={paraStyle}>{b.text}</p>;
+      case "structure":
+        return (
+          <section key={key} aria-labelledby="eufemia-structure-heading" style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "8px" }}>
+            <h3 id="eufemia-structure-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>
+              How Eufemia is structured
+            </h3>
+            <article style={{ padding: "20px", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}`, background: colors.selectedSubtle }}>
+              <h4 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textSelected }}>
+                Eufemia Foundation
+              </h4>
+              <p style={{ ...paraStyle, marginTop: "8px", color: colors.textSelected }}>
+                Shared principles, design language, accessibility, tokens, and guidelines.
+              </p>
+            </article>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px" }}>
+              <article style={{ padding: "20px", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}`, background: colors.surface }}>
+                <h4 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
+                  Eufemia Web
+                </h4>
+                <p style={{ ...paraStyle, marginTop: "8px", color: colors.textMuted }}>
+                  Resources and components for web products.
+                </p>
+              </article>
+              <article style={{ padding: "20px", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}`, background: colors.surface }}>
+                <h4 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
+                  Eufemia Native
+                </h4>
+                <p style={{ ...paraStyle, marginTop: "8px", color: colors.textMuted }}>
+                  Resources and components for iOS and Android.
+                </p>
+              </article>
+            </div>
+            <article style={{ padding: "20px", border: `1px solid ${colors.strokeSubtle}`, borderRadius: `${radius.lg}`, background: colors.surfaceAlt }}>
+              <h4 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
+                Eufemia Collection
+              </h4>
+              <p style={{ ...paraStyle, marginTop: "8px", color: colors.textMuted }}>
+                Shared reusable resources that support both Web and Native.
+              </p>
+            </article>
+          </section>
+        );
       case "subhead":
         return (
           <h3

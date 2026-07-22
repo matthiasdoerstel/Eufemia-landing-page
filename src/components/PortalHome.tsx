@@ -6,9 +6,8 @@ import EufemiaThemeScope from "./EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
 import { radius, font } from "../theme/tokens";
 import {
-  formatReleaseDate,
+  getCurrentFeatureRecap,
   releases,
-  type Release,
 } from "../data/release-data";
 import heroGlow from "../images/home/hero-glow.png";
 import heroGlowLight from "../images/home/hero-glow-light.png";
@@ -33,6 +32,43 @@ const cardMotionCSS = `
   animation-fill-mode: both;
 }
 @media (prefers-reduced-motion: reduce) { .pieces--play .pc { animation: none; opacity: 1; } }
+`;
+
+const resourceMotionCSS = `
+.resource-link {
+  position: relative;
+  text-decoration: none !important;
+}
+.resource-link::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  left: 0;
+  height: 7px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='7' viewBox='0 0 18 7'%3E%3Cpath d='M0 3.5C3 .5 6 .5 9 3.5S15 6.5 18 3.5' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0 / 18px 7px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='7' viewBox='0 0 18 7'%3E%3Cpath d='M0 3.5C3 .5 6 .5 9 3.5S15 6.5 18 3.5' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0 / 18px 7px;
+  opacity: 0;
+  transform: scaleX(0.15);
+  transform-origin: left;
+  transition: opacity 0.15s ease, transform 0.2s ease-out;
+}
+.resource-link:hover::after,
+.resource-link:focus-visible::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+.resource-link:hover::after {
+  animation: resourceWave 0.65s linear infinite;
+}
+@keyframes resourceWave {
+  to { -webkit-mask-position: 18px 0; mask-position: 18px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .resource-link::after { transition: none; }
+  .resource-link:hover::after { animation: none; }
+}
 `;
 
 const updateMotionCSS = `
@@ -162,33 +198,7 @@ const mockNativeUpdates: Record<Exclude<UpdatePlatform, "web">, MockUpdate[]> = 
   ],
 };
 
-const ReleaseSummary: React.FC<{
-  release: Release;
-  colors: ReturnType<typeof useTheme>["colors"];
-}> = ({ release, colors }) => {
-  const category = release.categories.find(
-    (item) => item.slug === "features" || item.slug === "bug-fixes"
-  );
-  const summary = category ? (
-    <>
-      {release.tag}: <strong style={{ color: colors.accent, fontWeight: 500 }}>{category.title}</strong>: {category.items[0]}
-    </>
-  ) : (
-    `${release.tag}: ${release.intro}`
-  );
-
-  return (
-    <a className="update-link" href={release.url} target="_blank" rel="noreferrer" style={{ display: "flex", flexDirection: "column", gap: "8px", minWidth: 0, color: colors.text, textDecoration: "none" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <span className="update-date" style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.accent }}>{formatReleaseDate(release.date)}</span>
-        <span className="update-arrow"><ArrowRight color={colors.accent} /></span>
-      </div>
-      <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
-        {summary}
-      </p>
-    </a>
-  );
-};
+const currentFeatureRecap = getCurrentFeatureRecap(releases);
 
 const PortalHome: React.FC = () => {
   const { colors, theme, brand } = useTheme();
@@ -223,7 +233,7 @@ const PortalHome: React.FC = () => {
 
   return (
     <Layout currentPath="/" currentPlatform="web">
-      <style>{cardMotionCSS}{updateMotionCSS}</style>
+      <style>{cardMotionCSS}{resourceMotionCSS}{updateMotionCSS}</style>
       <div style={{ position: "relative", fontFamily: font.family, color: colors.text, overflow: "hidden" }}>
         {isCarnegie ? (
           /* Carnegie hero — pre-rendered artwork (PNG for performance), fades out at the bottom */
@@ -324,19 +334,19 @@ const PortalHome: React.FC = () => {
 
           {/* Eufemia resources */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "761px", maxWidth: "100%" }}>
-            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Eufemia resources</span>
+            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Resources</span>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "8px", rowGap: "8px" }}>
               {moreCols.map((col, ci) => (
                 <div key={ci} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                   {col.map((label) => {
                     const to = moreHref[label];
                     const internal = to.startsWith("/");
-                    const linkStyle: React.CSSProperties = { display: "inline-flex", alignItems: "center", padding: "8px 0", fontFamily: font.family, fontWeight: 500, fontSize: "34px", lineHeight: "40px", color: colors.accent, textDecoration: "underline", textDecorationColor: moreHover === label ? colors.accent : "transparent", textUnderlineOffset: "4px", width: "fit-content", opacity: moreHover === label ? 1 : 0.9, transform: moreHover === label ? "translateX(6px)" : "translateX(0)", transition: "transform 0.15s ease, opacity 0.15s ease, text-decoration-color 0.15s ease" };
+                    const linkStyle: React.CSSProperties = { display: "inline-flex", alignItems: "center", padding: "8px 0", fontFamily: font.family, fontWeight: 500, fontSize: "34px", lineHeight: "40px", color: colors.accent, width: "fit-content", opacity: moreHover === label ? 1 : 0.9, transform: moreHover === label ? "translateX(6px)" : "translateX(0)", transition: "transform 0.15s ease, opacity 0.15s ease" };
                     const handlers = { onMouseEnter: () => setMoreHover(label), onMouseLeave: () => setMoreHover(null) };
                     return internal ? (
-                      <Link key={label} to={to} {...handlers} style={linkStyle}>{label}</Link>
+                      <Link key={label} to={to} {...handlers} className="resource-link" style={linkStyle}>{label}</Link>
                     ) : (
-                      <a key={label} href={to} target="_blank" rel="noreferrer" {...handlers} style={linkStyle}>{label}</a>
+                      <a key={label} href={to} target="_blank" rel="noreferrer" {...handlers} className="resource-link" style={linkStyle}>{label}</a>
                     );
                   })}
                 </div>
@@ -347,8 +357,8 @@ const PortalHome: React.FC = () => {
           {divider}
 
           {/* Updates */}
-          <section aria-labelledby="updates-heading" style={{ display: "flex", flexDirection: "column", gap: "24px", width: "761px", maxWidth: "100%", marginTop: "-24px" }}>
-            <h2 id="updates-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Updates</h2>
+          <section aria-labelledby="updates-heading" style={{ display: "flex", flexDirection: "column", gap: "24px", width: "761px", maxWidth: "100%" }}>
+            <h2 id="updates-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Highlights</h2>
 
             <EufemiaThemeScope>
               <Tabs
@@ -361,11 +371,48 @@ const PortalHome: React.FC = () => {
               <Tabs.Content id="portal-updates" contentInnerSpace={{ block: "large", inline: false }}>
                 {({ key }: { key: UpdatePlatform }) => (
                   key === "web" ? (
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: "25px 18px", width: "100%" }}>
-                      {releases.slice(0, 4).map((release) => (
-                        <ReleaseSummary key={release.tag} release={release} colors={colors} />
-                      ))}
-                    </div>
+                    currentFeatureRecap && (
+                      <section aria-labelledby="web-feature-recap-heading" style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                          <h3 id="web-feature-recap-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
+                            Feature releases in {currentFeatureRecap.version}
+                          </h3>
+                        </div>
+
+                        <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                          {currentFeatureRecap.features.map((feature) => (
+                            <li key={`${feature.component}-${feature.description}`} style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
+                              <strong style={{ fontWeight: 500 }}>{feature.component}</strong>
+                              {feature.description && `: ${feature.description}`}
+                              {feature.references.map((reference) => (
+                                <React.Fragment key={reference.href}>
+                                  {" "}
+                                  <a href={reference.href} target="_blank" rel="noreferrer" style={{ color: colors.accent, textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                                    ({reference.label})
+                                  </a>
+                                </React.Fragment>
+                              ))}
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "8px" }}>
+                          <Button
+                            text="Real-time Slack updates"
+                            icon="chevron_right"
+                            href="https://dnb-it.slack.com/archives/CMXABCHEY"
+                            target="_blank"
+                            rel="noreferrer"
+                          />
+                          <Button
+                            variant="secondary"
+                            text="View release archive"
+                            icon="chevron_right"
+                            href="/changelog"
+                          />
+                        </div>
+                      </section>
+                    )
                   ) : (
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: "25px 18px", width: "100%" }}>
                       {mockNativeUpdates[key].map((update) => (
@@ -381,17 +428,6 @@ const PortalHome: React.FC = () => {
                   )
                 )}
               </Tabs.Content>
-            </EufemiaThemeScope>
-
-            <EufemiaThemeScope>
-              <Button
-                variant="secondary"
-                text="See all Eufemia updates"
-                icon="chevron_right"
-                href="https://github.com/dnbexperience/eufemia/releases"
-                target="_blank"
-                rel="noreferrer"
-              />
             </EufemiaThemeScope>
           </section>
         </div>

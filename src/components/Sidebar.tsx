@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, navigate } from "gatsby";
+import { Icon as EufemiaIcon } from "@dnb/eufemia";
+import { ai, brush, chip, cog, information, user_feedback } from "@dnb/eufemia/icons";
 import { useTheme } from "../context/ThemeContext";
 import { usePortalSettings } from "../context/SettingsContext";
 import { useAuth } from "../context/AuthContext";
@@ -166,8 +168,16 @@ const Sidebar: React.FC<SidebarProps> = ({
     transition: "opacity 0.15s ease",
   });
 
-  // Notification dot for the Maintainer tools item — shown when there is unread
-  // portal feedback waiting.
+  const menuRowStyle = (active: boolean, hover: boolean): React.CSSProperties => ({
+    ...rowStyle(active, hover),
+    position: "relative",
+    margin: "-8px -12px",
+    padding: "8px 12px",
+    borderRadius: `${radius.md}`,
+    background: active ? colors.selectedSubtle : hover ? colors.surfaceAlt : "transparent",
+    transition: "background 0.15s ease, opacity 0.15s ease",
+  });
+
   const notificationDot = (
     <span
       aria-label="Unread feedback"
@@ -207,7 +217,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     );
   };
 
-  const menuLink = (to: string, label: string, key: string, indent = false, badge = false, beta = false) => {
+  const menuLink = (to: string, label: string, key: string, icon: React.ReactNode, badge = false, beta = false) => {
     const active = currentPath === to || currentPath.startsWith(`${to}/`);
     return (
       <Link
@@ -215,17 +225,14 @@ const Sidebar: React.FC<SidebarProps> = ({
         onClick={() => onRowClick(key)}
         onMouseEnter={() => setHovered(key)}
         onMouseLeave={() => setHovered(null)}
-        style={rowStyle(active, hovered === key, indent)}
+        style={menuRowStyle(active, hovered === key)}
       >
-        <Lead
-          key={click.key === key ? `c-${key}-${click.n}` : active ? `a-${to}` : key}
-          kind="arrow"
-          show={active || hovered === key}
-          play={active || click.key === key}
-        />
+        <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
+          <EufemiaIcon icon={icon} aria-hidden />
+        </span>
         {label}
         {beta && (
-          <span style={{ marginLeft: "auto", padding: "2px 7px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", fontWeight: 500, lineHeight: "20px" }}>Beta</span>
+          <span style={{ marginLeft: "auto", padding: "2px 7px", border: `1px solid ${colors.accent}`, borderRadius: radius.sm, background: colors.surface, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", fontWeight: 500, lineHeight: "20px" }}>Beta</span>
         )}
         {badge && hasUnreadFeedback && notificationDot}
       </Link>
@@ -258,12 +265,12 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div style={{ display: "flex", flexDirection: "column", gap: "27px", width: "336px" }}>
         {/* Menu */}
         <nav style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-          {menuLink("/about", "About Eufemia", "about")}
-          {menuLink("/docs/design", "Designer Guide", "designer-guide")}
-          {menuLink("/getting-started", "Developer Guide", "developer-guide")}
-          {menuLink("/contribute", "Contribute", "contribute")}
-          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai", false, false, true)}
-          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", false, true)}
+          {menuLink("/about", "About Eufemia", "about", information)}
+          {menuLink("/docs/design", "Designer Guide", "designer-guide", brush)}
+          {menuLink("/getting-started", "Developer Guide", "developer-guide", chip)}
+          {menuLink("/contribute", "Contribute", "contribute", user_feedback)}
+          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai", ai, false, true)}
+          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", cog, true)}
         </nav>
 
         {/* Divider between the menu and the platform selector (full-width) */}

@@ -1,7 +1,10 @@
 import React from "react";
+import { Breadcrumb } from "@dnb/eufemia";
 import Layout from "../components/Layout";
 import PageShell from "../components/PageShell";
+import InPageRail from "../components/InPageRail";
 import ReleaseNotes from "../components/ReleaseNotes";
+import EufemiaThemeScope from "../components/EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
 import {
@@ -11,13 +14,56 @@ import {
   releaseKindLabel,
 } from "../data/release-data";
 
+const versionLine = (version: string) => version.split(".").slice(0, 2).join(".");
+
+const releaseRailItems = releases
+  .filter(
+    (release, index) =>
+      releases.findIndex(
+        (item) => versionLine(item.version) === versionLine(release.version)
+      ) === index
+  )
+  .map((release) => {
+    const line = versionLine(release.version);
+
+    return {
+      id: release.tag,
+      label: `v${line}.x`,
+      sectionIds: releases
+        .filter((item) => versionLine(item.version) === line)
+        .map((item) => item.tag),
+    };
+  });
+
+const releaseVersionLinkCSS = `
+.release-version-link {
+  text-decoration: none;
+}
+.release-version-link:hover,
+.release-version-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+`;
+
 const ChangelogPage: React.FC = () => {
   const { colors } = useTheme();
 
   return (
     <Layout currentPath="/changelog">
-      <PageShell>
-        <header style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
+      <style>{releaseVersionLinkCSS}</style>
+      <PageShell rail={<InPageRail items={releaseRailItems} scrollable autoFollow />}>
+        <EufemiaThemeScope>
+          <Breadcrumb
+            variant="responsive"
+            navText="Page hierarchy"
+            data={[
+              { text: "About Eufemia", href: "/about" },
+              { text: "What's new in Eufemia" },
+            ]}
+          />
+        </EufemiaThemeScope>
+        <header style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "24px", marginBottom: "48px" }}>
           <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
             What&apos;s new in Eufemia
           </h1>
@@ -26,32 +72,25 @@ const ChangelogPage: React.FC = () => {
           </p>
         </header>
 
-        <main aria-label="Eufemia release history" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          {releases.map((release) => (
+        <main aria-label="Eufemia release history" style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+          {releases.map((release, index) => (
             <article
               key={release.tag}
               id={release.tag}
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "24px",
-                padding: "28px",
-                background: colors.surface,
-                border: `1px solid ${colors.strokeSubtle}`,
-                borderRadius: `${radius.xl}`,
+                gap: "16px",
+                paddingBottom: index === releases.length - 1 ? 0 : "40px",
+                borderBottom: index === releases.length - 1 ? undefined : `1px solid ${colors.strokeSubtle}`,
               }}
             >
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <a href={release.url} target="_blank" rel="noreferrer" style={{ width: "fit-content", fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.accent, textDecoration: "underline", textUnderlineOffset: "4px" }}>
-                    {release.tag}
-                  </a>
-                  <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
-                    {formatReleaseDate(release.date)}
-                  </span>
-                </div>
-                <span style={{ padding: "4px 12px", background: colors.surfaceAlt, borderRadius: `${radius.md}`, fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.text }}>
-                  {releaseKindLabel[release.kind]}
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <a href={release.url} target="_blank" rel="noreferrer" className="release-version-link" style={{ width: "fit-content", fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.accent }}>
+                  {release.tag}
+                </a>
+                <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
+                  {formatReleaseDate(release.date)} · {releaseKindLabel[release.kind]}
                 </span>
               </div>
 

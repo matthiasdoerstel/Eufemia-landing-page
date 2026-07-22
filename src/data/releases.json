@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-20T15:42:03.140Z",
+  "generated": "2026-07-22T10:04:03.696Z",
   "source": "https://github.com/dnbexperience/eufemia/releases",
   "count": 100,
   "releases": [
@@ -959,27 +959,27 @@
           "title": "Features",
           "slug": "features",
           "items": [
-            "React: add support for React v19",
-            "Menu: add new context menu component, closes #6372 (https://github.com/dnbexperience/eufemia/issues/6372) #7378 (https://github.com/dnbexperience/eufemia/issues/7378)",
-            "InputMasked: replace masking with new Maskito dependency",
-            "Forms: support native form submit in Form.Handler",
-            "DatePicker, Expiry: refactor input to work without text cursor, closes #6658 (https://github.com/dnbexperience/eufemia/issues/6658)",
-            "PhoneNumber: E.164 default output, auto-detect country codes",
-            "Section: add surface prop and provide it via Theme provider",
-            "Card: adjust outline thickness and border radius to new design",
-            "Card: add support for scoped dark mode",
-            "List: add List.ShowMoreButton to toggle items visibility",
-            "Autocomplete: add onItemMouseEnter event for dropdown items",
-            "Autocomplete: add onSubmit event for Enter key without selection",
-            "Forms: add id prop support to Form.SubmitIndicator",
-            "Forms: add id prop support to Form.Visibility",
-            "Forms: add id prop support to Iterate.Array",
-            "Forms: add support for Swedish bank account numbers and IBAN in BankAccountNumber",
-            "Forms: remove default outset from Form.Card, Wizard, and inline help; remove heading auto-indent",
-            "Forms: remove included Ajv instance creation from Form.Handler and fields",
-            "Design Tokens: generate tokens-tailwind.css for design tokens",
-            "Logo: remove brand and variant and make Sbanken opt-in",
-            "CSS: centralize z-index scale with CSS custom properties",
+            "React: add support for React v19 (#6201) (4c66389)",
+            "Menu: add new context menu component (#7380) (0683e61), closes #6372 (https://github.com/dnbexperience/eufemia/issues/6372) #7378 (https://github.com/dnbexperience/eufemia/issues/7378)",
+            "InputMasked: replace masking with new Maskito dependency (#6658) (9ff04cb)",
+            "Forms: support native form submit in Form.Handler (#6987) (746d3d1)",
+            "DatePicker, Expiry: refactor input to work without text cursor (#7028) (ffdccc8), closes #6658 (https://github.com/dnbexperience/eufemia/issues/6658)",
+            "PhoneNumber: E.164 default output, auto-detect country codes (#7419) (89cd42f)",
+            "Section: add surface prop and provide it via Theme provider (#7424) (17be9c4)",
+            "Card: adjust outline thickness and border radius to new design (#6897) (4373225)",
+            "Card: add support for scoped dark mode (#7576) (7904dc6)",
+            "List: add List.ShowMoreButton to toggle items visibility (#7513) (d0854ad)",
+            "Autocomplete: add onItemMouseEnter event for dropdown items (#7249) (e15b932)",
+            "Autocomplete: add onSubmit event for Enter key without selection (#7248) (7c976ae)",
+            "Forms: add id prop support to Form.SubmitIndicator (#7235) (255779f)",
+            "Forms: add id prop support to Form.Visibility (#7228) (f1f0c0f)",
+            "Forms: add id prop support to Iterate.Array (#7234) (5ab6315)",
+            "Forms: add support for Swedish bank account numbers and IBAN in BankAccountNumber (#7246) (d0c3036)",
+            "Forms: remove default outset from Form.Card, Wizard, and inline help; remove heading auto-indent (#6929) (5c1ef39)",
+            "Forms: remove included Ajv instance creation from Form.Handler and fields (#5618) (e393bbe)",
+            "Design Tokens: generate tokens-tailwind.css for design tokens (#7225) (e3d0767)",
+            "Logo: remove brand and variant and make Sbanken opt-in (#5882) (25202ed)",
+            "CSS: centralize z-index scale with CSS custom properties (#7356) (73c6c95)",
             "Design Tokens: add design token support to Accordion, Anchor, Badge, Blockquote, Button, Card, Checkbox, Dialog, Dropdown, Autocomplete, FormLabel, FormStatus, GlobalError, GlobalStatus, Img, Input, Label, List, Modal, Drawer, Radio, Section, Switch, Textarea, TextCounter, Tooltip, and Typography (#7529 (https://github.com/dnbexperience/eufemia/issues/7529), #6874 (https://github.com/dnbexperience/eufemia/issues/6874), #6688 (https://github.com/dnbexperience/eufemia/issues/6688), #7581 (https://github.com/dnbexperience/eufemia/issues/7581), #6916 (https://github.com/dnbexperience/eufemia/issues/6916), #7253 (https://github.com/dnbexperience/eufemia/issues/7253), #7515 (https://github.com/dnbexperience/eufemia/issues/7515), #7357 (https://github.com/dnbexperience/eufemia/issues/7357), #7533 (https://github.com/dnbexperience/eufemia/issues/7533), #7363 (https://github.com/dnbexperience/eufemia/issues/7363), #7049 (https://github.com/dnbexperience/eufemia/issues/7049), #7259 (https://github.com/dnbexperience/eufemia/issues/7259), #7054 (https://github.com/dnbexperience/eufemia/issues/7054), #7584 (https://github.com/dnbexperience/eufemia/issues/7584), #7254 (https://github.com/dnbexperience/eufemia/issues/7254), #7586 (https://github.com/dnbexperience/eufemia/issues/7586), #7535 (https://github.com/dnbexperience/eufemia/issues/7535), #7631 (https://github.com/dnbexperience/eufemia/issues/7631), #7518 (https://github.com/dnbexperience/eufemia/issues/7518), #7394 (https://github.com/dnbexperience/eufemia/issues/7394), #7188 (https://github.com/dnbexperience/eufemia/issues/7188), #7386 (https://github.com/dnbexperience/eufemia/issues/7386), #7031 (https://github.com/dnbexperience/eufemia/issues/7031), #7396 (https://github.com/dnbexperience/eufemia/issues/7396), #7378 (https://github.com/dnbexperience/eufemia/issues/7378), #7403 (https://github.com/dnbexperience/eufemia/issues/7403))"
           ]
         },
@@ -987,35 +987,35 @@
           "title": "Documentation",
           "slug": "documentation",
           "items": [
-            "remove en-NO documentation"
+            "remove en-NO documentation (#7538) (ae57e1b)"
           ]
         },
         {
           "title": "Bug Fixes",
           "slug": "bug-fixes",
           "items": [
-            "Autocomplete: prevent dropdown from reopening after Enter key selection",
-            "Icon: fix broken icon size detection in production builds",
-            "Button, Skeleton, PaymentCard, Pagination: preserve defaultProps behavior for undefined values, closes #6792 (https://github.com/dnbexperience/eufemia/issues/6792)",
-            "DatePicker: align popover arrow styling with DatePicker container",
-            "DrawerList: prevent value reset on blur for lazy-loaded data",
-            "DrawerList: refresh scroll observer on direction change or search results change",
-            "Dropdown: correct outline padding on focus and error state",
-            "FormStatus: remove loose string/boolean from FormStatusState type",
-            "getTranslation: prevent context corruption after unmounting",
-            "GlobalStatus: prevent unintended visibility when show defaults to auto",
-            "Icon: replace alt='no-alt' with empty string for data:image icons",
-            "List: inherit card border-radius on first/last items when used in Card without scroll view",
-            "FormStatus: rename remaining warn→warning and info→information status references, closes #6522 (https://github.com/dnbexperience/eufemia/issues/6522) #7174 (https://github.com/dnbexperience/eufemia/issues/7174)",
-            "StyleIsolation: handle :global(html[attr]) & when used in CSS module, closes #7429 (https://github.com/dnbexperience/eufemia/issues/7429)",
-            "Tabs: fix false overflow detection when tab title contains extra elements"
+            "Autocomplete: prevent dropdown from reopening after Enter key selection (#7628) (2f23c13)",
+            "Icon: fix broken icon size detection in production builds (#6881) (aff06bb)",
+            "Button, Skeleton, PaymentCard, Pagination: preserve defaultProps behavior for undefined values (#6880) (9699f96), closes #6792 (https://github.com/dnbexperience/eufemia/issues/6792)",
+            "DatePicker: align popover arrow styling with DatePicker container (#7625) (2d3f683)",
+            "DrawerList: prevent value reset on blur for lazy-loaded data (#7624) (1f3749e)",
+            "DrawerList: refresh scroll observer on direction change or search results change (#6397) (ae6c789)",
+            "Dropdown: correct outline padding on focus and error state (#7003) (c92f532)",
+            "FormStatus: remove loose string/boolean from FormStatusState type (#7399) (6ab75cb)",
+            "getTranslation: prevent context corruption after unmounting (#6769) (36299c0)",
+            "GlobalStatus: prevent unintended visibility when show defaults to auto (#7502) (8513c25)",
+            "Icon: replace alt='no-alt' with empty string for data:image icons (#7353) (743e3bc)",
+            "List: inherit card border-radius on first/last items when used in Card without scroll view (#7348) (986c3cd)",
+            "FormStatus: rename remaining warn→warning and info→information status references (#7218) (52d7838), closes #6522 (https://github.com/dnbexperience/eufemia/issues/6522) #7174 (https://github.com/dnbexperience/eufemia/issues/7174)",
+            "StyleIsolation: handle :global(html[attr]) & when used in CSS module (#7483) (e20ea53), closes #7429 (https://github.com/dnbexperience/eufemia/issues/7429)",
+            "Tabs: fix false overflow detection when tab title contains extra elements (#7508) (37e2e28)"
           ]
         },
         {
           "title": "Refactoring",
           "slug": "refactoring",
           "items": [
-            "PaymentCard: replace runtime type system with plain TypeScript discriminated unions"
+            "PaymentCard: replace runtime type system with plain TypeScript discriminated unions (#7430) (08c32bd)"
           ]
         }
       ]

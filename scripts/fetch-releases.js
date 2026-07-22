@@ -17,8 +17,8 @@ const OUTPUT_PATH = path.join(__dirname, "..", "src", "data", "releases.json");
 const toText = (value) => value
   .replace(/\r\n/g, "\n")
   .replace(/!?(?:\[([^\]]*)\]\([^)]*\))/g, "$1")
-  .replace(/\s*\(#\d+\s+\(https?:[^)]+\)\)/g, "")
-  .replace(/\s*\([a-f0-9]{7,}\s+\(https?:[^)]+\)\)/gi, "")
+  .replace(/\s*\((#\d+)\s+\(https?:[^)]+\)\)/g, " ($1)")
+  .replace(/\s*\(([a-f0-9]{7,})\s+\(https?:[^)]+\)\)/gi, " ($1)")
   .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")
   .replace(/`([^`]+)`/g, "$1")
   .replace(/<[^>]+>/g, "")
