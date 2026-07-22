@@ -2,12 +2,12 @@ import React from "react";
 import PlatformOverview, { OverviewComponent } from "../../components/PlatformOverview";
 
 const components: OverviewComponent[] = [
-  { id: "button", name: "Button", slug: "button", description: "Buttons are used to trigger actions or navigate to new pages. They come in different variants and sizes." },
-  { id: "input", name: "Input", slug: "input", description: "Input fields allow users to enter and edit text. They support various types and validation states." },
-  { id: "dropdown", name: "Dropdown", slug: "dropdown", description: "Dropdowns allow users to select an option from a list of choices." },
-  { id: "card", name: "Card", slug: "card", description: "Cards are used to group related content and actions about a single subject." },
-  { id: "modal", name: "Modal", slug: "modal", description: "Modals are dialog windows that appear on top of the main content to capture user attention." },
-  { id: "table", name: "Table", slug: "table", description: "Tables display data in rows and columns for easy scanning and comparison." },
+  { id: "button", name: "Button", slug: "button", description: "Triggers an action or navigation." },
+  { id: "avatar-group", name: "Avatar Group", slug: "avatar-group", description: "Groups related people or entities." },
+  { id: "dropdown", name: "Dropdown", slug: "dropdown", description: "Lets users choose from a list of options." },
+  { id: "card", name: "Card", slug: "card", description: "Groups related content and actions." },
+  { id: "dialog", name: "Dialog", slug: "dialog", description: "Focuses attention on an important decision or message." },
+  { id: "badge", name: "Badge", slug: "badge", description: "Highlights a status, count, or label." },
 ];
 
 const WebPage: React.FC = () => (

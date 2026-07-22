@@ -5,6 +5,12 @@ import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
 import PageShell from "./PageShell";
 import { CmsComponent } from "../data/sanity-component";
+import buttonPreview from "../images/components/button-preview.svg";
+import avatarGroupPreview from "../images/components/avatar-group-preview.svg";
+import dropdownPreview from "../images/components/dropdown-preview.svg";
+import cardPreview from "../images/components/card-preview.svg";
+import dialogPreview from "../images/components/dialog-preview.svg";
+import badgePreview from "../images/components/badge-preview.svg";
 
 export type PlatformKey = "web" | "ios" | "android";
 
@@ -67,6 +73,15 @@ interface PlatformOverviewProps {
   platform: PlatformKey;
   components: OverviewComponent[];
 }
+
+const componentPreviews: Partial<Record<string, string>> = {
+  button: buttonPreview,
+  "avatar-group": avatarGroupPreview,
+  dropdown: dropdownPreview,
+  card: cardPreview,
+  dialog: dialogPreview,
+  badge: badgePreview,
+};
 
 const LaunchIcon = ({ color }: { color: string }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, color }}>
@@ -184,13 +199,23 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, component
                       style={{
                         height: "160px",
                         width: "240px",
+                        overflow: "hidden",
                         borderRadius: `${radius.xl}`,
                         background: colors.surfaceAlt,
                         transform: hover === c.id ? "translateY(-2px)" : "none",
                         boxShadow: hover === c.id ? "0 8px 16px rgba(0,0,0,0.12)" : "none",
                         transition: "transform 0.15s ease, box-shadow 0.15s ease",
                       }}
-                    />
+                    >
+                      {platform === "web" && componentPreviews[c.slug ?? ""] && (
+                        <img
+                          src={componentPreviews[c.slug ?? ""]}
+                          alt=""
+                          aria-hidden
+                          style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      )}
+                    </div>
                     <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
                       {c.name}
                     </span>
