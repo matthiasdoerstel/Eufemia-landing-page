@@ -58,7 +58,7 @@ const ChangelogPage: React.FC = () => {
             variant="responsive"
             navText="Page hierarchy"
             data={[
-              { text: "About Eufemia", href: "/about" },
+              { text: "Home", href: "/" },
               { text: "What's new in Eufemia" },
             ]}
           />
