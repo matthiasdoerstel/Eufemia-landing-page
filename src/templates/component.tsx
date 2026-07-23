@@ -224,7 +224,7 @@ const ComponentTemplate: React.FC<Props> = ({ data }) => {
   }
 
   return (
-    <Layout currentPlatform={platform} currentPath={`${platformPath}/components`}>
+    <Layout currentPlatform={platform} currentPath={`${platformPath}/components/${component.slug.current}`}>
       <PageShell contentStyle={{ maxWidth: "880px", gap: "40px" }} rail={<InPageRail items={sections} />}>
         <EufemiaThemeScope>
           <Breadcrumb
@@ -324,6 +324,9 @@ export const query = graphql`
       id
       name
       platform
+      slug {
+        current
+      }
       shortDescription
       figmaLink
       githubLink

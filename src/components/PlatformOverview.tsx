@@ -32,7 +32,7 @@ interface PlatformMeta {
 // supply the platform key and the component list.
 export const PLATFORM_META: Record<PlatformKey, PlatformMeta> = {
   web: {
-    title: "Web Components",
+    title: "Web Overview",
     intro: [
       "Components are the core of any design system, crafted to tackle specific UI challenges. Eufemia Web is a comprehensive set of accessible React components, allowing you to create consistent DNB experiences across the web.",
       "Just getting started? Take a look at the start designing and start developing guides.",
@@ -190,6 +190,7 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, component
                 return (
                   <Link
                     key={c.id}
+                      id={platform === "web" && c.slug ? `component-${c.slug}` : undefined}
                     to={to}
                     onMouseEnter={() => setHover(c.id)}
                     onMouseLeave={() => setHover(null)}

@@ -388,7 +388,7 @@ const ButtonDocsPage: React.FC = () => {
   };
 
   return (
-    <Layout currentPlatform="web" currentPath="/docs/web/components">
+    <Layout currentPlatform="web" currentPath="/docs/web/components/button">
       <PageShell contentStyle={{ gap: "56px" }} rail={<InPageRail items={railItems} />}>
         <EufemiaThemeScope>
           <Breadcrumb

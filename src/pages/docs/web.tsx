@@ -16,4 +16,4 @@ const WebPage: React.FC = () => (
 
 export default WebPage;
 
-export const Head = () => <title>Web Components | Eufemia Design System</title>;
+export const Head = () => <title>Web Overview | Eufemia Design System</title>;
