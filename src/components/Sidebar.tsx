@@ -130,6 +130,10 @@ const componentGroupForPath = (path: string) =>
     group.items.some((item) => item.path === path)
   )?.label;
 
+const availableWebComponentPaths = new Set([
+  "/docs/web/components/button",
+]);
+
 const iosNavItems: NavItem[] = [
   { label: "Overview", path: "/docs/ios", icon: home },
   { label: "Components", path: "/docs/ios/components", icon: layout_grid },
@@ -267,7 +271,33 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const renderComponentRow = (item: NavItem) => {
-    const active = currentPath === item.path;
+    const available = availableWebComponentPaths.has(item.path);
+    const active = available && currentPath === item.path;
+    const style = nestedRowStyle(active, available && hovered === item.path, 2);
+
+    const content = (
+      <>
+        {active && (
+          <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
+            <EufemiaIcon icon={arrow_right} aria-hidden />
+          </span>
+        )}
+        {item.label}
+      </>
+    );
+
+    if (!available) {
+      return (
+        <span
+          key={item.path}
+          aria-disabled="true"
+          style={{ ...style, color: colors.textMuted, background: "transparent", cursor: "not-allowed", opacity: 0.55 }}
+        >
+          {content}
+        </span>
+      );
+    }
+
     return (
       <Link
         key={item.path}
@@ -275,14 +305,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         onClick={onRowClick}
         onMouseEnter={() => setHovered(item.path)}
         onMouseLeave={() => setHovered(null)}
-        style={nestedRowStyle(active, hovered === item.path, 2)}
+        style={style}
       >
-        {active && (
-          <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
-            <EufemiaIcon icon={arrow_right} aria-hidden />
-          </span>
-        )}
-        {item.label}
+        {content}
       </Link>
     );
   };
