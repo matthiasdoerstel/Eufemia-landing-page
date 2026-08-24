@@ -55,7 +55,23 @@ const Header: React.FC<{
   showMenuButton?: boolean;
   onMenuClick?: () => void;
   menuOpen?: boolean;
-}> = ({ showMenuButton = false, onMenuClick, menuOpen = false }) => {
+  /**
+   * Left inset in px. Used when a full-height side rail occupies the screen
+   * edge, so the bar starts beside it rather than underneath.
+   */
+  insetLeft?: number;
+  /**
+   * Hide the wordmark when something else already shows it — the side rail
+   * carries its own, and two would be redundant.
+   */
+  showWordmark?: boolean;
+}> = ({
+  showMenuButton = false,
+  onMenuClick,
+  menuOpen = false,
+  insetLeft = 0,
+  showWordmark = true,
+}) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchCompareMode, setSearchCompareMode] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -145,13 +161,12 @@ const Header: React.FC<{
           justifyContent: "space-between",
           padding: "0 24px",
           height: `${NAV_HEIGHT}px`,
-          borderBottom: `1px solid ${colors.strokeSubtle}`,
           background: scrolled ? toRgba(colors.pageBg, 0.85) : colors.pageBg,
           backdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
           WebkitBackdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
           position: "fixed",
           top: 0,
-          left: 0,
+          left: insetLeft,
           right: 0,
           zIndex: 100,
           fontFamily: font.family,
@@ -169,19 +184,21 @@ const Header: React.FC<{
               <MenuIcon open={menuOpen} />
             </button>
           )}
-          <Link
-            to="/"
-            aria-label="Eufemia — home"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              color: colors.text,
-              textDecoration: "none",
-              lineHeight: 0,
-            }}
-          >
-            <EufemiaWordmark height={22} />
-          </Link>
+          {showWordmark && (
+            <Link
+              to="/"
+              aria-label="Eufemia — home"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                color: colors.text,
+                textDecoration: "none",
+                lineHeight: 0,
+              }}
+            >
+              <EufemiaWordmark height={22} />
+            </Link>
+          )}
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>

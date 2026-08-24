@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Agentation } from "agentation";
 import { Logo } from "@dnb/eufemia";
 import Header, { NAV_HEIGHT } from "./Header";
 import Sidebar from "./Sidebar";
+import { useSideMenuChrome } from "./SideMenuChrome";
 import FeedbackButton from "./FeedbackButton";
 import { useTheme } from "../context/ThemeContext";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -24,9 +26,17 @@ const Layout: React.FC<LayoutProps> = ({
   const isMobile = useIsMobile();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // The SideMenu is persistent chrome mounted from wrapPageElement, not from
+  // here — see SideMenuChrome. Layout only needs the offset it occupies.
+  const { enabled: useSideMenu, offset: menuOffset, railWidth } = useSideMenuChrome();
+
   // On desktop the sidebar is a fixed 384px column; on mobile it's an
   // off-canvas drawer, so the main content spans the full width.
-  const sidebarOffset = hideSidebar || isMobile ? 0 : 384;
+  const sidebarOffset = useSideMenu
+    ? menuOffset
+    : hideSidebar || isMobile
+    ? 0
+    : 384;
 
   // Close the drawer whenever we grow back to desktop, and lock body scroll
   // while the drawer is open on mobile.
@@ -50,9 +60,11 @@ const Layout: React.FC<LayoutProps> = ({
         showMenuButton={showMenuButton}
         onMenuClick={() => setDrawerOpen((o) => !o)}
         menuOpen={drawerOpen}
+        insetLeft={useSideMenu ? railWidth : 0}
+        showWordmark={!useSideMenu}
       />
 
-      {!hideSidebar && (
+      {!hideSidebar && !useSideMenu && (
         <Sidebar
           currentPlatform={currentPlatform}
           currentPath={currentPath}
@@ -115,6 +127,7 @@ const Layout: React.FC<LayoutProps> = ({
         </span>
       </footer>
       <FeedbackButton />
+      {process.env.NODE_ENV === "development" && <Agentation />}
     </div>
   );
 };

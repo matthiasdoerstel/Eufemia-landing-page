@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Link, navigate } from "gatsby";
-import { Icon as EufemiaIcon } from "@dnb/eufemia";
-import { ai, arrow_right, brush, chevron_down, chevron_right, chip, cog, hierarchy, home, information, layout_grid, user_feedback } from "@dnb/eufemia/icons";
+import { navigate } from "gatsby";
+import { ai_medium, brush_medium, chip_medium, cog_medium, hierarchy_medium, home_medium, information_medium, layout_grid_medium, user_feedback_medium } from "@dnb/eufemia/icons";
 import { useTheme } from "../context/ThemeContext";
 import { usePortalSettings } from "../context/SettingsContext";
 import { useAuth } from "../context/AuthContext";
 import { unreadCount } from "../lib/feedback";
 import { radius, font } from "../theme/tokens";
+import MenuRow, { MENU_LIST_CLASS, MENU_ROW_CSS, MenuRowState } from "./MenuRow";
 import { NAV_HEIGHT } from "./Header";
 
 type Platform = "web" | "ios" | "android" | null;
 
-type EufemiaIconDefinition = typeof home;
+type EufemiaIconDefinition = typeof home_medium;
 
-interface NavItem {
+export interface NavItem {
   label: string;
   path: string;
   icon?: EufemiaIconDefinition | "chevron";
 }
 
-const webNavItems: NavItem[] = [
-  { label: "Overview", path: "/docs/web", icon: home },
-  { label: "Design Tokens", path: "/docs/web/design-tokens", icon: hierarchy },
+export const webNavItems: NavItem[] = [
+  { label: "Overview", path: "/docs/web", icon: home_medium },
+  { label: "Design Tokens", path: "/docs/web/design-tokens", icon: hierarchy_medium },
 ];
 
-interface ComponentNavGroup {
+export interface ComponentNavGroup {
   label: string;
   items: NavItem[];
 }
 
-const webComponentNavGroups: ComponentNavGroup[] = [
+export const webComponentNavGroups: ComponentNavGroup[] = [
   {
     label: "Basic UI",
     items: [
@@ -130,24 +130,51 @@ const componentGroupForPath = (path: string) =>
     group.items.some((item) => item.path === path)
   )?.label;
 
-const availableWebComponentPaths = new Set([
+export const availableWebComponentPaths = new Set([
   "/docs/web/components/button",
 ]);
 
-const iosNavItems: NavItem[] = [
-  { label: "Overview", path: "/docs/ios", icon: home },
-  { label: "Components", path: "/docs/ios/components", icon: layout_grid },
-  { label: "Design Tokens", path: "/docs/ios/design-tokens", icon: layout_grid },
+export const iosNavItems: NavItem[] = [
+  { label: "Overview", path: "/docs/ios", icon: home_medium },
+  { label: "Components", path: "/docs/ios/components", icon: layout_grid_medium },
+  { label: "Design Tokens", path: "/docs/ios/design-tokens", icon: layout_grid_medium },
 ];
 
-const androidNavItems: NavItem[] = [
-  { label: "Overview", path: "/docs/android", icon: home },
-  { label: "Components", path: "/docs/android/components", icon: layout_grid },
-  { label: "Design Tokens", path: "/docs/android/design-tokens", icon: layout_grid },
+export const androidNavItems: NavItem[] = [
+  { label: "Overview", path: "/docs/android", icon: home_medium },
+  { label: "Components", path: "/docs/android/components", icon: layout_grid_medium },
+  { label: "Design Tokens", path: "/docs/android/design-tokens", icon: layout_grid_medium },
 ];
 
-const navigationIcon = (icon?: EufemiaIconDefinition | "chevron"): EufemiaIconDefinition =>
-  icon === "chevron" ? chevron_right : icon ?? chevron_right;
+// Component leaves are marked `"chevron"` in the nav data but carry no icon in
+// the Menu design — only real icon definitions reach the row.
+const navigationIcon = (icon?: EufemiaIconDefinition | "chevron"): EufemiaIconDefinition | undefined =>
+  icon === "chevron" ? undefined : icon;
+
+// Platform pills. Hover lives in CSS for the same reason the Menu rows do —
+// so the sidebar carries no hover state in React at all.
+const PLATFORM_PILL_CSS = `
+.eu-plat-pill {
+  padding: 8px 20px;
+  border: 1px solid var(--eu-strokeSubtle);
+  border-radius: var(--eu-radius-md);
+  background: var(--eu-surface);
+  color: var(--eu-accent);
+  font-family: DNB, sans-serif;
+  font-size: ${font.size.body}px;
+  line-height: ${font.lineHeight.body}px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.eu-plat-pill:hover { background: var(--eu-surfaceAlt); }
+.eu-plat-pill--active {
+  border-color: var(--eu-accent);
+  background: var(--eu-selectedSubtle);
+  color: var(--eu-textSelected);
+  font-weight: 500;
+}
+`;
 
 interface SidebarProps {
   currentPlatform?: Platform;
@@ -164,7 +191,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   open = false,
   onNavigate,
 }) => {
-  const [hovered, setHovered] = useState<string | null>(null);
   const [componentsOpen, setComponentsOpen] = useState(currentPath.startsWith("/docs/web/components"));
   const [componentGroupsOpen, setComponentGroupsOpen] = useState<Record<string, boolean>>({});
   const onRowClick = () => onNavigate?.();
@@ -204,154 +230,84 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const platformLabels: Record<string, string> = { web: "Web", ios: "iOS", android: "Android" };
 
-  const rowStyle = (active: boolean, hover: boolean): React.CSSProperties => ({
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
-    boxSizing: "border-box",
-    minHeight: "40px",
-    padding: "8px 12px",
-    borderRadius: `${radius.md}`,
-    textDecoration: "none",
-    fontFamily: font.family,
-    fontSize: `${font.size.body}px`,
-    lineHeight: `${font.lineHeight.body}px`,
-    fontWeight: active ? 500 : 400,
-    color: active ? colors.textSelected : colors.accent,
-    background: active ? colors.selectedSubtle : hover ? colors.surfaceAlt : "transparent",
-    transition: "background 0.15s ease, color 0.15s ease",
-  });
-
-  const menuRowStyle = (active: boolean, hover: boolean): React.CSSProperties => ({
-    ...rowStyle(active, hover),
-    position: "relative",
-    margin: "-8px -12px",
-    padding: "8px 12px",
-  });
-
-  const nestedRowStyle = (active: boolean, hover: boolean, depth: number): React.CSSProperties => ({
-    ...rowStyle(active, hover),
-    width: `calc(100% - ${depth * 16}px)`,
-    marginLeft: `${depth * 16}px`,
-  });
-
+  // Trailing-slot decorations. Both use `currentColor` so they stay legible on a
+  // selected row, where the background flips to the accent fill.
   const notificationDot = (
     <span
       aria-label="Unread feedback"
       title="Unread feedback"
-      style={{
-        marginLeft: "auto",
-        alignSelf: "center",
-        width: "9px",
-        height: "9px",
-        flexShrink: 0,
-        borderRadius: "999px",
-        background: colors.accent,
-      }}
+      style={{ width: "9px", height: "9px", flexShrink: 0, borderRadius: "999px", background: "currentColor" }}
     />
   );
 
-  const renderRow = (item: NavItem) => {
-    const active = currentPath === item.path;
-    return (
-      <Link
-        key={item.path}
-        to={item.path}
-        onClick={onRowClick}
-        onMouseEnter={() => setHovered(item.path)}
-        onMouseLeave={() => setHovered(null)}
-        style={rowStyle(active, hovered === item.path)}
-      >
-        <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
-          <EufemiaIcon icon={navigationIcon(item.icon)} aria-hidden />
-        </span>
-        {item.label}
-      </Link>
-    );
-  };
+  const betaTag = (
+    <span
+      style={{
+        // 1px block padding + 20px line + 1px borders = 24px, so the tag fits the
+        // row's 24px content band and doesn't stretch it past 56px.
+        padding: "1px 7px",
+        border: "1px solid currentColor",
+        borderRadius: radius.sm,
+        fontFamily: font.family,
+        fontSize: "14px",
+        fontWeight: 500,
+        lineHeight: "20px",
+      }}
+    >
+      Beta
+    </span>
+  );
+
+  const rowState = (active: boolean): MenuRowState => (active ? "selected" : "default");
+
+  const renderRow = (item: NavItem) => (
+    <MenuRow
+      key={item.path}
+      level={1}
+      icon={navigationIcon(item.icon)}
+      label={item.label}
+      to={item.path}
+      onClick={onRowClick}
+      state={rowState(currentPath === item.path)}
+    />
+  );
 
   const renderComponentRow = (item: NavItem) => {
-    const available = availableWebComponentPaths.has(item.path);
-    const active = available && currentPath === item.path;
-    const style = nestedRowStyle(active, available && hovered === item.path, 2);
-
-    const content = (
-      <>
-        {active && (
-          <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
-            <EufemiaIcon icon={arrow_right} aria-hidden />
-          </span>
-        )}
-        {item.label}
-      </>
-    );
-
-    if (!available) {
-      return (
-        <span
-          key={item.path}
-          aria-disabled="true"
-          style={{ ...style, color: colors.textMuted, background: "transparent", cursor: "not-allowed", opacity: 0.55 }}
-        >
-          {content}
-        </span>
-      );
+    if (!availableWebComponentPaths.has(item.path)) {
+      return <MenuRow key={item.path} level={2} label={item.label} disabled />;
     }
-
     return (
-      <Link
+      <MenuRow
         key={item.path}
+        level={2}
+        label={item.label}
         to={item.path}
         onClick={onRowClick}
-        onMouseEnter={() => setHovered(item.path)}
-        onMouseLeave={() => setHovered(null)}
-        style={style}
-      >
-        {content}
-      </Link>
+        state={rowState(currentPath === item.path)}
+      />
     );
   };
-  const renderComponentsToggle = () => {
-    const key = "web-components";
-    const active = currentPath.startsWith("/docs/web/components");
-    return (
-      <button
-        type="button"
-        aria-expanded={componentsOpen}
-        onClick={() => setComponentsOpen((open) => !open)}
-        onMouseEnter={() => setHovered(key)}
-        onMouseLeave={() => setHovered(null)}
-        style={{ ...rowStyle(active, hovered === key), border: 0, cursor: "pointer", textAlign: "left" }}
-      >
-        <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
-          <EufemiaIcon icon={layout_grid} aria-hidden />
-        </span>
-        Components
-        <span style={{ marginLeft: "auto", display: "inline-flex", color: colors.textMuted, transform: componentsOpen ? "rotate(180deg)" : "none", transition: "transform 0.15s ease" }}>
-          <EufemiaIcon icon={chevron_down} aria-hidden />
-        </span>
-      </button>
-    );
-  };
+
+  const renderComponentsToggle = () => (
+    <MenuRow
+      level={1}
+      icon={layout_grid_medium}
+      label="Components"
+      chevron={componentsOpen ? "up" : "down"}
+      expanded={componentsOpen}
+      onClick={() => setComponentsOpen((open) => !open)}
+      // An open Components branch is an ancestor of the current page, not the page itself.
+      state={currentPath.startsWith("/docs/web/components") ? "highlighted" : "default"}
+    />
+  );
+
   const menuLink = (to: string, label: string, key: string, icon: EufemiaIconDefinition, badge = false, beta = false) => {
     const active = currentPath === to || currentPath.startsWith(`${to}/`);
+    const trailing = beta ? betaTag : badge && hasUnreadFeedback ? notificationDot : null;
     return (
-      <Link
-        to={to}
-        onClick={onRowClick}
-        onMouseEnter={() => setHovered(key)}
-        onMouseLeave={() => setHovered(null)}
-        style={menuRowStyle(active, hovered === key)}
-      >
-        <span style={{ width: "16px", marginRight: "8px", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
-          <EufemiaIcon icon={icon} aria-hidden />
-        </span>
-        {label}
-        {beta && (
-          <span style={{ marginLeft: "auto", padding: "2px 7px", border: `1px solid ${colors.accent}`, borderRadius: radius.sm, background: colors.surface, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", fontWeight: 500, lineHeight: "20px" }}>Beta</span>
-        )}
-        {badge && hasUnreadFeedback && notificationDot}
-      </Link>
+      <MenuRow key={key} level={1} icon={icon} label={label} to={to} onClick={onRowClick} state={rowState(active)}>
+        {trailing}
+      </MenuRow>
     );
   };
 
@@ -377,51 +333,33 @@ const Sidebar: React.FC<SidebarProps> = ({
       }}
       aria-hidden={isMobile && !open}
     >
-      <style>{`@keyframes sbArrowNudge { 0% { transform: translateX(-6px); } 55% { transform: translateX(3px); } 100% { transform: translateX(0); } }`}</style>
-      <div style={{ display: "flex", flexDirection: "column", gap: "27px", width: "336px" }}>
-        {/* Menu */}
-        <nav style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-          {menuLink("/about", "About Eufemia", "about", information)}
-          {menuLink("/docs/design", "Designer Guide", "designer-guide", brush)}
-          {menuLink("/getting-started", "Developer Guide", "developer-guide", chip)}
-          {menuLink("/contribute", "Contribute", "contribute", user_feedback)}
-          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai", ai, false, true)}
-          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", cog, true)}
+      <style>{MENU_ROW_CSS + PLATFORM_PILL_CSS}</style>
+      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        {/* Menu — rows are contiguous inside a bounded container, separated by
+            their own hairlines. */}
+        <nav className={MENU_LIST_CLASS}>
+          {menuLink("/about", "About Eufemia", "about", information_medium)}
+          {menuLink("/docs/design", "Designer Guide", "designer-guide", brush_medium)}
+          {menuLink("/getting-started", "Developer Guide", "developer-guide", chip_medium)}
+          {menuLink("/contribute", "Contribute", "contribute", user_feedback_medium)}
+          {menuLink("/eufemia-and-ai", "Eufemia and AI", "eufemia-and-ai", ai_medium, false, true)}
+          {isMaintainer && menuLink("/maintainer", "Maintainer tools", "maintainer", cog_medium, true)}
         </nav>
 
-        {/* Divider between the menu and the platform selector (full-width) */}
-        <div style={{ height: "1px", background: colors.strokeSubtle, width: "calc(100% + 48px)", marginLeft: "-24px", marginTop: "20px", marginBottom: "20px" }} />
-
-        {/* Platform selector — segmented pills */}
-        <div style={{ display: "flex", gap: "8px", marginTop: "-9px" }}>
+        {/* Platform selector — segmented pills, between the two menu containers. */}
+        <div style={{ display: "flex", gap: "8px" }}>
           {(["web", "ios", "android"] as ("web" | "ios" | "android")[]).map((p) => {
             const active = docPlatform === p;
             return (
               <button
                 key={p}
+                type="button"
+                aria-pressed={active}
+                className={`eu-plat-pill${active ? " eu-plat-pill--active" : ""}`}
                 onClick={() => {
                   setDocPlatform(p);
                   onNavigate?.();
                   navigate(p === "web" ? "/docs/web" : p === "ios" ? "/docs/ios" : "/docs/android");
-                }}
-                onMouseEnter={() => setHovered(`platform-${p}`)}
-                onMouseLeave={() => setHovered(null)}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: `${radius.md}`,
-                  border: `1px solid ${active ? colors.accent : colors.strokeSubtle}`,
-                  background: active
-                    ? colors.selectedSubtle
-                    : hovered === `platform-${p}`
-                    ? colors.surfaceAlt
-                    : colors.surface,
-                  cursor: "pointer",
-                  fontFamily: font.family,
-                  fontSize: `${font.size.body}px`,
-                  lineHeight: `${font.lineHeight.body}px`,
-                  fontWeight: active ? 500 : 400,
-                  color: active ? colors.textSelected : colors.accent,
-                  transition: "background 0.15s ease, border-color 0.15s ease",
                 }}
               >
                 {platformLabels[p]}
@@ -431,50 +369,35 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {navItems.length > 0 && (
-          <nav style={{ display: "flex", flexDirection: "column", gap: "16px", width: "336px" }}>
+          <nav className={MENU_LIST_CLASS}>
             {docPlatform === "web" ? (
               <>
                 {renderRow(webNavItems[0])}
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {renderComponentsToggle()}
-                  {componentsOpen && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                      {webComponentNavGroups.map((group) => {
-                        const key = `component-group-${group.label}`;
-                        const groupOpen = componentGroupsOpen[group.label] ?? false;
-                        return (
-                          <section key={group.label} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                            <button
-                              type="button"
-                              aria-expanded={groupOpen}
-                              onClick={() => setComponentGroupsOpen((groups) => ({ ...groups, [group.label]: !groupOpen }))}
-                              onMouseEnter={() => setHovered(key)}
-                              onMouseLeave={() => setHovered(null)}
-                              style={{ ...nestedRowStyle(groupOpen, hovered === key, 1), border: 0, cursor: "pointer", textAlign: "left" }}
-                            >
-                              {group.label}
-                              <span style={{ marginLeft: "auto", display: "inline-flex", color: colors.textMuted, transform: groupOpen ? "rotate(180deg)" : "none", transition: "transform 0.15s ease" }}>
-                                <EufemiaIcon icon={chevron_down} aria-hidden />
-                              </span>
-                            </button>
-                            {groupOpen && (
-                              <div style={{ display: "flex", flexDirection: "column", gap: "4px", paddingLeft: "16px" }}>
-                                {group.items.map(renderComponentRow)}
-                              </div>
-                            )}
-                          </section>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                {renderComponentsToggle()}
+                {componentsOpen &&
+                  webComponentNavGroups.map((group) => {
+                    const groupOpen = componentGroupsOpen[group.label] ?? false;
+                    // Flat fragment, not a wrapper element: every row must be a
+                    // direct child of the container for the sibling separators
+                    // and the corner clipping to line up.
+                    return (
+                      <React.Fragment key={group.label}>
+                        <MenuRow
+                          level={2}
+                          label={group.label}
+                          chevron={groupOpen ? "up" : "down"}
+                          expanded={groupOpen}
+                          onClick={() => setComponentGroupsOpen((groups) => ({ ...groups, [group.label]: !groupOpen }))}
+                          state={selectedComponentGroup === group.label ? "highlighted" : "default"}
+                        />
+                        {groupOpen && group.items.map(renderComponentRow)}
+                      </React.Fragment>
+                    );
+                  })}
                 {renderRow(webNavItems[1])}
               </>
             ) : (
-              <>
-                {renderRow(navItems[0])}
-                {navItems.slice(1).map((item) => renderRow(item))}
-              </>
+              navItems.map((item) => renderRow(item))
             )}
           </nav>
         )}
