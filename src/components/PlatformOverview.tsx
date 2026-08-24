@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
+import { H1, H2, H3, P } from "@dnb/eufemia";
+import EufemiaThemeScope from "./EufemiaThemeScope";
 import Layout from "./Layout";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
 import PageShell from "./PageShell";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { CmsComponent } from "../data/sanity-component";
 import buttonPreview from "../images/components/button-preview.svg";
 import avatarGroupPreview from "../images/components/avatar-group-preview.svg";
@@ -11,14 +14,25 @@ import dropdownPreview from "../images/components/dropdown-preview.svg";
 import cardPreview from "../images/components/card-preview.svg";
 import dialogPreview from "../images/components/dialog-preview.svg";
 import badgePreview from "../images/components/badge-preview.svg";
+import componentPlaceholder from "../images/components/component-placeholder.svg";
 
 export type PlatformKey = "web" | "ios" | "android";
+export type WebComponentCategory =
+  | "Basic UI"
+  | "Form and Input"
+  | "Navigation and Structure"
+  | "Feedback and Communication"
+  | "Other / Templates"
+  | "Accessibility / Navigation";
 
 export interface OverviewComponent {
   id: string;
   name: string;
   description: string | null;
   slug: string | null;
+  category?: WebComponentCategory;
+  href?: string;
+  external?: boolean;
 }
 
 interface PlatformMeta {
@@ -74,14 +88,35 @@ interface PlatformOverviewProps {
   components: OverviewComponent[];
 }
 
+const WEB_CATEGORY_ORDER: WebComponentCategory[] = [
+  "Basic UI",
+  "Form and Input",
+  "Navigation and Structure",
+  "Feedback and Communication",
+  "Other / Templates",
+  "Accessibility / Navigation",
+];
+
+const WEB_CATEGORY_COPY: Record<WebComponentCategory, string> = {
+  "Basic UI": "Core components used throughout interfaces.",
+  "Form and Input": "Components for collecting, selecting, and formatting information.",
+  "Navigation and Structure": "Components for moving through and organizing content.",
+  "Feedback and Communication": "Components for status, guidance, and focused messages.",
+  "Other / Templates": "Supporting components and technical building blocks.",
+  "Accessibility / Navigation": "Components that improve accessibility and keyboard navigation.",
+};
+
 const componentPreviews: Partial<Record<string, string>> = {
+  avatar: avatarGroupPreview,
   button: buttonPreview,
-  "avatar-group": avatarGroupPreview,
   dropdown: dropdownPreview,
   card: cardPreview,
   dialog: dialogPreview,
   badge: badgePreview,
 };
+
+const categoryId = (category: WebComponentCategory) =>
+  `category-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
 
 const LaunchIcon = ({ color }: { color: string }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, color }}>
@@ -108,8 +143,12 @@ const GithubLogo = ({ color }: { color: string }) => (
 
 const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, components }) => {
   const { colors } = useTheme();
+  const isMobile = useIsMobile();
   const [hover, setHover] = useState<string | null>(null);
   const { title, intro, figmaUrl, githubUrl } = PLATFORM_META[platform];
+  const compactWebOverview = platform === "web" && components.length > 6;
+  const previewHeight = compactWebOverview && isMobile ? "120px" : compactWebOverview ? "124px" : "160px";
+  const cardGap = compactWebOverview ? "12px" : "16px";
 
   const divider = (
     <div style={{ height: "1px", width: "100%", background: colors.strokeSubtle }} />
@@ -148,19 +187,119 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, component
     </a>
   );
 
+  const renderComponentCard = (component: OverviewComponent) => {
+    const to = component.href ?? `/docs/${platform}/components/${component.slug}`;
+    const isInteractive = platform === "web" && Boolean(component.href);
+    const preview = componentPreviews[component.slug ?? ""] ?? componentPlaceholder;
+    const componentName = platform === "web" ? (
+      <H3
+        id={component.slug ? `component-${component.slug}-title` : undefined}
+        style={{ margin: 0, color: colors.text }}
+      >
+        {component.name}
+      </H3>
+    ) : (
+      <H2 style={{ margin: 0, color: colors.text }}>
+        {component.name}
+      </H2>
+    );
+    const cardContent = (
+      <>
+        <div
+          style={{
+            height: previewHeight,
+            width: "100%",
+            overflow: "hidden",
+            borderRadius: `${radius.xl}`,
+            background: colors.surfaceAlt,
+            transform: hover === component.id ? "translateY(-2px)" : "none",
+            boxShadow: hover === component.id ? "0 8px 16px rgba(0,0,0,0.12)" : "none",
+            transition: "transform 0.15s ease, box-shadow 0.15s ease",
+          }}
+        >
+          {platform === "web" && (
+            <img
+              src={preview}
+              alt=""
+              aria-hidden
+              style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          )}
+        </div>
+        {componentName}
+        <P size="small" style={{ margin: 0, color: colors.textMuted }}>
+          {component.description || "No description available."}
+        </P>
+      </>
+    );
+
+    if (platform === "web" && isInteractive) {
+      return (
+        <article
+          key={component.id}
+          id={component.slug ? `component-${component.slug}` : undefined}
+          role="link"
+          tabIndex={0}
+          aria-labelledby={component.slug ? `component-${component.slug}-title` : undefined}
+          onClick={() => navigate(to)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              navigate(to);
+            }
+          }}
+          onMouseEnter={() => setHover(component.id)}
+          onMouseLeave={() => setHover(null)}
+          onFocus={() => setHover(component.id)}
+          onBlur={() => setHover(null)}
+          style={{ display: "flex", cursor: "pointer", flexDirection: "column", gap: cardGap, width: "100%", maxWidth: "240px", minWidth: 0, outlineOffset: "4px" }}
+        >
+          {cardContent}
+        </article>
+      );
+    }
+
+    if (platform === "web") {
+      return (
+        <article
+          key={component.id}
+          id={component.slug ? `component-${component.slug}` : undefined}
+          aria-labelledby={component.slug ? `component-${component.slug}-title` : undefined}
+          style={{ display: "flex", flexDirection: "column", gap: cardGap, width: "100%", maxWidth: "240px", minWidth: 0 }}
+        >
+          {cardContent}
+        </article>
+      );
+    }
+
+    return (
+      <Link
+        key={component.id}
+        to={to}
+        onMouseEnter={() => setHover(component.id)}
+        onMouseLeave={() => setHover(null)}
+        style={{ display: "flex", flexDirection: "column", gap: cardGap, width: "240px", textDecoration: "none" }}
+      >
+        {cardContent}
+      </Link>
+    );
+  };
+
   return (
     <Layout currentPlatform={platform} currentPath={`/docs/${platform}`}>
       <PageShell contentStyle={{ gap: "32px" }}>
+        <EufemiaThemeScope>
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
           {/* Title + intro */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
+            <H1 style={{ margin: 0, color: colors.text }}>
               {title}
-            </h1>
+            </H1>
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {intro.map((p, i) => (
-                <p key={i} style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
-                  {p}
-                </p>
+              {intro.map((paragraph, index) => (
+                <P key={index} style={{ margin: 0, color: colors.text }}>
+                  {paragraph}
+                </P>
               ))}
             </div>
           </div>
@@ -168,9 +307,9 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, component
           {divider}
 
           {/* Resources */}
-          <h2 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
+          <H2 style={{ margin: 0, color: colors.text }}>
             Resources
-          </h2>
+          </H2>
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
             {resourceCard("figma", <FigmaLogo />, "Figma", "Component for designers", figmaUrl)}
             {resourceCard("github", <GithubLogo color={colors.text} />, "Github", "Component for developers", githubUrl)}
@@ -180,54 +319,43 @@ const PlatformOverview: React.FC<PlatformOverviewProps> = ({ platform, component
 
           {/* Component grid */}
           {components.length === 0 ? (
-            <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
+            <P style={{ margin: 0, color: colors.textMuted }}>
               No components yet. Add components in Sanity Studio to see them here.
-            </p>
-          ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 240px)", gap: "32px 18px" }}>
-              {components.map((c) => {
-                const to = c.slug ? `/docs/${platform}/components/${c.slug}` : "#";
+            </P>
+          ) : platform === "web" ? (
+            <div style={{ display: "flex", flexDirection: "column", gap: compactWebOverview ? "32px" : "36px" }}>
+              {WEB_CATEGORY_ORDER.map((category) => {
+                const categoryComponents = components.filter((component) => component.category === category);
+                if (categoryComponents.length === 0) return null;
+
                 return (
-                  <Link
-                    key={c.id}
-                      id={platform === "web" && c.slug ? `component-${c.slug}` : undefined}
-                    to={to}
-                    onMouseEnter={() => setHover(c.id)}
-                    onMouseLeave={() => setHover(null)}
-                    style={{ display: "flex", flexDirection: "column", gap: "16px", width: "240px", textDecoration: "none" }}
-                  >
-                    <div
-                      style={{
-                        height: "160px",
-                        width: "240px",
-                        overflow: "hidden",
-                        borderRadius: `${radius.xl}`,
-                        background: colors.surfaceAlt,
-                        transform: hover === c.id ? "translateY(-2px)" : "none",
-                        boxShadow: hover === c.id ? "0 8px 16px rgba(0,0,0,0.12)" : "none",
-                        transition: "transform 0.15s ease, box-shadow 0.15s ease",
-                      }}
-                    >
-                      {platform === "web" && componentPreviews[c.slug ?? ""] && (
-                        <img
-                          src={componentPreviews[c.slug ?? ""]}
-                          alt=""
-                          aria-hidden
-                          style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
-                        />
-                      )}
+                  <section key={category} aria-labelledby={categoryId(category)} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <H2
+                        id={categoryId(category)}
+                        size={compactWebOverview ? "large" : "x-large"}
+                        style={{ margin: 0, color: colors.text }}
+                      >
+                        {category}
+                      </H2>
+                      <P size="small" style={{ margin: 0, maxWidth: "680px", color: colors.textMuted }}>
+                        {WEB_CATEGORY_COPY[category]}
+                      </P>
                     </div>
-                    <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
-                      {c.name}
-                    </span>
-                    <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
-                      {c.description || "No description available."}
-                    </p>
-                  </Link>
+                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "minmax(0, 1fr)" : "repeat(3, minmax(0, 1fr))", gap: compactWebOverview ? "20px 12px" : "24px 18px" }}>
+                      {categoryComponents.map((component) => renderComponentCard(component))}
+                    </div>
+                  </section>
                 );
               })}
             </div>
+          ) : (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 240px)", gap: "32px 18px" }}>
+              {components.map((component) => renderComponentCard(component))}
+            </div>
           )}
+          </div>
+        </EufemiaThemeScope>
       </PageShell>
     </Layout>
   );

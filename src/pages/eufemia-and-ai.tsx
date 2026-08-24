@@ -170,7 +170,9 @@ const EufemiaAndAiPage: React.FC = () => {
     <span
       style={{
         display: "inline-flex",
+        flexShrink: 0,
         alignItems: "center",
+        whiteSpace: "nowrap",
         padding: "3px 12px",
         borderRadius: "999px",
         fontFamily: font.family,

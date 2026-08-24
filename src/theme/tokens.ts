@@ -15,6 +15,9 @@ export interface ColorTokens {
   text: string; // primary text
   textMuted: string; // secondary / placeholder text
   accent: string; // action / links / active nav
+  accentSubtle: string; // tinted accent surface (nested nav rows at rest)
+  accentStrong: string; // high-emphasis accent — hover/focus outlines
+  textOnAccent: string; // text/icons on an accent-filled surface
   // Strokes
   stroke: string; // bold stroke
   strokeSubtle: string; // subtle divider / border
@@ -35,6 +38,11 @@ const dark: ColorTokens = {
   text: "#ffffff",
   textMuted: "#8e8e93",
   accent: "#a5e1d2",
+  // On dark the accent is a light mint, so the tint darkens toward the surface
+  // and the emphasis colour goes lighter (not darker) to stay visible.
+  accentSubtle: "#232e2c",
+  accentStrong: "#cdefe3",
+  textOnAccent: "#1c1c1e",
   stroke: "#48484a",
   strokeSubtle: "#48484a",
   strokeAction: "#a5e1d2",
@@ -53,6 +61,9 @@ const light: ColorTokens = {
   text: "#333333",
   textMuted: "#737373",
   accent: "#007272",
+  accentSubtle: "#f4fbf9",
+  accentStrong: "#14555a",
+  textOnAccent: "#ffffff",
   stroke: "#cccccc",
   strokeSubtle: "#ebebeb",
   strokeAction: "#007272",
@@ -73,6 +84,9 @@ const carnegie: ColorTokens = {
   text: "#000000",
   textMuted: "#737373",
   accent: "#000000",
+  accentSubtle: "#f6eae4",
+  accentStrong: "#000000",
+  textOnAccent: "#ffffff",
   stroke: "#dbcdc5",
   strokeSubtle: "#f6eae4",
   strokeAction: "#000000",
@@ -95,6 +109,9 @@ export const colorsFor = (theme: ThemeName, brand: BrandName = "DNB"): ColorToke
     ? {
         ...base,
         accent: "#c9a3e6",
+        accentSubtle: "#2b2233",
+        accentStrong: "#e8d6f5",
+        textOnAccent: "#1c1c1e",
         strokeAction: "#c9a3e6",
         selectedSubtle: "#3a1a4d",
         selected: "#e8d6f5",
@@ -104,6 +121,9 @@ export const colorsFor = (theme: ThemeName, brand: BrandName = "DNB"): ColorToke
     : {
         ...base,
         accent: "#6b2c91",
+        accentSubtle: "#f8f4fc",
+        accentStrong: "#4a1c66",
+        textOnAccent: "#ffffff",
         strokeAction: "#6b2c91",
         selectedSubtle: "#efe1f7",
         selected: "#3d1259",

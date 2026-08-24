@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@dnb/eufemia";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, H3, Input, P, Textarea, ToggleButton } from "@dnb/eufemia";
 import { user_feedback as feedbackIcon } from "@dnb/eufemia/icons";
 import EufemiaThemeScope from "./EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
-import { font, radius, shadow } from "../theme/tokens";
+import { radius, shadow } from "../theme/tokens";
 import { addFeedback, CATEGORY_LABELS, type FeedbackCategory } from "../lib/feedback";
 
 const categories: FeedbackCategory[] = ["idea", "bug", "content", "other"];
@@ -15,11 +15,8 @@ const FeedbackButton: React.FC = () => {
   const [category, setCategory] = useState<FeedbackCategory>("idea");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
-  // Keep the button clear of the footer: when the footer scrolls into view,
-  // lift the button so it rests above it instead of overlapping. Recompute on
-  // scroll/resize AND on any layout change (ResizeObserver) so it stays correct
-  // after client-side navigation, async content, or font/image reflow.
   const [lift, setLift] = useState(0);
+  const resetTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -34,13 +31,11 @@ const FeedbackButton: React.FC = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
-    // Run now, and again after layout settles.
+
     update();
     schedule();
-
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
-    // Catch layout changes that don't fire scroll/resize (navigation, reflow).
     const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
     ro?.observe(document.body);
 
@@ -61,16 +56,23 @@ const FeedbackButton: React.FC = () => {
 
   const close = () => {
     setOpen(false);
-    // Reset after the panel is dismissed.
-    setTimeout(reset, 200);
+    if (resetTimeout.current) clearTimeout(resetTimeout.current);
+    resetTimeout.current = setTimeout(reset, 200);
   };
 
-  // Close on Escape so the panel (and its full-screen click-away backdrop) can't
-  // get stuck open and silently block clicks across the page.
+  const openPanel = () => {
+    if (resetTimeout.current) clearTimeout(resetTimeout.current);
+    setOpen(true);
+  };
+
+  useEffect(() => () => {
+    if (resetTimeout.current) clearTimeout(resetTimeout.current);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -87,13 +89,6 @@ const FeedbackButton: React.FC = () => {
     setSent(true);
   };
 
-  const fieldLabel: React.CSSProperties = {
-    fontFamily: font.family,
-    fontSize: `${font.size.small}px`,
-    fontWeight: 500,
-    color: colors.text,
-  };
-
   return (
     <EufemiaThemeScope>
       <>
@@ -101,7 +96,7 @@ const FeedbackButton: React.FC = () => {
           text="Feedback"
           icon={feedbackIcon}
           iconPosition="right"
-          onClick={() => (open ? close() : setOpen(true))}
+          onClick={() => (open ? close() : openPanel)}
           style={{
             position: "fixed",
             right: "24px",
@@ -111,132 +106,80 @@ const FeedbackButton: React.FC = () => {
         />
 
         {!open ? null : (
-        <>
-          <div onClick={close} style={{ position: "fixed", inset: 0, zIndex: 300, background: "transparent" }} />
-          <div
-            role="dialog"
-            aria-label="Give feedback"
-            style={{
-              position: "fixed",
-              right: "24px",
-              bottom: `calc(80px + env(safe-area-inset-bottom, 0px) + ${lift}px)`,
-              zIndex: 301,
-              width: "360px",
-              maxWidth: "calc(100vw - 48px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-              padding: "24px",
-              borderRadius: `${radius.xl}`,
-              background: colors.surface,
-              border: `1px solid ${colors.strokeSubtle}`,
-              boxShadow: shadow.standard,
-            }}
-          >
-            {sent ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px", alignItems: "flex-start" }}>
-                <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, color: colors.text }}>
-                  Thanks for the feedback!
-                </span>
-                <span style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, color: colors.textMuted }}>
-                  It's been sent to the Eufemia maintainers.
-                </span>
-                <Button text="Done" onClick={close} />
-              </div>
-            ) : (
-              <>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, color: colors.text }}>
-                    Feedback about the portal
-                  </span>
-                  <button onClick={close} aria-label="Close" style={{ background: "none", border: "none", cursor: "pointer", color: colors.text, display: "flex" }}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M3.5 3.5L12.5 12.5M12.5 3.5L3.5 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </button>
+          <>
+            <div onClick={close} style={{ position: "fixed", inset: 0, zIndex: 300, background: "transparent" }} />
+            <div
+              role="dialog"
+              aria-label="Give feedback"
+              style={{
+                position: "fixed",
+                right: "24px",
+                bottom: `calc(80px + env(safe-area-inset-bottom, 0px) + ${lift}px)`,
+                zIndex: 301,
+                width: "360px",
+                maxWidth: "calc(100vw - 48px)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                padding: "24px",
+                borderRadius: `${radius.xl}`,
+                background: colors.surface,
+                border: `1px solid ${colors.strokeSubtle}`,
+                boxShadow: shadow.standard,
+              }}
+            >
+              {sent ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", alignItems: "flex-start" }}>
+                  <H3 style={{ margin: 0, color: colors.text }}>Thanks for the feedback!</H3>
+                  <P style={{ margin: 0, color: colors.textMuted }}>It&apos;s been sent to the Eufemia maintainers.</P>
+                  <Button text="Done" onClick={close} />
                 </div>
-
-                <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.textMuted }}>
-                  Something broken on this site, or an idea to make it better? This is about the <strong style={{ color: colors.text, fontWeight: 500 }}>portal itself</strong> — not for reporting that a component isn't working.
-                </p>
-
-                {/* Category */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <span style={fieldLabel}>Type</span>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                    {categories.map((c) => {
-                      const on = category === c;
-                      return (
-                        <button
-                          key={c}
-                          onClick={() => setCategory(c)}
-                          style={{
-                            padding: "5px 12px",
-                            borderRadius: "999px",
-                            cursor: "pointer",
-                            fontFamily: font.family,
-                            fontSize: `${font.size.small}px`,
-                            background: on ? colors.selectedSubtle : "transparent",
-                            color: on ? colors.textSelected : colors.textMuted,
-                            border: `1px solid ${on ? colors.strokeAction : colors.strokeSubtle}`,
-                          }}
-                        >
-                          {CATEGORY_LABELS[c]}
-                        </button>
-                      );
-                    })}
+              ) : (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <H3 style={{ margin: 0, color: colors.text }}>Feedback about the portal</H3>
+                    <Button title="Close" icon="close" size="small" onClick={close} />
                   </div>
-                </div>
 
-                {/* Message */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <span style={fieldLabel}>Your feedback</span>
-                  <textarea
+                  <P size="small" style={{ margin: 0, color: colors.textMuted }}>
+                    Something broken on this site, or an idea to make it better? This is about the <strong style={{ color: colors.text }}>portal itself</strong> — not for reporting that a component isn&apos;t working.
+                  </P>
+
+                  <ToggleButton.Group
+                    label="Type"
+                    value={category}
+                    onChange={({ value }) => setCategory(value as FeedbackCategory)}
+                  >
+                    {categories.map((item) => (
+                      <ToggleButton key={item} text={CATEGORY_LABELS[item]} value={item} />
+                    ))}
+                  </ToggleButton.Group>
+
+                  <Textarea
+                    label="Your feedback"
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={({ value }) => setMessage(value)}
                     placeholder="Something broken on the portal, or a way to improve it…"
                     rows={4}
-                    style={{
-                      resize: "vertical",
-                      padding: "10px 12px",
-                      borderRadius: `${radius.md}`,
-                      border: `1px solid ${colors.strokeSubtle}`,
-                      background: colors.pageBg,
-                      color: colors.text,
-                      fontFamily: font.family,
-                      fontSize: `${font.size.body}px`,
-                      outline: "none",
-                    }}
+                    stretch
+                    style={{ resize: "vertical" }}
                   />
-                </div>
 
-                {/* Email (optional) */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <span style={fieldLabel}>Email <span style={{ color: colors.textMuted, fontWeight: 400 }}>(optional)</span></span>
-                  <input
+                  <Input
+                    label={<>Email <span style={{ color: colors.textMuted }}>(optional)</span></>}
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={({ value }) => setEmail(value)}
                     placeholder="you@dnb.no"
-                    style={{
-                      padding: "10px 12px",
-                      borderRadius: `${radius.md}`,
-                      border: `1px solid ${colors.strokeSubtle}`,
-                      background: colors.pageBg,
-                      color: colors.text,
-                      fontFamily: font.family,
-                      fontSize: `${font.size.body}px`,
-                      outline: "none",
-                    }}
+                    stretch
                   />
-                </div>
 
-                <Button text="Send feedback" onClick={submit} disabled={!message.trim()} />
-              </>
-            )}
-          </div>
-        </>
-      )}
+                  <Button text="Send feedback" onClick={submit} disabled={!message.trim()} />
+                </>
+              )}
+            </div>
+          </>
+        )}
       </>
     </EufemiaThemeScope>
   );

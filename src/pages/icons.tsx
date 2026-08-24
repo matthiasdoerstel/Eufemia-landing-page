@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
+import { H1, H2, Input, P } from "@dnb/eufemia";
 import Layout from "../components/Layout";
+import EufemiaThemeScope from "../components/EufemiaThemeScope";
 import PageShell from "../components/PageShell";
 import { useTheme } from "../context/ThemeContext";
 import { font, radius } from "../theme/tokens";
@@ -12,12 +14,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   actions: "Actions",
   navigation: "Navigation",
 };
-
-const SearchIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "inherit" }}>
-    <path d="M11.5 11.5 15 15m-3.182-8.59A5.41 5.41 0 1 1 1 6.41a5.41 5.41 0 0 1 10.818 0Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
 
 const IconTile: React.FC<{ icon: IconEntry; onCopy: (name: string) => void; copied: boolean }> = ({ icon, onCopy, copied }) => {
   const { colors } = useTheme();
@@ -74,141 +70,86 @@ const IconsPage: React.FC = () => {
   const copy = (name: string) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(name).catch(() => {});
     setCopied(name);
-    setTimeout(() => setCopied((c) => (c === name ? null : c)), 1200);
+    setTimeout(() => setCopied((current) => (current === name ? null : current)), 1200);
   };
 
-  const q = query.trim().toLowerCase();
+  const normalizedQuery = query.trim().toLowerCase();
   const filtered = useMemo(() => {
-    if (!q) return ICONS;
-    return ICONS.filter((i) => i.name.toLowerCase().includes(q) || i.tags.some((t) => t.toLowerCase().includes(q)));
-  }, [q]);
+    if (!normalizedQuery) return ICONS;
+    return ICONS.filter((icon) => icon.name.toLowerCase().includes(normalizedQuery) || icon.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery)));
+  }, [normalizedQuery]);
 
   const byCategory = useMemo(() => {
     const map: Record<string, IconEntry[]> = {};
-    for (const cat of ICON_CATEGORIES) map[cat] = [];
-    for (const i of filtered) (map[i.category] ??= []).push(i);
+    for (const category of ICON_CATEGORIES) map[category] = [];
+    for (const icon of filtered) (map[icon.category] ??= []).push(icon);
     return map;
   }, [filtered]);
-
-  const h1: React.CSSProperties = {
-    margin: 0,
-    fontFamily: font.family,
-    fontWeight: 500,
-    fontSize: `${font.size.h1}px`,
-    lineHeight: `${font.lineHeight.h1}px`,
-    color: colors.text,
-  };
-  const para: React.CSSProperties = {
-    margin: 0,
-    fontFamily: font.family,
-    fontSize: `${font.size.body}px`,
-    lineHeight: `${font.lineHeight.body}px`,
-    color: colors.textMuted,
-    maxWidth: "720px",
-  };
 
   return (
     <Layout currentPlatform="web" currentPath="/icons">
       <PageShell contentStyle={{ gap: "32px" }}>
-        {/* Hero */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <h1 style={h1}>Icons</h1>
-          <p style={para}>
-            The complete Eufemia icon library — {ICONS.length} icons across {ICON_CATEGORIES.length} categories, primary and secondary
-            shown together. For web, icons ship as SVG files and ready-to-use React components. Click any icon to copy its name.
-          </p>
-        </div>
+        <EufemiaThemeScope>
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+            <header style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <H1 style={{ margin: 0, color: colors.text }}>Icons</H1>
+              <P style={{ margin: 0, maxWidth: "720px", color: colors.textMuted }}>
+                The complete Eufemia icon library — {ICONS.length} icons across {ICON_CATEGORIES.length} categories, primary and secondary shown together. For web, icons ship as SVG files and ready-to-use React components. Click any icon to copy its name.
+              </P>
+            </header>
 
-        {/* Search */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            padding: "10px 14px",
-            borderRadius: `${radius.lg}`,
-            border: `1px solid ${colors.strokeSubtle}`,
-            background: colors.surface,
-            color: colors.textMuted,
-            maxWidth: "440px",
-          }}
-        >
-          <SearchIcon />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search icons by name or keyword…"
-            style={{
-              flex: 1,
-              border: "none",
-              outline: "none",
-              background: "transparent",
-              color: colors.text,
-              fontFamily: font.family,
-              fontSize: `${font.size.body}px`,
-            }}
-          />
-          {query && (
-            <button
-              onClick={() => setQuery("")}
-              aria-label="Clear search"
-              style={{ background: "none", border: "none", cursor: "pointer", color: colors.textMuted, display: "flex" }}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3.5 3.5L12.5 12.5M12.5 3.5L3.5 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
-          )}
-        </div>
+            <Input
+              label="Search icons"
+              labelSrOnly
+              type="search"
+              value={query}
+              onChange={({ value }) => setQuery(value)}
+              onClear={() => setQuery("")}
+              placeholder="Search icons by name or keyword…"
+              showClearButton
+              stretch
+              style={{ maxWidth: "440px" }}
+            />
 
-        {q && (
-          <span style={{ ...para, marginTop: "-16px" }}>
-            {filtered.length} {filtered.length === 1 ? "icon" : "icons"} match "{query}"
-          </span>
-        )}
+            {normalizedQuery && (
+              <P size="small" style={{ margin: "-16px 0 0", color: colors.textMuted }}>
+                {filtered.length} {filtered.length === 1 ? "icon" : "icons"} match &quot;{query}&quot;
+              </P>
+            )}
 
-        {/* Category sections */}
-        {filtered.length === 0 ? (
-          <div
-            style={{
-              padding: "48px 24px",
-              borderRadius: `${radius.lg}`,
-              border: `1px dashed ${colors.strokeSubtle}`,
-              background: colors.surface,
-              textAlign: "center",
-            }}
-          >
-            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, color: colors.text }}>
-              No icons match "{query}"
-            </span>
+            {filtered.length === 0 ? (
+              <div
+                style={{
+                  padding: "48px 24px",
+                  borderRadius: `${radius.lg}`,
+                  border: `1px dashed ${colors.strokeSubtle}`,
+                  background: colors.surface,
+                  textAlign: "center",
+                }}
+              >
+                <P size="medium" weight="medium" style={{ margin: 0, color: colors.text }}>
+                  No icons match &quot;{query}&quot;
+                </P>
+              </div>
+            ) : (
+              ICON_CATEGORIES.map((category) => {
+                const items = byCategory[category];
+                if (!items || items.length === 0) return null;
+                return (
+                  <section key={category} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+                      <H2 style={{ margin: 0, color: colors.text }}>{CATEGORY_LABELS[category] || category}</H2>
+                      <P size="small" style={{ margin: 0, color: colors.textMuted }}>{items.length}</P>
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(104px, 1fr))", gap: "12px" }}>
+                      {items.map((icon) => <IconTile key={icon.name} icon={icon} onCopy={copy} copied={copied === icon.name} />)}
+                    </div>
+                  </section>
+                );
+              })
+            )}
           </div>
-        ) : (
-          ICON_CATEGORIES.map((cat) => {
-            const items = byCategory[cat];
-            if (!items || items.length === 0) return null;
-            return (
-              <section key={cat} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                  <h2 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
-                    {CATEGORY_LABELS[cat] || cat}
-                  </h2>
-                  <span style={{ fontFamily: font.family, fontSize: `${font.size.small}px`, color: colors.textMuted }}>{items.length}</span>
-                </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(104px, 1fr))",
-                    gap: "12px",
-                  }}
-                >
-                  {items.map((icon) => (
-                    <IconTile key={icon.name} icon={icon} onCopy={copy} copied={copied === icon.name} />
-                  ))}
-                </div>
-              </section>
-            );
-          })
-        )}
+        </EufemiaThemeScope>
       </PageShell>
     </Layout>
   );

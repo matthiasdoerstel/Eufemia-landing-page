@@ -1,13 +1,11 @@
 import React from "react";
-import { Breadcrumb } from "@dnb/eufemia";
-import { Link } from "gatsby";
+import { Anchor, Breadcrumb, Button, H1, P } from "@dnb/eufemia";
 import Layout from "../../components/Layout";
 import PageShell from "../../components/PageShell";
 import EufemiaThemeScope from "../../components/EufemiaThemeScope";
 import TokenCatalog from "../../components/TokenCatalog";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { font, radius } from "../../theme/tokens";
 
 const MicrosoftLogo = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden style={{ flexShrink: 0 }}>
@@ -22,52 +20,21 @@ const MaintainerDesignTokensPage: React.FC = () => {
   const { colors } = useTheme();
   const { isMaintainer, signingIn, signIn } = useAuth();
 
-  const h1: React.CSSProperties = {
-    margin: 0,
-    fontFamily: font.family,
-    fontWeight: 500,
-    fontSize: `${font.size.h1}px`,
-    lineHeight: `${font.lineHeight.h1}px`,
-    color: colors.text,
-  };
-  const para: React.CSSProperties = {
-    margin: 0,
-    fontFamily: font.family,
-    fontSize: `${font.size.body}px`,
-    lineHeight: `${font.lineHeight.body}px`,
-    color: colors.textMuted,
-    maxWidth: "720px",
-  };
-
-  // Signed-out gate.
   if (!isMaintainer) {
     return (
       <Layout currentPath="/maintainer/design-tokens" currentPlatform="web">
         <PageShell contentStyle={{ gap: "20px" }}>
-          <h1 style={h1}>Design Tokens</h1>
-          <p style={para}>This is a maintainer tool. Sign in with your DNB Microsoft account to continue.</p>
-          <button
-            onClick={() => signIn()}
-            disabled={signingIn}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              alignSelf: "flex-start",
-              padding: "10px 16px",
-              borderRadius: `${radius.md}`,
-              border: `1px solid ${colors.stroke}`,
-              background: colors.surface,
-              color: colors.text,
-              fontFamily: font.family,
-              fontSize: `${font.size.body}px`,
-              cursor: signingIn ? "default" : "pointer",
-              opacity: signingIn ? 0.6 : 1,
-            }}
-          >
-            <MicrosoftLogo />
-            {signingIn ? "Signing in…" : "Maintainer sign-in"}
-          </button>
+          <EufemiaThemeScope>
+            <H1 style={{ margin: 0, color: colors.text }}>Design Tokens</H1>
+            <P style={{ margin: 0, maxWidth: "720px", color: colors.textMuted }}>This is a maintainer tool. Sign in with your DNB Microsoft account to continue.</P>
+            <Button
+              icon={<MicrosoftLogo />}
+              iconPosition="left"
+              text={signingIn ? "Signing in…" : "Maintainer sign-in"}
+              onClick={signIn}
+              disabled={signingIn}
+            />
+          </EufemiaThemeScope>
         </PageShell>
       </Layout>
     );
@@ -75,50 +42,31 @@ const MaintainerDesignTokensPage: React.FC = () => {
 
   return (
     <Layout currentPlatform="web" currentPath="/maintainer/design-tokens">
-      {/* Full-width overrides scoped to this maintainer page: uncap the content
-          column and collapse the reserved rail gutter so the wide token table
-          doesn't force horizontal scrolling. */}
       <PageShell contentStyle={{ gap: "40px", maxWidth: "none" }} rail={<></>}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <EufemiaThemeScope>
-            <Breadcrumb
-              variant="responsive"
-              navText="Page hierarchy"
-              data={[
-                { text: "Maintainer tools", href: "/maintainer" },
-                { text: "Design Tokens" },
-              ]}
-            />
-          </EufemiaThemeScope>
-          <h1 style={h1}>Design Tokens</h1>
-          <p style={para}>
-            Maintainer view of the Eufemia Web colour tokens. Select a token to see which components
-            reference it — its blast radius if you change it — and track token adoption across the
-            component library. Tokens with no usage are safe to change.
-          </p>
-        </div>
+        <EufemiaThemeScope>
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+            <header style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <Breadcrumb
+                variant="responsive"
+                navText="Page hierarchy"
+                data={[
+                  { text: "Maintainer tools", href: "/maintainer" },
+                  { text: "Design Tokens" },
+                ]}
+              />
+              <H1 style={{ margin: 0, color: colors.text }}>Design Tokens</H1>
+              <P style={{ margin: 0, maxWidth: "720px", color: colors.textMuted }}>
+                Maintainer view of the Eufemia Web colour tokens. Select a token to see which components reference it — its blast radius if you change it — and track token adoption across the component library. Tokens with no usage are safe to change.
+              </P>
+            </header>
 
-        <TokenCatalog maintainer />
+            <TokenCatalog maintainer />
 
-        <div style={{ paddingTop: "24px", borderTop: `1px solid ${colors.strokeSubtle}` }}>
-          <Link
-            to="/maintainer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              fontFamily: font.family,
-              fontSize: `${font.size.body}px`,
-              color: colors.accent,
-              textDecoration: "none",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Back to Maintainer tools
-          </Link>
-        </div>
+            <div style={{ paddingTop: "24px", borderTop: `1px solid ${colors.strokeSubtle}` }}>
+              <Anchor href="/maintainer" icon="chevron_left" iconPosition="left">Back to Maintainer tools</Anchor>
+            </div>
+          </div>
+        </EufemiaThemeScope>
       </PageShell>
     </Layout>
   );

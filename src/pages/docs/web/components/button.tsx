@@ -187,6 +187,8 @@ const externalLink = (href: string, label: string) => (
 );
 
 
+type PrismThemeName = "vsDark" | "vsLight";
+
 const defaultPrismTheme = (theme: "light" | "dark"): PrismThemeName =>
   theme === "dark" ? "vsDark" : "vsLight";
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "gatsby";
-import { Button, Tabs } from "@dnb/eufemia";
+import { Button, H1, H2, H3, P, Tabs } from "@dnb/eufemia";
 import Layout from "./Layout";
 import EufemiaThemeScope from "./EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
@@ -234,7 +234,8 @@ const PortalHome: React.FC = () => {
   return (
     <Layout currentPath="/" currentPlatform="web">
       <style>{cardMotionCSS}{resourceMotionCSS}{updateMotionCSS}</style>
-      <div style={{ position: "relative", fontFamily: font.family, color: colors.text, overflow: "hidden" }}>
+      <EufemiaThemeScope>
+        <div style={{ position: "relative", color: colors.text, overflow: "hidden" }}>
         {isCarnegie ? (
           /* Carnegie hero — pre-rendered artwork (PNG for performance), fades out at the bottom */
           <img
@@ -276,14 +277,14 @@ const PortalHome: React.FC = () => {
 
         {/* Hero */}
         <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", padding: "144px 40px 0", textAlign: "center" }}>
-          <h1 style={{ margin: 0, width: "464px", maxWidth: "100%", fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: isCarnegie ? "#ffffff" : colors.text }}>
+          <H1 style={{ margin: 0, width: "464px", maxWidth: "100%", color: isCarnegie ? "#ffffff" : colors.text }}>
             Welcome to Eufemia
-          </h1>
-          <p style={{ margin: 0, width: "691px", maxWidth: "100%", fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: isCarnegie ? "#ffffff" : colors.text }}>
+          </H1>
+          <P style={{ margin: 0, width: "691px", maxWidth: "100%", color: isCarnegie ? "#ffffff" : colors.text }}>
             Eufemia is DNB's design system, which consist of resources for designers and developers in
             order to maintain consistency and efficiency when building applications for web and our
             native platforms.
-          </p>
+          </P>
         </div>
 
         {/* Main content */}
@@ -316,8 +317,8 @@ const PortalHome: React.FC = () => {
                   }}
                 >
                   <div style={{ display: "flex", flexDirection: "column", width: "219px" }}>
-                    <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: cardTheme.text }}>{title}</span>
-                    <span style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: cardTheme.text }}>{desc}</span>
+                    <H2 size="large" style={{ margin: 0, color: cardTheme.text }}>{title}</H2>
+                    <P style={{ margin: 0, color: cardTheme.text }}>{desc}</P>
                   </div>
                   <Graphic playing={hoverCard === title} stroke={graphicStroke} />
                 </div>
@@ -334,7 +335,7 @@ const PortalHome: React.FC = () => {
 
           {/* Eufemia resources */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "761px", maxWidth: "100%" }}>
-            <span style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Resources</span>
+            <H2 size="medium" style={{ margin: 0, color: colors.text }}>Resources</H2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "8px", rowGap: "8px" }}>
               {moreCols.map((col, ci) => (
                 <div key={ci} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -358,40 +359,41 @@ const PortalHome: React.FC = () => {
 
           {/* Updates */}
           <section aria-labelledby="updates-heading" style={{ display: "flex", flexDirection: "column", gap: "24px", width: "761px", maxWidth: "100%" }}>
-            <h2 id="updates-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.lead}px`, lineHeight: `${font.lineHeight.lead}px`, color: colors.text }}>Highlights</h2>
+            <H2 id="updates-heading" size="medium" style={{ margin: 0, color: colors.text }}>Highlights</H2>
 
-            <EufemiaThemeScope>
-              <Tabs
-                id="portal-updates"
-                label="Platform updates"
-                breakout={false}
-                data={updatePlatforms}
-              />
+            <Tabs
+              id="portal-updates"
+              label="Platform updates"
+              breakout={false}
+              data={updatePlatforms}
+            />
 
-              <Tabs.Content id="portal-updates" contentInnerSpace={{ block: "large", inline: false }}>
+            <Tabs.Content id="portal-updates">
                 {({ key }: { key: UpdatePlatform }) => (
                   key === "web" ? (
                     currentFeatureRecap && (
                       <section aria-labelledby="web-feature-recap-heading" style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                          <h3 id="web-feature-recap-heading" style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.headingLg}px`, lineHeight: `${font.lineHeight.headingLg}px`, color: colors.text }}>
+                          <H3 id="web-feature-recap-heading" style={{ margin: 0, color: colors.text }}>
                             Feature releases in {currentFeatureRecap.version}
-                          </h3>
+                          </H3>
                         </div>
 
                         <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
                           {currentFeatureRecap.features.map((feature) => (
-                            <li key={`${feature.component}-${feature.description}`} style={{ fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>
-                              <strong style={{ fontWeight: 500 }}>{feature.component}</strong>
-                              {feature.description && `: ${feature.description}`}
-                              {feature.references.map((reference) => (
-                                <React.Fragment key={reference.href}>
-                                  {" "}
-                                  <a href={reference.href} target="_blank" rel="noreferrer" style={{ color: colors.accent, textDecoration: "underline", textUnderlineOffset: "3px" }}>
-                                    ({reference.label})
-                                  </a>
-                                </React.Fragment>
-                              ))}
+                            <li key={`${feature.component}-${feature.description}`}>
+                              <P style={{ margin: 0, color: colors.text }}>
+                                <strong>{feature.component}</strong>
+                                {feature.description && `: ${feature.description}`}
+                                {feature.references.map((reference) => (
+                                  <React.Fragment key={reference.href}>
+                                    {" "}
+                                    <a href={reference.href} target="_blank" rel="noreferrer" style={{ color: colors.accent, textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                                      ({reference.label})
+                                    </a>
+                                  </React.Fragment>
+                                ))}
+                              </P>
                             </li>
                           ))}
                         </ul>
@@ -421,17 +423,17 @@ const PortalHome: React.FC = () => {
                             <span className="update-date" style={{ fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.accent }}>{update.date}</span>
                             <span className="update-arrow"><ArrowRight color={colors.accent} /></span>
                           </div>
-                          <p style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.text }}>{update.text}</p>
+                          <P style={{ margin: 0, color: colors.text }}>{update.text}</P>
                         </article>
                       ))}
                     </div>
                   )
                 )}
               </Tabs.Content>
-            </EufemiaThemeScope>
           </section>
         </div>
-      </div>
+        </div>
+      </EufemiaThemeScope>
     </Layout>
   );
 };

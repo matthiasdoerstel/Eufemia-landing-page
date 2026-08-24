@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Breadcrumb } from "@dnb/eufemia";
-import { graphql, Link } from "gatsby";
+import React from "react";
+import { Anchor, Breadcrumb, Button, H1, H2, H3, H4, P } from "@dnb/eufemia";
+import { graphql } from "gatsby";
 import Layout from "../components/Layout";
 import PageShell from "../components/PageShell";
 import InPageRail, { RailItem } from "../components/InPageRail";
 import EufemiaThemeScope from "../components/EufemiaThemeScope";
 import { useTheme } from "../context/ThemeContext";
-import { font, radius } from "../theme/tokens";
+import { radius } from "../theme/tokens";
 
 interface BlockChild {
   _key: string;
@@ -30,6 +30,7 @@ interface ComponentData {
   id: string;
   name?: string;
   platform?: string;
+  slug?: { current?: string };
   shortDescription?: string;
   figmaLink?: string;
   githubLink?: string;
@@ -99,38 +100,21 @@ const renderBlock = (block: Block, colors: ReturnType<typeof useTheme>["colors"]
     if (child.marks?.includes("strong")) return <strong key={child._key}>{child.text}</strong>;
     if (child.marks?.includes("em")) return <em key={child._key}>{child.text}</em>;
     if (child.marks?.includes("code")) {
-      return (
-        <code key={child._key} style={{ padding: "2px 6px", borderRadius: radius.sm, background: colors.surfaceAlt, color: colors.text, fontSize: "0.875em" }}>
-          {child.text}
-        </code>
-      );
+      return <code key={child._key} style={{ padding: "2px 6px", borderRadius: radius.sm, background: colors.surfaceAlt, color: colors.text, fontSize: "0.875em" }}>{child.text}</code>;
     }
     return child.text;
   });
 
-  const headingSize = block.style === "h2" ? font.size.headingLg : block.style === "h3" ? font.size.bodyMedium : font.size.body;
-  const headingLineHeight = block.style === "h2" ? font.lineHeight.headingLg : font.lineHeight.body;
+  if (block.style === "h2") return <H2 key={block._key} style={{ margin: 0, color: colors.text }}>{text}</H2>;
+  if (block.style === "h3") return <H3 key={block._key} style={{ margin: 0, color: colors.text }}>{text}</H3>;
+  if (block.style === "h4") return <H4 key={block._key} style={{ margin: 0, color: colors.text }}>{text}</H4>;
 
-  if (block.style === "h2" || block.style === "h3" || block.style === "h4") {
-    const Tag = block.style;
-    return (
-      <Tag key={block._key} style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${headingSize}px`, lineHeight: `${headingLineHeight}px`, color: colors.text }}>
-        {text}
-      </Tag>
-    );
-  }
-
-  return (
-    <p key={block._key} style={{ margin: 0, fontFamily: font.family, fontSize: `${font.size.body}px`, lineHeight: `${font.lineHeight.body}px`, color: colors.textMuted }}>
-      {text}
-    </p>
-  );
+  return <P key={block._key} style={{ margin: 0, color: colors.textMuted }}>{text}</P>;
 };
 
 const ComponentTemplate: React.FC<Props> = ({ data }) => {
   const component = data.sanityComponent;
   const { colors, theme } = useTheme();
-  const [hoveredAction, setHoveredAction] = useState<string | null>(null);
 
   const platform = component.platform === "android" || component.platform === "web" ? component.platform : "ios";
   const platformLabel = platform === "ios" ? "iOS" : platform === "android" ? "Android" : "Web";
@@ -160,155 +144,71 @@ const ComponentTemplate: React.FC<Props> = ({ data }) => {
     borderBottom: `1px solid ${colors.strokeSubtle}`,
     scrollMarginTop: "112px",
   };
-  const headingStyle: React.CSSProperties = {
-    margin: 0,
-    fontFamily: font.family,
-    fontWeight: 500,
-    fontSize: `${font.size.headingLg}px`,
-    lineHeight: `${font.lineHeight.headingLg}px`,
-    color: colors.text,
-  };
-  const bodyStyle: React.CSSProperties = {
-    margin: 0,
-    fontFamily: font.family,
-    fontSize: `${font.size.body}px`,
-    lineHeight: `${font.lineHeight.body}px`,
-    color: colors.textMuted,
-  };
-
-  const resourceAction = (key: string, icon: React.ReactNode, label: string, onClick?: () => void, href?: string) => {
-    const content = <>{icon}<span>{label}</span>{href ? <ExternalLinkIcon /> : null}</>;
-    const style: React.CSSProperties = {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "8px",
-      minHeight: "44px",
-      padding: "10px 16px",
-      border: `1px solid ${key === "compare" ? colors.strokeAction : colors.strokeSubtle}`,
-      borderRadius: radius.md,
-      background: hoveredAction === key ? (key === "compare" ? colors.selectedSubtle : colors.surfaceAlt) : colors.surface,
-      color: key === "compare" ? colors.accent : colors.text,
-      fontFamily: font.family,
-      fontSize: `${font.size.small}px`,
-      lineHeight: `${font.lineHeight.small}px`,
-      fontWeight: 500,
-      cursor: "pointer",
-      textDecoration: "none",
-      transition: "background 0.15s ease, border-color 0.15s ease",
-    };
-
-    if (href) {
-      return (
-        <a key={key} href={href} target="_blank" rel="noreferrer" onMouseEnter={() => setHoveredAction(key)} onMouseLeave={() => setHoveredAction(null)} style={style}>
-          {content}
-        </a>
-      );
-    }
-
-    return (
-      <button key={key} type="button" onClick={onClick} onMouseEnter={() => setHoveredAction(key)} onMouseLeave={() => setHoveredAction(null)} style={style}>
-        {content}
-      </button>
-    );
-  };
 
   if (!component.name) {
     return (
       <Layout currentPlatform={platform} currentPath={`${platformPath}/components`}>
         <PageShell contentStyle={{ maxWidth: "880px" }}>
-          <p style={bodyStyle}>Component not found.</p>
+          <EufemiaThemeScope><P style={{ margin: 0, color: colors.textMuted }}>Component not found.</P></EufemiaThemeScope>
         </PageShell>
       </Layout>
     );
   }
 
   return (
-    <Layout currentPlatform={platform} currentPath={`${platformPath}/components/${component.slug.current}`}>
+    <Layout currentPlatform={platform} currentPath={`${platformPath}/components/${component.slug?.current || ""}`}>
       <PageShell contentStyle={{ maxWidth: "880px", gap: "40px" }} rail={<InPageRail items={sections} />}>
         <EufemiaThemeScope>
-          <Breadcrumb
-            variant="responsive"
-            navText="Page hierarchy"
-            data={[
-              { text: platformLabel, href: platformPath },
-              { text: "Components", href: platformPath },
-              { text: component.name },
-            ]}
-          />
-        </EufemiaThemeScope>
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+            <Breadcrumb
+              variant="responsive"
+              navText="Page hierarchy"
+              data={[
+                { text: platformLabel, href: platformPath },
+                { text: "Components", href: platformPath },
+                { text: component.name },
+              ]}
+            />
 
-        <header style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
-          <span style={{ padding: "4px 10px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected, fontFamily: font.family, fontSize: "14px", lineHeight: "20px", fontWeight: 500 }}>
-            {platformLabel}
-          </span>
-          <h1 style={{ margin: 0, fontFamily: font.family, fontWeight: 500, fontSize: `${font.size.h1}px`, lineHeight: `${font.lineHeight.h1}px`, color: colors.text }}>
-            {component.name}
-          </h1>
-          {component.shortDescription ? <p style={{ ...bodyStyle, maxWidth: "680px" }}>{component.shortDescription}</p> : null}
-        </header>
+            <header style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px" }}>
+              <P size="small" weight="medium" style={{ margin: 0, padding: "4px 10px", borderRadius: radius.sm, background: colors.selectedSubtle, color: colors.textSelected }}>{platformLabel}</P>
+              <H1 style={{ margin: 0, color: colors.text }}>{component.name}</H1>
+              {component.shortDescription ? <P style={{ margin: 0, maxWidth: "680px", color: colors.textMuted }}>{component.shortDescription}</P> : null}
+            </header>
 
-        {hasPreview && previewImage ? (
-          <section id="preview" style={sectionStyle}>
-            <h2 style={headingStyle}>Preview</h2>
-            <div style={{ overflow: "hidden", border: `1px solid ${colors.strokeSubtle}`, borderRadius: radius.lg, background: colors.surface }}>
-              <img src={previewImage.url || buildImageUrl(previewImage._ref || "")} alt={`${component.name} ${previewLabel.toLowerCase()}`} style={{ display: "block", width: "100%", height: "auto" }} />
-            </div>
-          </section>
-        ) : null}
+            {hasPreview && previewImage ? (
+              <section id="preview" style={sectionStyle}>
+                <H2 style={{ margin: 0, color: colors.text }}>Preview</H2>
+                <div style={{ overflow: "hidden", border: `1px solid ${colors.strokeSubtle}`, borderRadius: radius.lg, background: colors.surface }}>
+                  <img src={previewImage.url || buildImageUrl(previewImage._ref || "")} alt={`${component.name} ${previewLabel.toLowerCase()}`} style={{ display: "block", width: "100%", height: "auto" }} />
+                </div>
+              </section>
+            ) : null}
 
-        <section id="resources" style={sectionStyle}>
-          <h2 style={headingStyle}>Resources</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-            {resourceAction("compare", <CompareIcon />, "Compare", () => window.dispatchEvent(new Event("openSearchCompare")))}
-            {component.figmaLink ? resourceAction("figma", <FigmaIcon />, "Open in Figma", undefined, component.figmaLink) : null}
-            {component.githubLink ? resourceAction("github", <GitHubIcon />, "View source", undefined, component.githubLink) : null}
+            <section id="resources" style={sectionStyle}>
+              <H2 style={{ margin: 0, color: colors.text }}>Resources</H2>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+                <Button variant="secondary" icon={<CompareIcon />} iconPosition="left" text="Compare" onClick={() => window.dispatchEvent(new Event("openSearchCompare"))} />
+                {component.figmaLink ? <Button variant="secondary" icon={<FigmaIcon />} iconPosition="left" text="Open in Figma" href={component.figmaLink} target="_blank" rel="noreferrer" /> : null}
+                {component.githubLink ? <Button variant="secondary" icon={<GitHubIcon />} iconPosition="left" text="View source" href={component.githubLink} target="_blank" rel="noreferrer" /> : null}
+              </div>
+            </section>
+
+            {component.guidelines ? <section id="guidelines" style={sectionStyle}><H2 style={{ margin: 0, color: colors.text }}>Guidelines</H2><P style={{ margin: 0, color: colors.textMuted, whiteSpace: "pre-wrap" }}>{component.guidelines}</P></section> : null}
+            {component.usage ? <section id="usage" style={sectionStyle}><H2 style={{ margin: 0, color: colors.text }}>Usage</H2><P style={{ margin: 0, color: colors.textMuted, whiteSpace: "pre-wrap" }}>{component.usage}</P></section> : null}
+            {component.dosAndDonts ? <section id="dos-and-donts" style={sectionStyle}><H2 style={{ margin: 0, color: colors.text }}>Do’s and don’ts</H2><P style={{ margin: 0, color: colors.textMuted, whiteSpace: "pre-wrap" }}>{component.dosAndDonts}</P></section> : null}
+            {component.accessibilityInfo ? <section id="accessibility" style={sectionStyle}><H2 style={{ margin: 0, color: colors.text }}>Accessibility</H2><P style={{ margin: 0, color: colors.textMuted, whiteSpace: "pre-wrap" }}>{component.accessibilityInfo}</P></section> : null}
+
+            {hasDocumentation ? (
+              <section id="documentation" style={sectionStyle}>
+                <H2 style={{ margin: 0, color: colors.text }}>Documentation</H2>
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>{component._rawDocumentation?.map((block) => renderBlock(block, colors))}</div>
+              </section>
+            ) : null}
+
+            <Anchor href={platformPath} icon="chevron_left" iconPosition="left" style={{ width: "fit-content" }}>Back to {platformLabel} components</Anchor>
           </div>
-        </section>
-
-        {component.guidelines ? (
-          <section id="guidelines" style={sectionStyle}>
-            <h2 style={headingStyle}>Guidelines</h2>
-            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.guidelines}</p>
-          </section>
-        ) : null}
-
-        {component.usage ? (
-          <section id="usage" style={sectionStyle}>
-            <h2 style={headingStyle}>Usage</h2>
-            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.usage}</p>
-          </section>
-        ) : null}
-
-        {component.dosAndDonts ? (
-          <section id="dos-and-donts" style={sectionStyle}>
-            <h2 style={headingStyle}>Do’s and don’ts</h2>
-            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.dosAndDonts}</p>
-          </section>
-        ) : null}
-
-        {component.accessibilityInfo ? (
-          <section id="accessibility" style={sectionStyle}>
-            <h2 style={headingStyle}>Accessibility</h2>
-            <p style={{ ...bodyStyle, whiteSpace: "pre-wrap" }}>{component.accessibilityInfo}</p>
-          </section>
-        ) : null}
-
-        {hasDocumentation ? (
-          <section id="documentation" style={sectionStyle}>
-            <h2 style={headingStyle}>Documentation</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {component._rawDocumentation?.map((block) => renderBlock(block, colors))}
-            </div>
-          </section>
-        ) : null}
-
-        <Link to={platformPath} style={{ display: "inline-flex", alignItems: "center", gap: "8px", width: "fit-content", fontFamily: font.family, fontSize: `${font.size.small}px`, lineHeight: `${font.lineHeight.small}px`, color: colors.accent, textDecoration: "none" }}>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path d="m10 12-4-4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          Back to {platformLabel} components
-        </Link>
+        </EufemiaThemeScope>
       </PageShell>
     </Layout>
   );
