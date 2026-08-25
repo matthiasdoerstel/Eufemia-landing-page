@@ -77,7 +77,6 @@ const Header: React.FC<{
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [searchHovered, setSearchHovered] = useState(false);
   const [cogHovered, setCogHovered] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const { colors, theme, brand } = useTheme();
   const isMobile = useIsMobile();
   const displayBrand = brand === "Carnegie" ? "DNB Carnegie" : brand;
@@ -98,25 +97,6 @@ const Header: React.FC<{
     lineHeight: `${font.lineHeight.body}px`,
     whiteSpace: "nowrap",
     transition: "border-color 0.15s ease",
-  };
-
-  // Translucent header once scrolled away from the very top.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // pageBg hex -> rgba with alpha, for the frosted-glass background.
-  const toRgba = (hex: string, a: number) => {
-    const m = hex.replace("#", "");
-    const n = m.length === 3 ? m.split("").map((c) => c + c).join("") : m;
-    const r = parseInt(n.slice(0, 2), 16);
-    const g = parseInt(n.slice(2, 4), 16);
-    const b = parseInt(n.slice(4, 6), 16);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
   };
 
   useEffect(() => {
@@ -161,9 +141,9 @@ const Header: React.FC<{
           justifyContent: "space-between",
           padding: "0 24px",
           height: `${NAV_HEIGHT}px`,
-          background: scrolled ? toRgba(colors.pageBg, 0.85) : colors.pageBg,
-          backdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
-          WebkitBackdropFilter: scrolled ? "saturate(140%) blur(8px)" : "none",
+          // No background at any scroll position: page content runs under the
+          // bar. Nothing is layered behind the controls, scrolled or not.
+          background: "transparent",
           position: "fixed",
           top: 0,
           left: insetLeft,

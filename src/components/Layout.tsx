@@ -91,8 +91,10 @@ const Layout: React.FC<LayoutProps> = ({
       <main
         style={{
           marginLeft: sidebarOffset,
-          marginTop: `${NAV_HEIGHT}px`,
-          minHeight: `calc(100vh - ${NAV_HEIGHT}px)`,
+          // No top offset: the header is transparent and floats its controls, so
+          // there is no bar to clear. Content starts at the top of the viewport
+          // and each page's own padding sets the breathing room.
+          minHeight: "100vh",
           background: colors.pageBg,
           color: colors.text,
         }}

@@ -396,8 +396,11 @@ html[data-theme="light"] .efm {
 }
 
 .efm-rail-label {
-  font-size: 18px;
-  line-height: 24px;
+  /* Text x-small (14/20) rather than the frame's Text basis (18/24) — the rail
+     is only 127px wide, so the smaller step reads better and gives the longer
+     labels room. */
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 400;
   text-align: center;
   width: 100%;
@@ -456,7 +459,9 @@ html[data-theme="light"] .efm {
 .efm-panel-inner {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  /* 16px, not the frame's 32px — matches the group and child gaps, so every
+     vertical step in the panel is the same. */
+  gap: 16px;
   width: 225px;
 }
 
