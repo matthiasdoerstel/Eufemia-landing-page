@@ -42,7 +42,7 @@ import {
  */
 
 const RAIL_WIDTH = 160;
-const PANEL_WIDTH = 269;
+const PANEL_WIDTH = 301; // 269 in the frame, widened by 32px
 
 /**
  * Intrinsic SVG sizes, so each glyph lands exactly as drawn in Figma.
@@ -462,7 +462,9 @@ html[data-theme="light"] .efm {
   /* 16px, not the frame's 32px — matches the group and child gaps, so every
      vertical step in the panel is the same. */
   gap: 16px;
-  width: 225px;
+  /* Tracks the panel width rather than a fixed 225px, so widening the panel
+     gives the rows the extra room instead of leaving dead space. */
+  width: 100%;
 }
 
 .efm-group { display: flex; flex-direction: column; gap: 16px; }
