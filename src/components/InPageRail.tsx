@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NAV_HEIGHT } from "./Header";
-import { useTheme } from "../context/ThemeContext";
 import { font, layout } from "../theme/tokens";
 
 export interface RailItem {
@@ -9,82 +8,153 @@ export interface RailItem {
   sectionIds?: string[];
 }
 
-// Sticky right-hand "on this page" rail. Highlights every section currently
-// visible in the viewport with a bright segment that hugs the label glyphs,
-// over a subtle full-list track. Sections are located by DOM id.
+// Sticky right-hand "on this page" rail.
+//
+// Figma: Eufemia — Web, branch 1DFIwNXmRTUnL5a1UhZR6o, node 68520:3309
+// ("In-page navigation"). Values taken verbatim from get_design_context:
+//
+//   container   196px wide, flex column, gap 4
+//   header      "On this page", 18/24 regular, pb 16, pl 16
+//   body        px 16
+//   active      full-width pill: 1px stroke-neutral-subtle, radius 99,
+//               padding 8/16, label 16/20 regular, text-neutral
+//   inactive    label 16/20 regular, text-neutral-alternative, pl 16,
+//               29px apart
+//
+// The previous rail was a different pattern entirely — a document icon, a
+// 1px full-list track with a 2px accent segment spanning *every* section in
+// view, bold active labels and a hover nudge. This design has none of that:
+// no icon, no track, and exactly one active item shown as a bordered pill.
+// So the "set of visible sections" model collapses to a single active index.
+//
+// Colours are var(--eu-*) tokens rather than the frame's hexes, so the rail
+// follows the portal's light/dark toggle and brand switch. On DNB-dark they
+// resolve to the frame's own values (#48484a stroke, #8e8e93 muted label).
+
+const B = "eu-ipr";
+
+const CSS = `
+.${B} {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  font-family: ${font.family};
+}
+
+.${B}__header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 0 16px 16px;
+  color: var(--eu-text);
+  font-size: ${font.size.body}px;
+  line-height: ${font.lineHeight.body}px;
+  font-weight: 400;
+}
+
+.${B}__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 16px;
+}
+
+.${B}__list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Inactive item — plain muted label, no box. */
+.${B}__item {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0 0 16px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--eu-textMuted);
+  font-family: inherit;
+  font-size: ${font.size.small}px;
+  line-height: ${font.lineHeight.small}px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.${B}__item:hover { color: var(--eu-text); }
+.${B}__item:focus-visible {
+  outline: 2px solid var(--eu-accentStrong);
+  outline-offset: 2px;
+  border-radius: 99px;
+}
+
+/* Active item — the section currently in view. Bordered pill. */
+.${B}__item--active,
+.${B}__item--active:hover {
+  padding: 8px 16px;
+  border: 1px solid var(--eu-strokeSubtle);
+  border-radius: 99px;
+  color: var(--eu-text);
+}
+
+/* 29px between two plain labels; 16px wherever the pill is adjacent. The
+   pill's own 8px padding accounts for the rest of the frame's rhythm. */
+.${B}__item + .${B}__item { margin-top: 29px; }
+.${B}__item--active + .${B}__item,
+.${B}__item + .${B}__item--active { margin-top: 16px; }
+
+/* Long lists (changelog) scroll inside the rail with the scrollbar hidden. */
+.${B}__scroll { scrollbar-width: none; }
+.${B}__scroll::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .${B}__item { transition: none; }
+}
+`;
+
 const InPageRail: React.FC<{
   items: RailItem[];
   hidden?: boolean;
   scrollable?: boolean;
   autoFollow?: boolean;
-}> = ({
-  items,
-  hidden = false,
-  scrollable = false,
-  autoFollow = false,
-}) => {
-  const { colors } = useTheme();
-  const [visible, setVisible] = useState<Set<number>>(() => new Set([0]));
-  const [hl, setHl] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
-  const [track, setTrack] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
-  const [hoverStep, setHoverStep] = useState<number | null>(null);
+}> = ({ items, hidden = false, scrollable = false, autoFollow = false }) => {
+  const [active, setActive] = useState(0);
   const [scrollFade, setScrollFade] = useState<"none" | "top" | "bottom" | "both">("none");
-  const labelRefs = useRef<(HTMLElement | null)[]>([]);
-  const railRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Active = the last section whose start has passed the top edge. At the top of
+  // the page nothing has passed yet, so it stays on the first item.
   useEffect(() => {
     const onScroll = () => {
-      const vh = window.innerHeight;
-      const topEdge = NAV_HEIGHT + 8;
-      const next = new Set<number>();
+      const topEdge = NAV_HEIGHT + 24;
+      let next = 0;
       items.forEach((it, i) => {
-        const sectionIds = it.sectionIds ?? [it.id];
-        const isVisible = sectionIds.some((id) => {
+        const ids = it.sectionIds ?? [it.id];
+        const passed = ids.some((id) => {
           const el = document.getElementById(id);
           if (!el) return false;
-          const r = el.getBoundingClientRect();
-          return r.top < vh - 8 && r.bottom > topEdge;
+          return el.getBoundingClientRect().top - topEdge <= 0;
         });
-        if (isVisible) next.add(i);
+        if (passed) next = i;
       });
-      if (next.size === 0) next.add(0);
-      setVisible((prev) => (prev.size === next.size && [...next].every((n) => prev.has(n)) ? prev : next));
-
-      const idxs = [...next];
-      const first = labelRefs.current[Math.min(...idxs)];
-      const last = labelRefs.current[Math.max(...idxs)];
-      const rail = railRef.current;
-      if (first && last && rail) {
-        const base = rail.getBoundingClientRect().top;
-        const range = document.createRange();
-        const glyph = (el: HTMLElement) => {
-          range.selectNodeContents(el);
-          return range.getBoundingClientRect();
-        };
-        const fTop = glyph(first).top;
-        const lBottom = glyph(last).bottom;
-        const top = fTop - base;
-        const height = lBottom - fTop;
-        setHl((prev) => (prev.top === top && prev.height === height ? prev : { top, height }));
-
-        const all = labelRefs.current.filter(Boolean) as HTMLElement[];
-        if (all.length) {
-          const tTop = glyph(all[0]).top - base;
-          const tHeight = glyph(all[all.length - 1]).bottom - base - tTop;
-          setTrack((prev) => (prev.top === tTop && prev.height === tHeight ? prev : { top: tTop, height: tHeight }));
-        }
-      }
+      setActive((prev) => (prev === next ? prev : next));
     };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
-    const scrollContainer = scrollRef.current;
-    scrollContainer?.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      scrollContainer?.removeEventListener("scroll", onScroll);
     };
   }, [items]);
 
@@ -93,165 +163,113 @@ const InPageRail: React.FC<{
       setScrollFade("none");
       return;
     }
+    const el = scrollRef.current;
+    if (!el) return;
 
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    const updateScrollFade = () => {
-      const hasTopOverflow = scrollContainer.scrollTop > 1;
-      const hasBottomOverflow =
-        scrollContainer.scrollTop + scrollContainer.clientHeight <
-        scrollContainer.scrollHeight - 1;
-      const next = hasTopOverflow
-        ? hasBottomOverflow
+    const update = () => {
+      const hasTop = el.scrollTop > 1;
+      const hasBottom = el.scrollTop + el.clientHeight < el.scrollHeight - 1;
+      const next = hasTop
+        ? hasBottom
           ? "both"
           : "top"
-        : hasBottomOverflow
+        : hasBottom
           ? "bottom"
           : "none";
       setScrollFade((current) => (current === next ? current : next));
     };
 
-    updateScrollFade();
-    scrollContainer.addEventListener("scroll", updateScrollFade, {
-      passive: true,
-    });
-    const observer = new ResizeObserver(updateScrollFade);
-    observer.observe(scrollContainer);
-    railRef.current && observer.observe(railRef.current);
-
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
     return () => {
-      scrollContainer.removeEventListener("scroll", updateScrollFade);
+      el.removeEventListener("scroll", update);
       observer.disconnect();
     };
   }, [scrollable, items]);
 
+  // Keep the active item in view within a scrollable rail.
   useEffect(() => {
     if (!autoFollow) return;
-    const activeIndex = [...visible][0];
-    const activeLabel = labelRefs.current[activeIndex];
-    const scrollContainer = scrollRef.current;
-    if (!activeLabel || !scrollContainer) return;
-
-    const labelBounds = activeLabel.getBoundingClientRect();
-    const containerBounds = scrollContainer.getBoundingClientRect();
-    scrollContainer.scrollTo({
+    const el = itemRefs.current[active];
+    const container = scrollRef.current;
+    if (!el || !container) return;
+    const b = el.getBoundingClientRect();
+    const cb = container.getBoundingClientRect();
+    container.scrollTo({
       top:
-        scrollContainer.scrollTop +
-        labelBounds.top -
-        containerBounds.top -
-        (scrollContainer.clientHeight - labelBounds.height) / 2,
+        container.scrollTop +
+        b.top -
+        cb.top -
+        (container.clientHeight - b.height) / 2,
       behavior: "smooth",
     });
-  }, [autoFollow, visible]);
+  }, [autoFollow, active]);
 
   const scrollTo = (i: number) => {
     const el = document.getElementById(items[i].id);
-    if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - (NAV_HEIGHT + 24);
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - (NAV_HEIGHT + 24);
+    window.scrollTo({ top: y, behavior: "smooth" });
   };
 
   if (hidden) return null;
 
+  const mask =
+    scrollFade === "top"
+      ? "linear-gradient(to bottom, transparent, black 40px)"
+      : scrollFade === "bottom"
+        ? "linear-gradient(to bottom, black calc(100% - 40px), transparent)"
+        : scrollFade === "both"
+          ? "linear-gradient(to bottom, transparent, black 40px, black calc(100% - 40px), transparent)"
+          : undefined;
+
   return (
     <nav
       aria-label="On this page"
-      style={{ position: "sticky", top: `${NAV_HEIGHT + 80}px`, width: `${layout.railWidth}px`, flexShrink: 0, padding: "16px 0" }}
+      style={{
+        position: "sticky",
+        top: `${NAV_HEIGHT + 80}px`,
+        width: `${layout.railWidth}px`,
+        flexShrink: 0,
+      }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, color: colors.text }} aria-hidden>
-          <rect x="4" y="2.5" width="12" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M7 6.5h6M7 10h6M7 13.5h4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
-        <span style={{ fontFamily: font.family, fontSize: `${font.size.bodyMedium}px`, lineHeight: `${font.lineHeight.body}px`, fontWeight: 400, color: colors.text }}>
-          On this page
-        </span>
-      </div>
+      <style>{CSS}</style>
+      <div className={B}>
+        <div className={`${B}__header`}>On this page</div>
 
-      <style>{`.in-page-rail-scroll { scrollbar-width: none; } .in-page-rail-scroll::-webkit-scrollbar { display: none; }`}</style>
-      <div
-        ref={scrollRef}
-        className={scrollable ? "in-page-rail-scroll" : undefined}
-        style={{
-          maxHeight: scrollable ? `calc(100vh - ${NAV_HEIGHT + 152}px)` : undefined,
-          overflowY: scrollable ? "auto" : undefined,
-          overscrollBehavior: scrollable ? "contain" : undefined,
-          WebkitMaskImage:
-            scrollFade === "top"
-              ? "linear-gradient(to bottom, transparent, black 40px)"
-              : scrollFade === "bottom"
-                ? "linear-gradient(to bottom, black calc(100% - 40px), transparent)"
-                : scrollFade === "both"
-                  ? "linear-gradient(to bottom, transparent, black 40px, black calc(100% - 40px), transparent)"
-                  : undefined,
-          maskImage:
-            scrollFade === "top"
-              ? "linear-gradient(to bottom, transparent, black 40px)"
-              : scrollFade === "bottom"
-                ? "linear-gradient(to bottom, black calc(100% - 40px), transparent)"
-                : scrollFade === "both"
-                  ? "linear-gradient(to bottom, transparent, black 40px, black calc(100% - 40px), transparent)"
-                  : undefined,
-        }}
-      >
-        <div ref={railRef} style={{ position: "relative" }}>
-          {/* Subtle track spanning the labels' text extent */}
-          <div style={{ position: "absolute", left: 0, top: `${track.top}px`, height: `${track.height}px`, width: "1px", background: colors.stroke }} />
-          {/* Bright segment spanning the visible steps */}
+        <div className={`${B}__body`}>
           <div
+            ref={scrollRef}
+            className={scrollable ? `${B}__scroll` : undefined}
             style={{
-              position: "absolute",
-              left: 0,
-              width: "2px",
-              top: `${hl.top}px`,
-              height: `${hl.height}px`,
-              background: colors.accent,
-              transition: "top 0.2s ease, height 0.2s ease",
+              width: "100%",
+              maxHeight: scrollable
+                ? `calc(100vh - ${NAV_HEIGHT + 152}px)`
+                : undefined,
+              overflowY: scrollable ? "auto" : undefined,
+              overscrollBehavior: scrollable ? "contain" : undefined,
+              WebkitMaskImage: mask,
+              maskImage: mask,
             }}
-          />
-
-          <div style={{ display: "flex", flexDirection: "column", paddingLeft: "16px" }}>
-            {items.map((it, i) => {
-              const isActive = visible.has(i);
-              const isHover = hoverStep === i;
-              return (
+          >
+            <div className={`${B}__list`}>
+              {items.map((it, i) => (
                 <button
                   key={it.id}
-                  onClick={() => scrollTo(i)}
-                  onMouseEnter={() => setHoverStep(i)}
-                  onMouseLeave={() => setHoverStep(null)}
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "0 0 24px",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    textAlign: "left",
+                  type="button"
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
                   }}
+                  className={`${B}__item${i === active ? ` ${B}__item--active` : ""}`}
+                  aria-current={i === active ? "location" : undefined}
+                  onClick={() => scrollTo(i)}
                 >
-                  <span
-                    ref={(el) => {
-                      labelRefs.current[i] = el;
-                    }}
-                    style={{
-                      display: "inline-block",
-                      fontFamily: font.family,
-                      fontSize: `${font.size.bodyMedium}px`,
-                      lineHeight: `${font.lineHeight.body}px`,
-                      fontWeight: isActive ? 500 : 400,
-                      color: isActive || isHover ? colors.text : colors.textMuted,
-                      transform: isHover ? "translateX(3px)" : "translateX(0)",
-                      transition: "color 0.15s ease, transform 0.15s ease",
-                    }}
-                  >
-                    {it.label}
-                  </span>
+                  {it.label}
                 </button>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>

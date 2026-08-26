@@ -231,7 +231,10 @@ export const layout = {
   mobileBreakpoint: 900,
   // On-this-page rail dimensions (also reserved as an empty gutter on
   // rail-less pages so every page's content column is identical).
-  railWidth: 289,
+  // 196px is the "In-page navigation" width from Figma (Eufemia — Web branch
+  // 1DFIwNXmRTUnL5a1UhZR6o, node 68520:3309). PageShell reserves the same
+  // value, so changing it moves every page's content column in step.
+  railWidth: 196,
   railGap: 80,
 } as const;
 
