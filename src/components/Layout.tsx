@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Agentation } from "agentation";
 import { Logo } from "@dnb/eufemia";
-import Header, { NAV_HEIGHT } from "./Header";
-import Sidebar from "./Sidebar";
+import Header from "./Header";
 import { useSideMenuChrome } from "./SideMenuChrome";
 import FeedbackButton from "./FeedbackButton";
 import { useTheme } from "../context/ThemeContext";
-import { useIsMobile } from "../hooks/useIsMobile";
 import { font } from "../theme/tokens";
 
 interface LayoutProps {
@@ -16,77 +14,33 @@ interface LayoutProps {
   hideSidebar?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  currentPlatform = null,
-  currentPath = "",
-  hideSidebar = false,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { colors } = useTheme();
-  const isMobile = useIsMobile();
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // The SideMenu is persistent chrome mounted from wrapPageElement, not from
-  // here — see SideMenuChrome. Layout only needs the offset it occupies.
-  const { enabled: useSideMenu, offset: menuOffset, railWidth } = useSideMenuChrome();
+  // The side menu is persistent chrome mounted from wrapPageElement, not from
+  // here — see SideMenuChrome. Layout only needs the offset it occupies and the
+  // controls for its mobile drawer.
+  const {
+    enabled: hasMenu,
+    offset: sidebarOffset,
+    headerInset,
+    isMobile,
+    drawerOpen,
+    toggleDrawer,
+  } = useSideMenuChrome();
 
-  // On desktop the sidebar is a fixed 384px column; on mobile it's an
-  // off-canvas drawer, so the main content spans the full width.
-  const sidebarOffset = useSideMenu
-    ? menuOffset
-    : hideSidebar || isMobile
-    ? 0
-    : 384;
-
-  // Close the drawer whenever we grow back to desktop, and lock body scroll
-  // while the drawer is open on mobile.
-  useEffect(() => {
-    if (!isMobile && drawerOpen) setDrawerOpen(false);
-  }, [isMobile, drawerOpen]);
-
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    document.body.style.overflow = drawerOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [drawerOpen]);
-
-  const showMenuButton = !hideSidebar && isMobile;
+  const showMenuButton = hasMenu && isMobile;
 
   return (
     <div style={{ minHeight: "100vh", background: colors.pageBg, fontFamily: font.family }}>
       <Header
         showMenuButton={showMenuButton}
-        onMenuClick={() => setDrawerOpen((o) => !o)}
+        onMenuClick={toggleDrawer}
         menuOpen={drawerOpen}
-        insetLeft={useSideMenu ? railWidth : 0}
-        showWordmark={!useSideMenu}
+        insetLeft={headerInset}
+        // The panel carries its own wordmark; two would be redundant.
+        showWordmark={!hasMenu || isMobile}
       />
-
-      {!hideSidebar && !useSideMenu && (
-        <Sidebar
-          currentPlatform={currentPlatform}
-          currentPath={currentPath}
-          isMobile={isMobile}
-          open={drawerOpen}
-          onNavigate={() => setDrawerOpen(false)}
-        />
-      )}
-
-      {/* Backdrop behind the mobile drawer */}
-      {showMenuButton && drawerOpen && (
-        <div
-          onClick={() => setDrawerOpen(false)}
-          aria-hidden
-          style={{
-            position: "fixed",
-            inset: `${NAV_HEIGHT}px 0 0 0`,
-            background: "rgba(0,0,0,0.5)",
-            zIndex: 90,
-          }}
-        />
-      )}
 
       <main
         style={{
