@@ -217,17 +217,21 @@ const foundationsGroup = (platform: DocPlatform): NavGroup =>
     hierarchy
   );
 
-// Platform-scoped build block ----------------------------------------------
+// Platform-scoped block ------------------------------------------------------
+// The blocks the platform switcher actually rebuilds, and so the only ones its
+// dimmer covers. Foundations is deliberately NOT here: it does vary a little by
+// platform (its Design tokens row is a live link on web and disabled elsewhere,
+// since that page is web-only) but is otherwise identical across all three, so
+// it sits above the switcher and stays undimmed.
 
-const buildBlock = (platform: DocPlatform): NavNode[] => {
+const scopedBlock = (platform: DocPlatform): NavNode[] => {
   if (platform === "web") {
-    return [foundationsGroup(platform), componentsGroup(), formsGroup()];
+    return [componentsGroup(), formsGroup()];
   }
 
   // iOS and Android have an Overview page but no component or token pages yet.
   const overview = platform === "ios" ? "/docs/ios" : "/docs/android";
   return [
-    foundationsGroup(platform),
     group(
       "Components",
       [link("Overview", overview), link("All components")],
@@ -246,42 +250,70 @@ export interface NavOptions {
   hasUnreadFeedback?: boolean;
 }
 
-export const navFor = ({
+/**
+ * The tree split around the platform switcher, which is rendered between `lead`
+ * and `scoped` rather than at the top of the menu — it sits directly under
+ * Foundations, next to the blocks it governs.
+ */
+export interface NavSegments {
+  /** Everything above the switcher. */
+  lead: NavNode[];
+  /** Rebuilt when the platform changes; what the switcher's dimmer covers. */
+  scoped: NavNode[];
+  /** Below the scoped block. Platform-agnostic — never dimmed. */
+  trail: NavNode[];
+}
+
+export const navSegmentsFor = ({
   platform,
   isMaintainer = false,
-}: NavOptions): NavNode[] => [
-  // Orient — flat, always relevant, no children.
-  link("Home", "/", home),
-  link("Getting started", "/getting-started", star),
-  link("What's new", "/changelog", news),
+}: NavOptions): NavSegments => ({
+  lead: [
+    // Orient — flat, always relevant, no children.
+    link("Home", "/", home),
+    link("Getting started", "/getting-started", star),
+    link("What's new", "/changelog", news),
 
-  divider,
+    divider,
 
-  // Build — everything the contextual switcher scopes.
-  ...buildBlock(platform),
+    foundationsGroup(platform),
+  ],
 
-  // Learn.
-  group(
-    "Guides",
-    [
-      link("Designer guide", "/docs/design"),
-      link("Accessibility"),
-      link("Best practices"),
-      link("Platform comparison", "/docs/comparison"),
-    ],
-    list
-  ),
+  scoped: scopedBlock(platform),
 
-  divider,
+  trail: [
+    // Learn.
+    group(
+      "Guides",
+      [
+        link("Designer guide", "/docs/design"),
+        link("Accessibility"),
+        link("Best practices"),
+        link("Platform comparison", "/docs/comparison"),
+      ],
+      list
+    ),
 
-  // Meta — platform-agnostic, deliberately below the switcher's reach.
-  link("About Eufemia", "/about", information),
-  link("Contribute", "/contribute", user_feedback),
-  link("Eufemia and AI", "/eufemia-and-ai", ai, "beta"),
-  ...(isMaintainer
-    ? [link("Maintainer tools", "/maintainer", cog, "unread")]
-    : []),
-];
+    divider,
+
+    // Meta — platform-agnostic, deliberately outside the switcher's reach.
+    link("About Eufemia", "/about", information),
+    link("Contribute", "/contribute", user_feedback),
+    link("Eufemia and AI", "/eufemia-and-ai", ai, "beta"),
+    ...(isMaintainer
+      ? [link("Maintainer tools", "/maintainer", cog, "unread")]
+      : []),
+  ],
+});
+
+/**
+ * The whole tree, flat. The menu renders from `navSegmentsFor`, but its
+ * open-state seeding needs to walk every group regardless of segment.
+ */
+export const navFor = (options: NavOptions): NavNode[] => {
+  const { lead, scoped, trail } = navSegmentsFor(options);
+  return [...lead, ...scoped, ...trail];
+};
 
 /** Unused today, but keeps `brush` reachable for a future Design platform. */
 export const DESIGN_ICON = brush;

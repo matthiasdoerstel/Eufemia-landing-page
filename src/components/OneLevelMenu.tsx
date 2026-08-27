@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "gatsby";
 import { Icon as EufemiaIcon } from "@dnb/eufemia";
-import { chevron_down, chevron_up } from "@dnb/eufemia/icons";
+import { check, chevron_down, chevron_up } from "@dnb/eufemia/icons";
 import PlatformIcon from "./PlatformIcon";
 import {
+  navSegmentsFor,
   navFor,
   NavNode,
   NavGroup,
@@ -191,8 +192,11 @@ const CSS = `
 }
 
 /* Platform switcher ------------------------------------------------------- */
-/* The trigger and its popover share a positioning context, and sit above the
-   nav list so the popover can overlay it. */
+/* Sits mid-nav, directly under Foundations and above the blocks it governs. The
+   trigger and its popover share a positioning context, and sit above the scoped
+   blocks in the stack so the popover can overlay them. Being positioned with a
+   z-index also lets the popover paint over Guides and the meta links below,
+   which are static, when it is taller than the scoped block. */
 .${B}-switcher {
   position: relative;
   width: 100%;
@@ -216,7 +220,7 @@ const CSS = `
   overflow: hidden;
   border: 1px solid var(--eu-strokeSubtle);
   border-radius: ${radius.xl};
-  background: var(--eu-surfaceAlt);
+  background: var(--eu-surface);
   /* Frame effect "UI sharp": drop shadow, y+1, blur 6, #00000029. */
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.16);
   animation: ${B}-pop 0.12s ease-out;
@@ -226,17 +230,23 @@ const CSS = `
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 56px rows — taller than a nav row, per the frame's "Menu items". */
+/* Rows are two boxes: a full-width container that owns the 8px inset, and a
+   pill inside it that owns the fill and the state. 8 + 40 + 8 keeps the frame's
+   56px row height. No separators between rows — the frame draws none. */
+.${B}-context-option-item {
+  padding: 8px;
+}
+
 .${B}-context-option {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
   box-sizing: border-box;
-  min-height: 56px;
-  padding: 16px;
+  min-height: 40px;
+  padding: 8px;
   border: 0;
-  border-radius: ${radius.sm};
+  border-radius: ${radius.lg};
   background: transparent;
   color: var(--eu-text);
   font-family: inherit;
@@ -246,16 +256,39 @@ const CSS = `
   cursor: pointer;
   transition: background 0.15s ease;
 }
-.${B}-context-option:hover { background: var(--eu-selectedSubtle); }
+
+/* State ladder. The frame stacks three neutral surfaces inside the menu
+   (container #2c2c2e, hover #333, selected #48484a); the portal's ramp
+   surface -> surfaceAlt -> stroke carries the same three steps, so the dark
+   theme lands on the frame's values exactly and light/Carnegie get the
+   equivalent relative steps. Note that stroke is a stroke token doing duty as a
+   fill — it is the only neutral above surfaceAlt, and picking it over the
+   lighter actionAlt is also what keeps selected-row text above 4.5:1 on light. */
+.${B}-context-option:hover { background: var(--eu-surfaceAlt); }
+
+/* Selected — the frame's bold fill plus a 1px border, and the check. As with
+   the nav rows, padding is not compensated for the border, so a selected pill
+   is 42px against its siblings' 40px. */
+.${B}-context-option[aria-checked="true"] {
+  background: var(--eu-stroke);
+  border: 1px solid var(--eu-strokeSubtle);
+}
+
 .${B}-context-option:focus-visible {
   outline: 2px solid var(--eu-accentStrong);
   outline-offset: -2px;
-  background: var(--eu-selectedSubtle);
 }
-/* Hairline between rows, matching the frame's padded dividers. */
-.${B}-context-option-item + .${B}-context-option-item {
-  border-top: 1px solid var(--eu-strokeSubtle);
+
+/* Pushed to the trailing edge — the frame's space-between on the selected
+   pill. Only the selected row renders one. */
+.${B}-context__check {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: currentColor;
 }
+
 .${B}-context__glyph {
   display: inline-flex;
   align-items: center;
@@ -266,10 +299,11 @@ const CSS = `
   color: currentColor;
 }
 
-/* Nav list + its dimmer. Positioned so the dimmer can cover it, and below the
-   switcher in the stack so the popover wins. Keeps the 24px block rhythm the
-   nav used when these rows were its direct children. */
-.${B}-navlist {
+/* The platform-scoped blocks and their dimmer. Positioned so the dimmer can
+   cover exactly these, and below the switcher in the stack so the popover paints
+   over them. Repeats the nav's 24px block rhythm internally, since wrapping
+   these rows took them out of the nav's own flex flow. */
+.${B}-scoped {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -278,24 +312,27 @@ const CSS = `
   z-index: 1;
 }
 
-/* Dimmer over everything the platform choice is about to replace.
+/* Dimmer over the blocks the platform choice is about to rebuild — Components
+   and, on web, Forms. Not the whole nav: Foundations above and Guides plus the
+   meta links below are the same on every platform.
    Deliberately the panel's OWN background rather than a black wash: where the
    dimmer extends past the rows there is nothing under it but panel, so surface
    over surface is invisible and the layer has no visible edge. Over the rows the
-   same fill veils them toward the panel colour. Click-to-dismiss. */
+   same fill veils them toward the panel colour. 0.6 is the frame's own backdrop,
+   rgba(28,28,30,0.6) — surface at 60%. Click-to-dismiss. */
 .${B}-dim {
   position: absolute;
   inset: -8px;
   border: 0;
   padding: 0;
   background: var(--eu-surface);
-  opacity: 0.8;
+  opacity: 0.6;
   cursor: pointer;
   animation: ${B}-fade 0.12s ease-out;
 }
 @keyframes ${B}-fade {
   from { opacity: 0; }
-  to { opacity: 0.8; }
+  to { opacity: 0.6; }
 }
 
 /* Blocks ----------------------------------------------------------------- */
@@ -630,6 +667,15 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
     };
   }, [contextOpen]);
 
+  const segments = useMemo(
+    () => navSegmentsFor({ platform, isMaintainer }),
+    [platform, isMaintainer]
+  );
+
+  // The flat tree, for open-state seeding only — that has to walk every group
+  // regardless of which segment it renders in. Group keys are built from the
+  // label and the parent key, and every segment renders at depth 1 with an empty
+  // parent key, so the keys match whichever way the tree is traversed.
   const nodes = useMemo(
     () => navFor({ platform, isMaintainer }),
     [platform, isMaintainer]
@@ -675,6 +721,19 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
       </Link>
 
       <nav className={`${B}-nav`} aria-label="Portal">
+        {/* Above the switcher: Home / Getting started / What's new, then
+            Foundations. Unaffected by the platform choice. */}
+        <Tree
+          nodes={segments.lead}
+          depth={1}
+          parentKey=""
+          currentPath={currentPath}
+          open={open}
+          toggle={toggle}
+          hasUnread={hasUnreadFeedback}
+          onNavigate={onNavigate}
+        />
+
         <div className={`${B}-switcher`} ref={switcherRef}>
           <button
             type="button"
@@ -697,21 +756,24 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
           </button>
 
           {contextOpen && (
-            // A "switch to" menu, not a value picker: the frame lists only the
-            // platforms you are not on, so the active one has no row and there
-            // is nothing to mark as checked. Hence `menu`/`menuitem` rather than
-            // the radiogroup this used to be.
-            <ul className={`${B}-context-menu`} role="menu" aria-label="Switch platform">
-              {(["web", "ios", "android"] as DocPlatform[])
-                .filter((p) => p !== platform)
-                .map((p) => (
-                  <li key={p} className={`${B}-context-option-item`} role="none">
+            // Back to a radiogroup: the frame now lists every platform and marks
+            // the active one, so this is a value picker again rather than the
+            // "switch to" menu it briefly was.
+            <ul className={`${B}-context-menu`} role="radiogroup" aria-label="Platform">
+              {(["web", "ios", "android"] as DocPlatform[]).map((p) => {
+                const selected = p === platform;
+                return (
+                  <li key={p} className={`${B}-context-option-item`}>
                     <button
                       type="button"
-                      role="menuitem"
+                      role="radio"
+                      aria-checked={selected}
                       className={`${B}-context-option`}
                       onClick={() => {
-                        onPlatformChange(p);
+                        // Re-picking the active platform should just dismiss —
+                        // onPlatformChange navigates to the platform overview,
+                        // which would move the user off the page they are on.
+                        if (!selected) onPlatformChange(p);
                         setContextOpen(false);
                       }}
                     >
@@ -719,16 +781,23 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
                         <PlatformIcon platform={p} />
                       </span>
                       <span>{PLATFORM_LABELS[p]}</span>
+                      {selected && (
+                        <span className={`${B}-context__check`}>
+                          <EufemiaIcon icon={check} size="default" aria-hidden />
+                        </span>
+                      )}
                     </button>
                   </li>
-                ))}
+                );
+              })}
             </ul>
           )}
         </div>
 
-        <div className={`${B}-navlist`}>
+        {/* The blocks the switcher rebuilds, and the only ones it dims. */}
+        <div className={`${B}-scoped`}>
           <Tree
-            nodes={nodes}
+            nodes={segments.scoped}
             depth={1}
             parentKey=""
             currentPath={currentPath}
@@ -749,6 +818,19 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
             />
           )}
         </div>
+
+        {/* Below the scoped block: Guides and the meta links. Identical on every
+            platform, so they stay undimmed. */}
+        <Tree
+          nodes={segments.trail}
+          depth={1}
+          parentKey=""
+          currentPath={currentPath}
+          open={open}
+          toggle={toggle}
+          hasUnread={hasUnreadFeedback}
+          onNavigate={onNavigate}
+        />
       </nav>
     </aside>
   );
