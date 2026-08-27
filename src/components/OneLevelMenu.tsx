@@ -220,7 +220,10 @@ const CSS = `
   overflow: hidden;
   border: 1px solid var(--eu-strokeSubtle);
   border-radius: ${radius.xl};
-  background: var(--eu-surface);
+  /* The frame's .Panel is background-neutral-base. Like the frame it is almost
+     never seen — the row containers are full width and cover it — but it is the
+     colour behind the rounded corners. */
+  background: var(--eu-surfaceAlt);
   /* Frame effect "UI sharp": drop shadow, y+1, blur 6, #00000029. */
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.16);
   animation: ${B}-pop 0.12s ease-out;
@@ -230,11 +233,15 @@ const CSS = `
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Rows are two boxes: a full-width container that owns the 8px inset, and a
-   pill inside it that owns the fill and the state. 8 + 40 + 8 keeps the frame's
-   56px row height. No separators between rows — the frame draws none. */
+/* Rows are two boxes: a full-width container that owns the 8px inset and the
+   band fill, and a pill inside it that owns the state. 8 + 40 + 8 keeps the
+   frame's 56px row height. No separators between rows — the frame draws none.
+   The container is what you actually read as the menu's background, exactly as
+   in the frame, where these cover .Panel entirely. */
 .${B}-context-option-item {
   padding: 8px;
+  border-radius: ${radius.sm};
+  background: var(--eu-surfaceSubtle);
 }
 
 .${B}-context-option {
@@ -257,20 +264,17 @@ const CSS = `
   transition: background 0.15s ease;
 }
 
-/* State ladder. The frame stacks three neutral surfaces inside the menu
-   (container #2c2c2e, hover #333, selected #48484a); the portal's ramp
-   surface -> surfaceAlt -> stroke carries the same three steps, so the dark
-   theme lands on the frame's values exactly and light/Carnegie get the
-   equivalent relative steps. Note that stroke is a stroke token doing duty as a
-   fill — it is the only neutral above surfaceAlt, and picking it over the
-   lighter actionAlt is also what keeps selected-row text above 4.5:1 on light. */
+/* State ladder, straight off the frame now that the portal models the whole
+   neutral ramp: the container band is background-neutral-subtle, hover is
+   -base, and selected is -bold. In DNB dark those resolve to the frame's
+   #2c2c2e / #333 / #48484a exactly. */
 .${B}-context-option:hover { background: var(--eu-surfaceAlt); }
 
 /* Selected — the frame's bold fill plus a 1px border, and the check. As with
    the nav rows, padding is not compensated for the border, so a selected pill
    is 42px against its siblings' 40px. */
 .${B}-context-option[aria-checked="true"] {
-  background: var(--eu-stroke);
+  background: var(--eu-surfaceBold);
   border: 1px solid var(--eu-strokeSubtle);
 }
 

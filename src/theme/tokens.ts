@@ -7,10 +7,12 @@ export type ThemeName = "light" | "dark";
 export type BrandName = "DNB" | "Sbanken" | "Carnegie";
 
 export interface ColorTokens {
-  // Surfaces
+  // Surfaces — the neutral ladder, mirroring Eufemia's background-neutral-*.
   pageBg: string; // page background
   surface: string; // neutral surface (cards, inputs, popover)
-  surfaceAlt: string; // alternative/raised surface
+  surfaceSubtle: string; // background-neutral-subtle — one step up from surface
+  surfaceAlt: string; // alternative/raised surface (background-neutral-base)
+  surfaceBold: string; // background-neutral-bold — the topmost neutral fill
   // Text
   text: string; // primary text
   textMuted: string; // secondary / placeholder text
@@ -34,7 +36,11 @@ export interface ColorTokens {
 const dark: ColorTokens = {
   pageBg: "#000000",
   surface: "#1c1c1e",
+  // dnb-greyscale-900 / -800 / -700, which is what Eufemia's dark
+  // background-neutral-subtle / -base / -bold resolve to.
+  surfaceSubtle: "#2c2c2e",
   surfaceAlt: "#333333",
+  surfaceBold: "#48484a",
   text: "#ffffff",
   textMuted: "#8e8e93",
   accent: "#a5e1d2",
@@ -57,7 +63,12 @@ const dark: ColorTokens = {
 const light: ColorTokens = {
   pageBg: "#ffffff",
   surface: "#ffffff",
+  // dnb-greyscale-50 and -200, per Eufemia's light background-neutral-subtle
+  // and -bold. surfaceAlt keeps the portal's own #f2f2f5 rather than Eufemia's
+  // -base (#ebebeb), which is already relied on across the portal.
+  surfaceSubtle: "#f8f8f8",
   surfaceAlt: "#f2f2f5",
+  surfaceBold: "#cccccc",
   text: "#333333",
   textMuted: "#737373",
   accent: "#007272",
@@ -80,7 +91,9 @@ const light: ColorTokens = {
 const carnegie: ColorTokens = {
   pageBg: "#ffffff",
   surface: "#ffffff",
+  surfaceSubtle: "#f8f8f8",
   surfaceAlt: "#f2f2f5",
+  surfaceBold: "#cccccc",
   text: "#000000",
   textMuted: "#737373",
   accent: "#000000",
