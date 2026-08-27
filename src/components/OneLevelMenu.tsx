@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "gatsby";
 import { Icon as EufemiaIcon } from "@dnb/eufemia";
 import { chevron_down, chevron_up } from "@dnb/eufemia/icons";
+import PlatformIcon from "./PlatformIcon";
 import {
   navFor,
   NavNode,
@@ -189,43 +190,53 @@ const CSS = `
   cursor: not-allowed;
 }
 
-/* Avatar — 24px circle in the switcher. */
-.${B}-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  background: var(--eu-accent);
-  color: var(--eu-textOnAccent);
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 500;
+/* Platform switcher ------------------------------------------------------- */
+/* The trigger and its popover share a positioning context, and sit above the
+   nav list so the popover can overlay it. */
+.${B}-switcher {
+  position: relative;
+  width: 100%;
+  z-index: 2;
 }
 
-/* The switcher's dropdown. */
+/* The switcher's dropdown — an overlay, not a block in the flow. Absolute so
+   opening it lays the menu *over* the nav list instead of pushing every row
+   down; the offset is the trigger's full height plus the frame's 6px gap. */
 .${B}-context-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
-  width: 100%;
   box-sizing: border-box;
-  margin: 8px 0 0;
-  padding: 8px 0;
+  margin: 0;
+  padding: 0;
   list-style: none;
-  border-radius: ${radius.md};
+  overflow: hidden;
+  border: 1px solid var(--eu-strokeSubtle);
+  border-radius: ${radius.xl};
   background: var(--eu-surfaceAlt);
+  /* Frame effect "UI sharp": drop shadow, y+1, blur 6, #00000029. */
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.16);
+  animation: ${B}-pop 0.12s ease-out;
 }
+@keyframes ${B}-pop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 56px rows — taller than a nav row, per the frame's "Menu items". */
 .${B}-context-option {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   box-sizing: border-box;
-  min-height: 40px;
-  padding: 8px 16px;
+  min-height: 56px;
+  padding: 16px;
   border: 0;
+  border-radius: ${radius.sm};
   background: transparent;
   color: var(--eu-text);
   font-family: inherit;
@@ -233,19 +244,58 @@ const CSS = `
   line-height: ${font.lineHeight.body}px;
   text-align: left;
   cursor: pointer;
+  transition: background 0.15s ease;
 }
 .${B}-context-option:hover { background: var(--eu-selectedSubtle); }
-.${B}-context-option[aria-checked="true"] { font-weight: 500; }
-.${B}-radio {
+.${B}-context-option:focus-visible {
+  outline: 2px solid var(--eu-accentStrong);
+  outline-offset: -2px;
+  background: var(--eu-selectedSubtle);
+}
+/* Hairline between rows, matching the frame's padded dividers. */
+.${B}-context-option-item + .${B}-context-option-item {
+  border-top: 1px solid var(--eu-strokeSubtle);
+}
+.${B}-context__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 16px;
   width: 16px;
   height: 16px;
-  border: 1.5px solid var(--eu-strokeActionAlt);
-  border-radius: 999px;
+  color: currentColor;
 }
-.${B}-context-option[aria-checked="true"] .${B}-radio {
-  border-color: var(--eu-accent);
-  box-shadow: inset 0 0 0 3px var(--eu-accent);
+
+/* Nav list + its dimmer. Positioned so the dimmer can cover it, and below the
+   switcher in the stack so the popover wins. Keeps the 24px block rhythm the
+   nav used when these rows were its direct children. */
+.${B}-navlist {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Dimmer over everything the platform choice is about to replace.
+   Deliberately the panel's OWN background rather than a black wash: where the
+   dimmer extends past the rows there is nothing under it but panel, so surface
+   over surface is invisible and the layer has no visible edge. Over the rows the
+   same fill veils them toward the panel colour. Click-to-dismiss. */
+.${B}-dim {
+  position: absolute;
+  inset: -8px;
+  border: 0;
+  padding: 0;
+  background: var(--eu-surface);
+  opacity: 0.8;
+  cursor: pointer;
+  animation: ${B}-fade 0.12s ease-out;
+}
+@keyframes ${B}-fade {
+  from { opacity: 0; }
+  to { opacity: 0.8; }
 }
 
 /* Blocks ----------------------------------------------------------------- */
@@ -305,7 +355,8 @@ const CSS = `
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .${B}-row, .${B}-context, .${B}-panel--drawer { transition: none; }
+  .${B}-row, .${B}-context, .${B}-panel--drawer, .${B}-context-option { transition: none; }
+  .${B}-context-menu, .${B}-dim { animation: none; }
 }
 `;
 
@@ -553,6 +604,31 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
   wordmark,
 }) => {
   const [contextOpen, setContextOpen] = useState(false);
+  const switcherRef = useRef<HTMLDivElement>(null);
+
+  // Now that the menu overlays rather than occupying flow, it needs the usual
+  // popover dismissals: Escape, and a click anywhere outside the switcher. The
+  // dimmer covers the nav list, but the wordmark and the panel's padding are
+  // still exposed — a click there should close it too.
+  useEffect(() => {
+    if (!contextOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setContextOpen(false);
+    };
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (!switcherRef.current?.contains(e.target as Node)) setContextOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+    };
+  }, [contextOpen]);
 
   const nodes = useMemo(
     () => navFor({ platform, isMaintainer }),
@@ -599,16 +675,16 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
       </Link>
 
       <nav className={`${B}-nav`} aria-label="Portal">
-        <div>
+        <div className={`${B}-switcher`} ref={switcherRef}>
           <button
             type="button"
             className={`${B}-context`}
             onClick={() => setContextOpen((o) => !o)}
             aria-expanded={contextOpen}
-            aria-haspopup="true"
+            aria-haspopup="menu"
           >
-            <span className={`${B}-avatar`} aria-hidden>
-              {PLATFORM_LABELS[platform].charAt(0)}
+            <span className={`${B}-context__glyph`} aria-hidden>
+              <PlatformIcon platform={platform} />
             </span>
             <span className={`${B}-row__label`}>{PLATFORM_LABELS[platform]}</span>
             <span className={`${B}-row__chevron`}>
@@ -621,42 +697,58 @@ const OneLevelMenu: React.FC<OneLevelMenuProps> = ({
           </button>
 
           {contextOpen && (
-            <ul
-              className={`${B}-context-menu`}
-              role="radiogroup"
-              aria-label="Platform"
-            >
-              {(["web", "ios", "android"] as DocPlatform[]).map((p) => (
-                <li key={p}>
-                  <button
-                    type="button"
-                    role="radio"
-                    aria-checked={platform === p}
-                    className={`${B}-context-option`}
-                    onClick={() => {
-                      onPlatformChange(p);
-                      setContextOpen(false);
-                    }}
-                  >
-                    <span className={`${B}-radio`} aria-hidden />
-                    <span>{PLATFORM_LABELS[p]}</span>
-                  </button>
-                </li>
-              ))}
+            // A "switch to" menu, not a value picker: the frame lists only the
+            // platforms you are not on, so the active one has no row and there
+            // is nothing to mark as checked. Hence `menu`/`menuitem` rather than
+            // the radiogroup this used to be.
+            <ul className={`${B}-context-menu`} role="menu" aria-label="Switch platform">
+              {(["web", "ios", "android"] as DocPlatform[])
+                .filter((p) => p !== platform)
+                .map((p) => (
+                  <li key={p} className={`${B}-context-option-item`} role="none">
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className={`${B}-context-option`}
+                      onClick={() => {
+                        onPlatformChange(p);
+                        setContextOpen(false);
+                      }}
+                    >
+                      <span className={`${B}-context__glyph`} aria-hidden>
+                        <PlatformIcon platform={p} />
+                      </span>
+                      <span>{PLATFORM_LABELS[p]}</span>
+                    </button>
+                  </li>
+                ))}
             </ul>
           )}
         </div>
 
-        <Tree
-          nodes={nodes}
-          depth={1}
-          parentKey=""
-          currentPath={currentPath}
-          open={open}
-          toggle={toggle}
-          hasUnread={hasUnreadFeedback}
-          onNavigate={onNavigate}
-        />
+        <div className={`${B}-navlist`}>
+          <Tree
+            nodes={nodes}
+            depth={1}
+            parentKey=""
+            currentPath={currentPath}
+            open={open}
+            toggle={toggle}
+            hasUnread={hasUnreadFeedback}
+            onNavigate={onNavigate}
+          />
+
+          {contextOpen && (
+            // A div, not a button: it is `aria-hidden`, and an aria-hidden
+            // focusable element is an a11y violation. Keyboard users dismiss
+            // with Escape instead.
+            <div
+              className={`${B}-dim`}
+              aria-hidden
+              onClick={() => setContextOpen(false)}
+            />
+          )}
+        </div>
       </nav>
     </aside>
   );
